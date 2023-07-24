@@ -1,12 +1,15 @@
 import { ChangeEvent, useState } from 'react';
+import { useFileContext } from '../contexts/FileContext';
 
 function FileUpload(): JSX.Element {
 
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const { selectedFile, setSelectedFile } = useFileContext();
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
-        setSelectedFile(file);
+        if(file != null) {
+            setSelectedFile(file.name);
+        }
     };
 
     const handleFileUpload = () => {
@@ -15,9 +18,9 @@ function FileUpload(): JSX.Element {
 
     return (
         <div>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleFileUpload}>Upload</button>
-            {selectedFile && <p>{selectedFile.name}</p>}
+            <input type="file" accept=".txt, .srt" onChange={handleFileChange} />
+            {/* <button onClick={handleFileUpload}>Upload</button> */}
+            {selectedFile && <p>{selectedFile}</p>}
         </div>
 
     )
