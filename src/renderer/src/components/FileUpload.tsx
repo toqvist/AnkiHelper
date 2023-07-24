@@ -11,15 +11,10 @@ function FileUpload(): JSX.Element {
             setSelectedFile(file.name);
         }
     };
-
-    const handleFileUpload = () => {
-        if (!selectedFile) return;
-    };
-
+    
     return (
         <div>
             <input type="file" accept=".txt, .srt" onChange={handleFileChange} />
-            {/* <button onClick={handleFileUpload}>Upload</button> */}
             {selectedFile && <p>{selectedFile}</p>}
         </div>
 
