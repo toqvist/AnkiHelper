@@ -27,6 +27,7 @@
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@electron/notarize": "^1.2.3",
+    "@types/electron": "^1.6.10",
     "@types/node": "^18.16.19",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",

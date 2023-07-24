@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { ipcRenderer } from 'electron';
 
 interface FileContextType {
     selectedFile: string;
@@ -7,6 +6,14 @@ interface FileContextType {
     preview: string[];
     updatePreview: (fileName: string) => void;
 }
+
+declare global {
+    interface Window {
+      api: {
+        previewFile: (filePath: string) => Promise<string[]>;
+      };
+    }
+  }
 
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
