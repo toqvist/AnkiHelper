@@ -1,7 +1,8 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import FileHandler from '../model/fileHandler'
 
 function createWindow(): void {
   // Create the browser window.
@@ -56,6 +57,16 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  ipcMain.handle('file:preview', async (event, filePath) => {
+    try {
+      const fileContent = await FileHandler.preview(filePath);
+      return fileContent;
+    } catch (error) {
+      console.error('Error while reading the file:', error);
+      return null;
+    }
+  });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -69,3 +80,4 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
