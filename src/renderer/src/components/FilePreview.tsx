@@ -3,6 +3,7 @@ import { useFileContext } from '../contexts/FileContext';
 function FilePreview(): JSX.Element {
 
     const { preview, selectedFile } = useFileContext();
+
     
     return (
         <>

@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from '../model/fileHandler'
+import FileProcessor from '../model/fileProcessor'
 
 function createWindow(): void {
   // Create the browser window.
@@ -58,7 +59,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  ipcMain.handle('file:preview', async (event, filePath) => {
+  ipcMain.handle('file:preview', async (event, filePath: string) => {
     try {
       const fileContent = await FileHandler.preview(filePath);
       return fileContent;
@@ -66,6 +67,11 @@ app.whenReady().then(() => {
       console.error('Error while reading the file:', error);
       return null;
     }
+  });
+
+  ipcMain.handle('process:trimSRT', async (event, content: string) => {
+    const fileContent = await FileProcessor.trimSRTMetadata(content);
+    return fileContent;
   });
 })
 

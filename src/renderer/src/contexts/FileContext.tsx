@@ -26,14 +26,10 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     const [processing, setProcessing] = useState<boolean>(false);
     const [preview, setPreview] = useState<string[]>([]);
     
-
     async function updatePreview (filePath: string) {
-        /* const fileContent = await ipcRenderer.invoke('file:preview', filePath); */
         const fileContent = await window.api.previewFile(filePath)
         setPreview(fileContent);
     }
-
-    /* function updatePreview () {} */
 
     return (
         <FileContext.Provider value={{ selectedFile, setSelectedFile, preview, updatePreview }}>

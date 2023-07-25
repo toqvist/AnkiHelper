@@ -1,5 +1,6 @@
 import FileUpload from './components/FileUpload';
 import FilePreview from './components/FilePreview';
+import FileActions from './components/FileActions';
 
 function App(): JSX.Element {
 
@@ -9,6 +10,7 @@ function App(): JSX.Element {
         📖 LangTool
       </h1>
       <FileUpload/>
+      <FileActions/>
       <FilePreview/>
     </div>
   )

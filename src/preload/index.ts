@@ -3,7 +3,9 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-    previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath)
+  trimSRT: (content: string) => ipcRenderer.invoke('process:trimSRT', content),  
+  previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath),
+    
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
