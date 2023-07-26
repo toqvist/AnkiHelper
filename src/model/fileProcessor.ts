@@ -2,7 +2,7 @@ import FileHandler from "./fileHandler";
 
 export default class FileProcessor {
 
-    static trimSRTMetadata(content: string) {
+    static trimSRTMetadata(content: string): string {
 
         const lines = content.split('\n');
         const filteredLines = lines.filter(line => !/^\d/.test(line));
@@ -11,7 +11,7 @@ export default class FileProcessor {
         return trimmedContent;
     }
 
-    static async trimSRTFile(filePath: string) {
+    static async trimSRTFile(filePath: string): Promise<string> {
         return this.trimSRTMetadata(await FileHandler.readFile(filePath))
     }
 }

@@ -1,15 +1,10 @@
-import { useFileContext } from '../contexts/FileContext';
-
-function FilePreview(): JSX.Element {
-
-    const { preview, selectedFile } = useFileContext();
-
+function FilePreview({previewLines}): JSX.Element {
     
     return (
         <>
-            {(preview.length > 0) &&
+            {(previewLines.length > 0) &&
                 <div>
-                    {preview.map((line, i) => {
+                    {previewLines.map((line, i) => {
                         return <p key={"previewline" + i}>{line}</p>
                     })}
                 </div>}

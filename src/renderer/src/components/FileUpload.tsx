@@ -3,13 +3,13 @@ import { useFileContext } from '../contexts/FileContext';
 
 function FileUpload(): JSX.Element {
 
-    const { selectedFile, setSelectedFile, updatePreview } = useFileContext();
+    const { selectedFile, setSelectedFile, updateSrcPreview } = useFileContext();
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if(file != null) {
             setSelectedFile(file.name);
-            updatePreview(file.name);
+            updateSrcPreview(file.name);
         }
     };
     

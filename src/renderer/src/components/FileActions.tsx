@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useFileContext } from '../contexts/FileContext';
+import FilePreview from './FilePreview';
 
 interface Action {
     label: string,
@@ -23,7 +24,9 @@ function FileActions(): JSX.Element {
 
     const srtActions = [
         { label: "Trim timestamps", function: window.api.trimSRTFile },
+        { label: "Save", function: window.api.openSaveDialog}
     ]
+
     var actions: Action[] = [];
     switch (getFileExtension(selectedFile)) {
         case "srt":
@@ -47,6 +50,7 @@ function FileActions(): JSX.Element {
             {result != "" &&
                 <div>
                     <p>{result}</p>
+                    <FilePreview previewLines={result}/>
                 </div>
             }
         </>

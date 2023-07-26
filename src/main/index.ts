@@ -1,9 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from '../model/fileHandler'
 import FileProcessor from '../model/fileProcessor'
+
 
 function createWindow(): void {
   // Create the browser window.
@@ -20,7 +21,7 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow!.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -61,10 +62,28 @@ app.whenReady().then(() => {
 
   ipcMain.handle('file:preview', async (event, filePath: string) => {
     try {
-      const fileContent = await FileHandler.preview(filePath);
+      const fileContent = await FileHandler.previewFile(filePath);
       return fileContent;
     } catch (error) {
       console.error('Error while reading the file:', error);
+      return null;
+    }
+  });
+
+  ipcMain.handle('file:saveDialog', async (event, browserWindow) => {
+    dialog.showSaveDialog({}).then(result => {
+      console.log(result.canceled)
+    }).catch(err => {
+      console.log(err)
+    })
+  });
+
+  ipcMain.handle('file:save', async (event, content: string) => {
+    try {
+      /* const fileContent = await FileHandler.writeStringToFile(content,); */
+
+    } catch (error) {
+      console.error('Error while saving the file:', error);
       return null;
     }
   });
