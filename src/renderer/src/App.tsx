@@ -17,7 +17,7 @@ declare global {
 
 function App(): JSX.Element {
 
-  const { selectedFile, srcPreview } = useFileContext();
+  const { selectedFile, srcPreview, resultPreview } = useFileContext();
 
   return (
     <div className="container">
@@ -27,10 +27,11 @@ function App(): JSX.Element {
       <FileUpload />
       <FileActions />
       {selectedFile &&
-        <>
+        <div>
           <FilePreview previewLines={["one", "two"]} />
           <FilePreview previewLines={srcPreview} />
-        </>
+          <FilePreview previewLines={resultPreview} />
+        </div>
       }
     </div>
   )

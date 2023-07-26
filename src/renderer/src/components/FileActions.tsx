@@ -7,11 +7,12 @@ interface Action {
     function: Function
 }
 
+// TODO: Move actions to context or other
+
 function FileActions(): JSX.Element {
 
     /* const [actions, setActions] = useState<Action[]>([]); */
-    const { selectedFile, setSelectedFile } = useFileContext();
-    const [result, setResult] = useState<string>("");
+    const { selectedFile, setSelectedFile, updateResult } = useFileContext();
 
     function getFileExtension(filename: string): string {
         const dotIndex = filename.lastIndexOf('.');
@@ -24,7 +25,7 @@ function FileActions(): JSX.Element {
 
     const srtActions = [
         { label: "Trim timestamps", function: window.api.trimSRTFile },
-        { label: "Save", function: window.api.openSaveDialog}
+        { label: "Save", function: window.api.openSaveDialog }
     ]
 
     var actions: Action[] = [];
@@ -41,18 +42,12 @@ function FileActions(): JSX.Element {
                 {actions.map((action, i) => {
                     return <button onClick={async () => {
                         var result: string = await action.function(selectedFile);
-                        setResult(result);
+                        updateResult(result);
                     }}>
                         {action.label}
                     </button>
                 })}
             </div>
-            {result != "" &&
-                <div>
-                    <p>{result}</p>
-                    <FilePreview previewLines={result}/>
-                </div>
-            }
         </>
     )
 }

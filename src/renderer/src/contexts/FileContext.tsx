@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface FileContextType {
     selectedFile: string;
     setSelectedFile: (fileName: string) => void;
+    result: string;
+    updateResult: (result: string) => void;
     srcPreview: string[];
     resultPreview: string[];
     updateSrcPreview: (fileName: string) => void;
@@ -18,10 +20,13 @@ interface FileProviderProps {
 
 export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     const [selectedFile, setSelectedFile] = useState<string>('');
-    const [processing, setProcessing] = useState<boolean>(false);
     const [srcPreview, setSrcPreview] = useState<string[]>([]);
+    
+    const [result, setResult] = useState<string>('');
     const [resultPreview, setResultPreview] = useState<string[]>([]);
     
+    const [processing, setProcessing] = useState<boolean>(false);
+
     async function updateSrcPreview (filePath: string): Promise<void> {
         const filePreview = await window.api.previewFile(filePath)
         setSrcPreview(filePreview);
@@ -35,6 +40,10 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
         setResultPreview(result);
     }
 
+    async function updateResult (result: string): Promise<void> {
+        await updateResultPreview(result)
+    }
+
     async function openSaveDialog(): Promise<void> {
         const filePath: string = await window.api.openSaveDialog();
         if (filePath) {
@@ -45,7 +54,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
       }
 
     return (
-        <FileContext.Provider value={{ selectedFile, setSelectedFile, srcPreview, resultPreview, updateSrcPreview, updateResultPreview, openSaveDialog }}>
+        <FileContext.Provider value={{ selectedFile, setSelectedFile, result, updateResult, srcPreview, resultPreview, updateSrcPreview, updateResultPreview, openSaveDialog }}>
             {children}
         </FileContext.Provider>
     );
