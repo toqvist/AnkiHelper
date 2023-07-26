@@ -1,8 +1,12 @@
 import fs from 'fs'
 
 export default class FileHandler {
+
   //Writes string to file
   static async writeStringToFile(filePath: string, content: string): Promise<string> {
+
+    console.log(filePath)
+
     return new Promise((resolve, reject) => {
       fs.writeFile(filePath, content, 'utf8', (err) => {
         if (err) {
@@ -49,7 +53,6 @@ export default class FileHandler {
       const linesToReturn = Math.min(numLines, lines.length) // Ensure we don't exceed the total lines
 
       const result = lines.slice(0, linesToReturn)
-      console.log(result)
       return result
     } catch (error: any) {
       throw new Error('Error reading the file: ' + error.message)

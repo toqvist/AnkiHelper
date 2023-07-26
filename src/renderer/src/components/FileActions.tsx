@@ -11,7 +11,7 @@ interface Action {
 
 function FileActions(): JSX.Element {
   /* const [actions, setActions] = useState<Action[]>([]); */
-  const { selectedFile, setSelectedFile, updateResult } = useFileContext()
+  const { selectedFile, updateResult, openSaveDialog } = useFileContext()
 
   function getFileExtension(filename: string): string {
     const dotIndex = filename.lastIndexOf('.')
@@ -24,7 +24,7 @@ function FileActions(): JSX.Element {
 
   const srtActions = [
     { label: 'Trim timestamps', function: window.api.trimSRTFile },
-    { label: 'Save', function: window.api.openSaveDialog }
+    { label: 'Save', function: openSaveDialog }
   ]
 
   let actions: Action[] = []

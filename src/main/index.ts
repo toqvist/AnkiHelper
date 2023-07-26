@@ -69,15 +69,9 @@ app.whenReady().then(() => {
     }
   })
 
-  ipcMain.handle('file:saveDialog', async (event) => {
-    dialog
-      .showSaveDialog({})
-      .then((result) => {
-        console.log(result.canceled)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+  ipcMain.handle('file:saveDialog', async (event): Promise<string | undefined> => {
+    const result: Electron.SaveDialogReturnValue = await dialog.showSaveDialog({})
+    return result.filePath;
   })
 
   ipcMain.handle('file:save', async (event, content: string, filePath: string) => {

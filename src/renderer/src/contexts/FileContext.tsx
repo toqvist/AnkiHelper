@@ -40,16 +40,16 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     setResultPreview(result)
   }
 
-  async function updateResult(result: string): Promise<void> {
-    await updateResultPreview(result)
+  async function updateResult(content: string): Promise<void> {
+    setResult(content)
+    await updateResultPreview(content)
   }
 
   async function openSaveDialog(): Promise<void> {
     const filePath: string = await window.api.openSaveDialog()
-    console.log('filepath: ' + filePath)
+
     if (filePath && result) {
       window.api.saveFile(result, filePath)
-      console.log('saved ' + filePath)
     }
   }
 

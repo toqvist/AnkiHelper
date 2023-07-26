@@ -25,8 +25,9 @@ function App(): JSX.Element {
       <FileActions />
       {selectedFile && (
         <div>
-          <FilePreview previewLines={['one', 'two']} />
+          <h2>Source</h2>
           <FilePreview previewLines={srcPreview} />
+          <h2>Result</h2>
           <FilePreview previewLines={resultPreview} />
         </div>
       )}
