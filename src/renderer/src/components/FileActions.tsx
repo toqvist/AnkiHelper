@@ -8,10 +8,10 @@ interface Action {
 
 function FileActions(): JSX.Element {
 
-    const [actions, setActions] = useState<Action[]>([]);
+    /* const [actions, setActions] = useState<Action[]>([]); */
     const { selectedFile, setSelectedFile } = useFileContext();
 
-    function getFileExtension(filename) {
+    function getFileExtension(filename: string): string {
         const dotIndex = filename.lastIndexOf('.');
         if (dotIndex === -1 || dotIndex === filename.length - 1) {
             return "No file extension found";
@@ -20,20 +20,23 @@ function FileActions(): JSX.Element {
         }
     }
 
-    //SRT
-    //Trim srt
-
     const srtActions = [
         { label: "Trim timestamps", function: window.api.trimSRT },
     ]
-
-
-    getFileExtension(selectedFile);
+    var actions: Action[] = [];
+    switch (getFileExtension(selectedFile)) {
+        case "srt":
+            /* setActions(srtActions) */
+            actions = srtActions;
+            console.log("SRT!")
+            break;
+        default:
+    }
 
     return (
         <>
             <div>
-                {srtActions.map((action, i) => {
+                {actions.map((action, i) => {
                     return <button onClick={() => action.function()}>
                         {action.label}
                     </button>
