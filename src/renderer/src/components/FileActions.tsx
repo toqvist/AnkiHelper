@@ -1,55 +1,58 @@
-import { useState } from 'react';
-import { useFileContext } from '../contexts/FileContext';
-import FilePreview from './FilePreview';
+import { useState } from 'react'
+import { useFileContext } from '../contexts/FileContext'
+import FilePreview from './FilePreview'
 
 interface Action {
-    label: string,
-    function: Function
+  label: string
+  function: Function
 }
 
 // TODO: Move actions to context or other
 
 function FileActions(): JSX.Element {
+  /* const [actions, setActions] = useState<Action[]>([]); */
+  const { selectedFile, setSelectedFile, updateResult } = useFileContext()
 
-    /* const [actions, setActions] = useState<Action[]>([]); */
-    const { selectedFile, setSelectedFile, updateResult } = useFileContext();
-
-    function getFileExtension(filename: string): string {
-        const dotIndex = filename.lastIndexOf('.');
-        if (dotIndex === -1 || dotIndex === filename.length - 1) {
-            return "No file extension found";
-        } else {
-            return filename.substring(dotIndex + 1);
-        }
+  function getFileExtension(filename: string): string {
+    const dotIndex = filename.lastIndexOf('.')
+    if (dotIndex === -1 || dotIndex === filename.length - 1) {
+      return 'No file extension found'
+    } else {
+      return filename.substring(dotIndex + 1)
     }
+  }
 
-    const srtActions = [
-        { label: "Trim timestamps", function: window.api.trimSRTFile },
-        { label: "Save", function: window.api.openSaveDialog }
-    ]
+  const srtActions = [
+    { label: 'Trim timestamps', function: window.api.trimSRTFile },
+    { label: 'Save', function: window.api.openSaveDialog }
+  ]
 
-    var actions: Action[] = [];
-    switch (getFileExtension(selectedFile)) {
-        case "srt":
-            actions = srtActions;
-            break;
-        default:
-    }
+  let actions: Action[] = []
+  switch (getFileExtension(selectedFile)) {
+    case 'srt':
+      actions = srtActions
+      break
+    default:
+  }
 
-    return (
-        <>
-            <div>
-                {actions.map((action, i) => {
-                    return <button onClick={async () => {
-                        var result: string = await action.function(selectedFile);
-                        updateResult(result);
-                    }}>
-                        {action.label}
-                    </button>
-                })}
-            </div>
-        </>
-    )
+  return (
+    <>
+      <div>
+        {actions.map((action, i) => {
+          return (
+            <button
+              onClick={async () => {
+                const result: string = await action.function(selectedFile)
+                updateResult(result)
+              }}
+            >
+              {action.label}
+            </button>
+          )
+        })}
+      </div>
+    </>
+  )
 }
 
 export default FileActions

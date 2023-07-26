@@ -5,7 +5,6 @@ import icon from '../../resources/icon.png?asset'
 import FileHandler from '../model/fileHandler'
 import FileProcessor from '../model/fileProcessor'
 
-
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -62,40 +61,43 @@ app.whenReady().then(() => {
 
   ipcMain.handle('file:preview', async (event, filePath: string) => {
     try {
-      const fileContent = await FileHandler.previewFile(filePath);
-      return fileContent;
+      const fileContent = await FileHandler.previewFile(filePath)
+      return fileContent
     } catch (error) {
-      console.error('Error while reading the file:', error);
-      return null;
+      console.error('Error while reading the file:', error)
+      return null
     }
-  });
+  })
 
   ipcMain.handle('file:saveDialog', async (event) => {
-    dialog.showSaveDialog({}).then(result => {
-      console.log(result.canceled)
-    }).catch(err => {
-      console.log(err)
-    })
-  });
+    dialog
+      .showSaveDialog({})
+      .then((result) => {
+        console.log(result.canceled)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  })
 
-  ipcMain.handle('file:save', async (event, content: string, filePath: string ) => {
+  ipcMain.handle('file:save', async (event, content: string, filePath: string) => {
     try {
-      FileHandler.writeStringToFile(filePath, content);
+      FileHandler.writeStringToFile(filePath, content)
     } catch (error) {
-      console.error('Error while saving the file:', error);
-      return null;
+      console.error('Error while saving the file:', error)
+      return null
     }
-  });
+  })
 
   ipcMain.handle('process:trimSRT', async (event, content: string) => {
-    const fileContent = await FileProcessor.trimSRTMetadata(content);
-    return fileContent;
-  });
+    const fileContent = await FileProcessor.trimSRTMetadata(content)
+    return fileContent
+  })
 
   ipcMain.handle('process:trimSRTFile', async (event, filePath: string) => {
-    const fileContent = await FileProcessor.trimSRTFile(filePath);
-    return fileContent;
-  });
+    const fileContent = await FileProcessor.trimSRTFile(filePath)
+    return fileContent
+  })
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -109,4 +111,3 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
-
