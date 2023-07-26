@@ -70,7 +70,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('file:saveDialog', async (event, browserWindow) => {
+  ipcMain.handle('file:saveDialog', async (event) => {
     dialog.showSaveDialog({}).then(result => {
       console.log(result.canceled)
     }).catch(err => {
@@ -78,10 +78,9 @@ app.whenReady().then(() => {
     })
   });
 
-  ipcMain.handle('file:save', async (event, content: string) => {
+  ipcMain.handle('file:save', async (event, content: string, filePath: string ) => {
     try {
-      /* const fileContent = await FileHandler.writeStringToFile(content,); */
-
+      FileHandler.writeStringToFile(filePath, content);
     } catch (error) {
       console.error('Error while saving the file:', error);
       return null;

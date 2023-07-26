@@ -10,7 +10,8 @@ declare global {
       trimSRTFile: () => string;
       trimSRT: () => string;
       previewFile: (filePath: string) => Promise<string[]>;
-      openSaveDialog: () => string;
+      openSaveDialog: () => Promise<string>;
+      saveFile: (filePath: string, content: string) => Promise<string>
     };
   }
 }

@@ -33,8 +33,8 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     }
 
     async function updateResultPreview (content: string): Promise<void> {
-        const lines = content.split('\n');
-        const linesToReturn = Math.min(10, lines.length);
+        const lines: string[] = content.split('\n');
+        const linesToReturn: number = Math.min(10, lines.length);
     
         const result = lines.slice(0, linesToReturn);
         setResultPreview(result);
@@ -46,10 +46,10 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
     async function openSaveDialog(): Promise<void> {
         const filePath: string = await window.api.openSaveDialog();
-        if (filePath) {
-          // Perform actions with the selected file path
-          console.log('Selected save location:', filePath);
-          // You can now save the file using JavaScript, perform further actions, etc.
+        console.log("filepath: " + filePath)
+        if (filePath && result) {
+            window.api.saveFile(result, filePath)
+            console.log("saved " + filePath)
         }
       }
 

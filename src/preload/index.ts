@@ -6,6 +6,8 @@ const api = {
   trimSRT: (content: string) => ipcRenderer.invoke('process:trimSRT', content),
   trimSRTFile: (filePath: string) => ipcRenderer.invoke('process:trimSRTFile', filePath),
   previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath),
+  openSaveDialog: () => ipcRenderer.invoke('file:saveDialog'),
+  saveFile: (content: string, filePath: string) => ipcRenderer.invoke('file:save'),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
