@@ -10,6 +10,7 @@ function FileActions(): JSX.Element {
 
     /* const [actions, setActions] = useState<Action[]>([]); */
     const { selectedFile, setSelectedFile } = useFileContext();
+    const [result, setResult] = useState<string>("");
 
     function getFileExtension(filename: string): string {
         const dotIndex = filename.lastIndexOf('.');
@@ -21,14 +22,12 @@ function FileActions(): JSX.Element {
     }
 
     const srtActions = [
-        { label: "Trim timestamps", function: window.api.trimSRT },
+        { label: "Trim timestamps", function: window.api.trimSRTFile },
     ]
     var actions: Action[] = [];
     switch (getFileExtension(selectedFile)) {
         case "srt":
-            /* setActions(srtActions) */
             actions = srtActions;
-            console.log("SRT!")
             break;
         default:
     }
@@ -37,11 +36,19 @@ function FileActions(): JSX.Element {
         <>
             <div>
                 {actions.map((action, i) => {
-                    return <button onClick={() => action.function()}>
+                    return <button onClick={async () => {
+                        var result: string = await action.function(selectedFile);
+                        setResult(result);
+                    }}>
                         {action.label}
                     </button>
                 })}
             </div>
+            {result != "" &&
+                <div>
+                    <p>{result}</p>
+                </div>
+            }
         </>
     )
 }

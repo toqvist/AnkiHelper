@@ -1,3 +1,5 @@
+import FileHandler from "./fileHandler";
+
 export default class FileProcessor {
 
     static trimSRTMetadata(content: string) {
@@ -7,5 +9,9 @@ export default class FileProcessor {
 
         const trimmedContent = filteredLines.join('\n').trim();
         return trimmedContent;
+    }
+
+    static async trimSRTFile(filePath: string) {
+        return this.trimSRTMetadata(await FileHandler.readFile(filePath))
     }
 }

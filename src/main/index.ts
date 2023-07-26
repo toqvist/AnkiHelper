@@ -73,6 +73,11 @@ app.whenReady().then(() => {
     const fileContent = await FileProcessor.trimSRTMetadata(content);
     return fileContent;
   });
+
+  ipcMain.handle('process:trimSRTFile', async (event, filePath: string) => {
+    const fileContent = await FileProcessor.trimSRTFile(filePath);
+    return fileContent;
+  });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

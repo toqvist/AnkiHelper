@@ -10,7 +10,7 @@ function FilePreview(): JSX.Element {
             {(preview.length > 0) &&
                 <div>
                     {preview.map((line, i) => {
-                        return <p>{line}</p>
+                        return <p key={"previewline" + i}>{line}</p>
                     })}
                 </div>}
         </>

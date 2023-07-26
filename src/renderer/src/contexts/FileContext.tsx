@@ -7,14 +7,6 @@ interface FileContextType {
     updatePreview: (fileName: string) => void;
 }
 
-declare global {
-    interface Window {
-      api: {
-        previewFile: (filePath: string) => Promise<string[]>;
-      };
-    }
-  }
-
 const FileContext = createContext<FileContextType | undefined>(undefined);
 
 interface FileProviderProps {
