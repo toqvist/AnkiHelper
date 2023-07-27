@@ -1,12 +1,12 @@
 import fs from 'fs'
+import * as path from 'path';
+import { app, dialog } from 'electron';
+import { v1 as uuidv1 } from 'uuid';
 
 export default class FileHandler {
 
   //Writes string to file
   static async writeStringToFile(filePath: string, content: string): Promise<string> {
-
-    console.log(filePath)
-
     return new Promise((resolve, reject) => {
       fs.writeFile(filePath, content, 'utf8', (err) => {
         if (err) {
@@ -58,4 +58,26 @@ export default class FileHandler {
       throw new Error('Error reading the file: ' + error.message)
     }
   }
+
+  static async saveFileTemp(filePath: string, content: string): Promise<string> {
+    const scriptDir = app.getAppPath();
+
+    const fileName = path.basename(filePath);
+    const fileExtension = path.extname(fileName);
+    const fileNameWithoutExtension = path.basename(fileName, fileExtension);
+
+    const uuid = uuidv1().replace(/-/g, '');
+
+    const newFileName = `${fileNameWithoutExtension}-${uuid}${fileExtension}`;
+    const targetPath = path.join('temp', scriptDir, newFileName);
+    
+    if (fs.existsSync(targetPath)) {
+      fs.unlinkSync(targetPath);
+    }
+
+    FileHandler.writeStringToFile(targetPath, content)
+    return targetPath
+    //TODO Clean up temp file on exit
+  }
 }
+

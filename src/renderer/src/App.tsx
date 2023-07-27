@@ -12,6 +12,7 @@ declare global {
       previewFile: (filePath: string) => Promise<string[]>
       openSaveDialog: () => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<string>
+      saveFileTemp: (filePath: string, content: string) => string,
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
     }
   }

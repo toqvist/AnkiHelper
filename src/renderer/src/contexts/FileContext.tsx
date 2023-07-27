@@ -7,9 +7,10 @@ interface FileContextType {
   updateResult: (result: string) => void
   srcPreview: string[]
   resultPreview: string[]
-  updateSrcPreview: (fileName: string) => void
+  updateSrc: (fileName: string) => void
   updateResultPreview: (content: string) => void
   openSaveDialog: () => void
+  resultToSource: (content: string) => Promise<void>
 }
 
 const FileContext = createContext<FileContextType | undefined>(undefined)
@@ -27,9 +28,19 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   const [processing, setProcessing] = useState<boolean>(false)
 
+  async function updateSrc(filePath: string): Promise<void> {
+    setSelectedFile(filePath)
+    updateSrcPreview(filePath)
+  }
+
   async function updateSrcPreview(filePath: string): Promise<void> {
     const filePreview = await window.api.previewFile(filePath)
     setSrcPreview(filePreview)
+  }
+
+  async function updateResult(content: string): Promise<void> {
+    setResult(content)
+    await updateResultPreview(content)
   }
 
   async function updateResultPreview(content: string): Promise<void> {
@@ -38,11 +49,6 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
     const result = lines.slice(0, linesToReturn)
     setResultPreview(result)
-  }
-
-  async function updateResult(content: string): Promise<void> {
-    setResult(content)
-    await updateResultPreview(content)
   }
 
   async function openSaveDialog(): Promise<void> {
@@ -54,9 +60,9 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
   }
 
   async function resultToSource(content: string): Promise<void> {
-    //Save to a temporary file in the program directory
-    //Use file name + UUID
-    window.api.saveFile("", content)
+    const resultPath = await window.api.saveFileTemp(selectedFile, content)
+    updateSrc(resultPath);
+    updateResult("")
   }
 
   return (
@@ -68,9 +74,10 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
         updateResult,
         srcPreview,
         resultPreview,
-        updateSrcPreview,
+        updateSrc,
         updateResultPreview,
-        openSaveDialog
+        openSaveDialog,
+        resultToSource
       }}
     >
       {children}

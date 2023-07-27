@@ -11,7 +11,7 @@ interface Action {
 
 function FileActions(): JSX.Element {
   /* const [actions, setActions] = useState<Action[]>([]); */
-  const { selectedFile, updateResult, openSaveDialog, setSelectedFile, result } = useFileContext()
+  const { selectedFile, updateResult, openSaveDialog, resultToSource, result } = useFileContext()
 
   function getFileExtension(filename: string): string {
     const dotIndex = filename.lastIndexOf('.')
@@ -24,7 +24,7 @@ function FileActions(): JSX.Element {
 
   const defaultActions = [
     { label: 'Save', function: openSaveDialog },
-    { label: 'Word Frequencies', function: window.api.wordFrequency}
+    { label: 'Word Frequencies', function: window.api.wordFrequency }
   ]
 
   const srtActions = [
@@ -36,7 +36,7 @@ function FileActions(): JSX.Element {
   let actions: Action[] = []
   switch (getFileExtension(selectedFile)) {
     case 'srt':
-      actions = [ ...defaultActions, ...srtActions ]
+      actions = [...defaultActions, ...srtActions]
       break
     default:
       actions = defaultActions
@@ -45,8 +45,8 @@ function FileActions(): JSX.Element {
   return (
     <>
       <div>
-      <button onClick={() => setSelectedFile(result)} >Set result as active file</button>
-       { selectedFile &&
+        {result && <button onClick={() => resultToSource(result)} >Set result as active file</button>}
+        {selectedFile &&
           actions.map((action, i) => {
             return (
               <button

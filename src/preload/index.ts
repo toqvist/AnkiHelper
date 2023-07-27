@@ -7,6 +7,7 @@ const api = {
   trimSRTFile: (filePath: string) => ipcRenderer.invoke('process:trimSRTFile', filePath),
   previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath),
   openSaveDialog: () => ipcRenderer.invoke('file:saveDialog'),
+  saveFileTemp: ( filePath: string, content: string) => ipcRenderer.invoke('file:saveTemp', filePath, content),
   saveFile: (content: string, filePath: string) => ipcRenderer.invoke('file:save', content, filePath),
   wordFrequency: (filePath: string) => ipcRenderer.invoke('tools:wordFrequency', filePath),
 }

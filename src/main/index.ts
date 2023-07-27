@@ -75,9 +75,18 @@ app.whenReady().then(() => {
     return result.filePath;
   })
 
-  ipcMain.handle('file:save', async (event, content: string, filePath: string) => {
+  ipcMain.handle('file:save', async (event, filePath: string, content: string,) => {
     try {
       FileHandler.writeStringToFile(filePath, content)
+    } catch (error) {
+      console.error('Error while saving the file:', error)
+      return null
+    }
+  })
+
+  ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {
+    try {
+      return FileHandler.writeStringToFile(filePath, content)
     } catch (error) {
       console.error('Error while saving the file:', error)
       return null

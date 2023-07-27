@@ -2,13 +2,12 @@ import { ChangeEvent, useState } from 'react'
 import { useFileContext } from '../contexts/FileContext'
 
 function FileUpload(): JSX.Element {
-  const { selectedFile, setSelectedFile, updateSrcPreview } = useFileContext()
+  const { selectedFile, updateSrc } = useFileContext()
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
     if (file != null) {
-      setSelectedFile(file.name)
-      updateSrcPreview(file.name)
+      updateSrc(file.name)
     }
   }
 
