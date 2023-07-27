@@ -22,17 +22,23 @@ function FileActions(): JSX.Element {
     }
   }
 
-  const srtActions = [
-    { label: 'Trim timestamps', function: window.api.trimSRTFile },
+  const defaultActions = [
     { label: 'Save', function: openSaveDialog }
   ]
+
+  const srtActions = [
+    { label: 'Trim timestamps', function: window.api.trimSRTFile },
+  ]
+
+
 
   let actions: Action[] = []
   switch (getFileExtension(selectedFile)) {
     case 'srt':
-      actions = srtActions
+      actions = {...defaultActions, ...srtActions}
       break
     default:
+      actions = defaultActions
   }
 
   return (
