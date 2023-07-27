@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useFileContext } from '../contexts/FileContext'
 import FilePreview from './FilePreview'
+import { WordFreq } from 'src/model/tools'
 
 interface Action {
   label: string
@@ -24,7 +25,13 @@ function FileActions(): JSX.Element {
 
   const defaultActions = [
     { label: 'Save', function: openSaveDialog },
-    { label: 'Word Frequencies', function: window.api.wordFrequency }
+    {
+      label: 'Word Frequencies', function: async (arg) => {
+        const result: WordFreq[] = await window.api.wordFrequency(arg);
+        const resultAsString = result.map((wordFreq, i) => { return `${wordFreq.word} - [${wordFreq.frequency}]` }).join('\n')
+        updateResult(resultAsString)
+      }
+    }
   ]
 
   const srtActions = [

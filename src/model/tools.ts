@@ -9,29 +9,48 @@ export default class Tools {
 
   static async wordFrequency(filePath: string, argumentWord: string): Promise<WordFreq[]> {
     try {
-      const data: string = await FileHandler.readFile(filePath)
-      const sentences: string[] = data.split(/[\.\?!]+\n*/);
-
+      const data: string = await FileHandler.readFile(filePath);
       const wordFrequencyMap: { [key: string]: number } = {};
 
-      sentences.forEach((sentence) => {
-        const words: string[] = sentence.trim().split(' ');
-        words.forEach((word) => {
-          const cleanedWord = word.toLowerCase().replace(/[.,?!]/g, '');
-          if (cleanedWord.includes(argumentWord.toLowerCase())) {
-            wordFrequencyMap[cleanedWord] = (wordFrequencyMap[cleanedWord] || 0) + 1;
-          }
-        });
+      const words: string[] = data
+        .toLowerCase()
+        .replace(/[.,?!]/g, '')
+        .split(/\s+/);
+
+      words.forEach((word) => {
+        if (word.includes(argumentWord.toLowerCase())) {
+          wordFrequencyMap[word] = (wordFrequencyMap[word] || 0) + 1;
+        }
       });
 
-      const outputArray: WordFreq[] = Object.entries(wordFrequencyMap).map(([word, frequency]) => ({
+      const wordFrequencyList: WordFreq[] = Object.keys(wordFrequencyMap).map((word) => ({
         word,
-        frequency,
+        frequency: wordFrequencyMap[word],
       }));
 
-      return outputArray;
+      return wordFrequencyList;
     } catch (error) {
-      throw new Error('Error reading input file: ' + error);
+      throw new Error('Error reading or processing the file.');
     }
+  }
+
+  static sortByFrequency(wordFrequencyList: WordFreq[], descending = true): WordFreq[] {
+    return wordFrequencyList.sort((a, b) => {
+      if (descending) {
+        return b.frequency - a.frequency; // Sort in descending order
+      } else {
+        return a.frequency - b.frequency; // Sort in ascending order
+      }
+    });
+  }
+
+  static sortAlphabetically(wordFrequencyList: WordFreq[], descending = true): WordFreq[] {
+    return wordFrequencyList.sort((a, b) => {
+      if (descending) {
+        return b.word.localeCompare(a.word); // Sort in descending order (reverse alphabetical)
+      } else {
+        return a.word.localeCompare(b.word); // Sort in ascending order (alphabetical)
+      }
+    });
   }
 }
