@@ -12,7 +12,7 @@ function FileUpload(): JSX.Element {
   }
 
   return (
-    <div>
+    <div className="upload">
       <input type="file" accept=".txt, .srt" onChange={handleFileChange} />
       {selectedFile && <p>{selectedFile}</p>}
     </div>

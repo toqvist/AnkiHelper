@@ -192,3 +192,16 @@ a:hover {
   display: flex;
   justify-content: space-evenly;
 }
+
+.tabs {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.tabs button {
+  flex: 1;
+}
+
+.upload {
+  display: flex;
+}
