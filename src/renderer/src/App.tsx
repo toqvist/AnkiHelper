@@ -2,6 +2,7 @@ import FileUpload from './components/FileUpload'
 import FilePreview from './components/FilePreview'
 import FileActions from './components/FileActions'
 import { useFileContext } from './contexts/FileContext'
+import { WordFreq } from 'src/model/tools'
 
 declare global {
   interface Window {
@@ -11,6 +12,7 @@ declare global {
       previewFile: (filePath: string) => Promise<string[]>
       openSaveDialog: () => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<string>
+      wordFrequency: (filePath: string) => Promise<WordFreq[]>,
     }
   }
 }

@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import FileHandler from '../model/fileHandler'
 import FileProcessor from '../model/fileProcessor'
+import Tools, { WordFreq} from '../model/tools'
 
 function createWindow(): void {
   // Create the browser window.
@@ -90,6 +91,11 @@ app.whenReady().then(() => {
 
   ipcMain.handle('process:trimSRTFile', async (event, filePath: string) => {
     const fileContent = await FileProcessor.trimSRTFile(filePath)
+    return fileContent
+  })
+
+  ipcMain.handle('tools:wordFrequency', async (event, filePath: string): Promise<WordFreq[]> => {
+    const fileContent = await Tools.wordFrequency(filePath, '')
     return fileContent
   })
 })

@@ -53,6 +53,12 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     }
   }
 
+  async function resultToSource(content: string): Promise<void> {
+    //Save to a temporary file in the program directory
+    //Use file name + UUID
+    window.api.saveFile("", content)
+  }
+
   return (
     <FileContext.Provider
       value={{
