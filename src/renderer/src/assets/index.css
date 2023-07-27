@@ -187,3 +187,8 @@ a:hover {
     width: 100%;
   }
 }
+
+.previews {
+  display: flex;
+  justify-content: space-evenly;
+}

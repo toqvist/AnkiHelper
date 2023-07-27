@@ -24,11 +24,15 @@ function App(): JSX.Element {
       <FileUpload />
       <FileActions />
       {selectedFile && (
-        <div>
-          <h2>Source</h2>
-          <FilePreview previewLines={srcPreview} />
-          <h2>Result</h2>
-          <FilePreview previewLines={resultPreview} />
+        <div className="previews">
+          <div>
+            <h2>Source</h2>
+            <FilePreview previewLines={srcPreview} />
+          </div>
+          <div>
+            <h2>Result</h2>
+            <FilePreview previewLines={resultPreview} />
+          </div>
         </div>
       )}
     </div>
