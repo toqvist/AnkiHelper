@@ -35,7 +35,7 @@ function FileActions(): JSX.Element {
   let actions: Action[] = []
   switch (getFileExtension(selectedFile)) {
     case 'srt':
-      actions = {...defaultActions, ...srtActions}
+      actions = [ ...defaultActions, ...srtActions ]
       break
     default:
       actions = defaultActions
@@ -44,18 +44,20 @@ function FileActions(): JSX.Element {
   return (
     <>
       <div>
-        {actions.map((action, i) => {
-          return (
-            <button
-              onClick={async () => {
-                const result: string = await action.function(selectedFile)
-                updateResult(result)
-              }}
-            >
-              {action.label}
-            </button>
-          )
-        })}
+       { selectedFile &&
+          actions.map((action, i) => {
+            return (
+              <button
+                onClick={async () => {
+                  const result: string = await action.function(selectedFile)
+                  updateResult(result)
+                }}
+              >
+                {action.label}
+              </button>
+            )
+          })
+        }
       </div>
     </>
   )
