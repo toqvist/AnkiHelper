@@ -33,8 +33,8 @@ function App(): JSX.Element {
     <>
       <FileUpload />
       <div className="tabs">
-        <button onClick={() => setMode(Mode.process)}>Process</button>
-        <button onClick={() => setMode(Mode.analyze)}>Analyze</button>
+        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>Process</button>
+        <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>Analyze</button>
       </div>
       <div className="container">
         {/* <h1 className="hero-text">📖 LangTool</h1> */}
