@@ -26,7 +26,7 @@ enum Mode { process, analyze }
 function App(): JSX.Element {
   /*   const { selectedFile, srcPreview, resultPreview } = useFileContext() */
 
-  const [mode, setMode] = useState<Mode>(Mode.process)
+  const [mode, setMode] = useState<Mode>(Mode.analyze)
 
 
   return (
@@ -38,8 +38,8 @@ function App(): JSX.Element {
       </div>
       <div className="container">
         {/* <h1 className="hero-text">📖 LangTool</h1> */}
-        {mode === Mode.process && <Process />}
         {mode === Mode.analyze && <Analyze />}
+        {mode === Mode.process && <Process />}
       </div>
     </>
   )
