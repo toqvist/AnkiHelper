@@ -2,9 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import FileHandler from '../model/fileHandler'
-import FileProcessor from '../model/fileProcessor'
-import Tools, { WordFreq} from '../model/tools'
+import { getHandlers } from './ipcHandlers'
 
 function createWindow(): void {
   // Create the browser window.
@@ -60,53 +58,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 
-  ipcMain.handle('file:preview', async (event, filePath: string) => {
-    try {
-      const fileContent = await FileHandler.previewFile(filePath)
-      return fileContent
-    } catch (error) {
-      console.error('Error while reading the file:', error)
-      return null
-    }
-  })
-
-  ipcMain.handle('file:saveDialog', async (event): Promise<string | undefined> => {
-    const result: Electron.SaveDialogReturnValue = await dialog.showSaveDialog({})
-    return result.filePath;
-  })
-
-  ipcMain.handle('file:save', async (event, filePath: string, content: string,) => {
-    try {
-      FileHandler.writeStringToFile(filePath, content)
-    } catch (error) {
-      console.error('Error while saving the file:', error)
-      return null
-    }
-  })
-
-  ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {
-    try {
-      return FileHandler.writeStringToFile(filePath, content)
-    } catch (error) {
-      console.error('Error while saving the file:', error)
-      return null
-    }
-  })
-
-  ipcMain.handle('process:trimSRT', async (event, content: string) => {
-    const fileContent = await FileProcessor.trimSRTMetadata(content)
-    return fileContent
-  })
-
-  ipcMain.handle('process:trimSRTFile', async (event, filePath: string) => {
-    const fileContent = await FileProcessor.trimSRTFile(filePath)
-    return fileContent
-  })
-
-  ipcMain.handle('tools:wordFrequency', async (event, filePath: string): Promise<WordFreq[]> => {
-    const fileContent = await Tools.wordFrequency(filePath, '')
-    return fileContent
-  })
+  getHandlers()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
