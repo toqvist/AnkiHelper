@@ -7,7 +7,7 @@ import { useState } from 'react'
 import Process from './modes/Process'
 import Analyze from './modes/Analyze'
 
-declare global {
+declare global { //TODO: This is probably not the correct/best way to declare types
   interface Window {
     api: {
       trimSRTFile: () => string
@@ -17,7 +17,14 @@ declare global {
       saveFile: (filePath: string, content: string) => Promise<string>
       saveFileTemp: (filePath: string, content: string) => string,
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
+      getDecks: () => Promise<Deck[]>
+      createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>
     }
+  }
+
+  interface Deck {
+    id: number;
+    name: string;
   }
 }
 
@@ -33,8 +40,8 @@ function App(): JSX.Element {
     <>
       <FileUpload />
       <div className="tabs">
-        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>Process</button>
         <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>Analyze</button>
+        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>Process</button>
       </div>
       <div className="container">
         {/* <h1 className="hero-text">📖 LangTool</h1> */}

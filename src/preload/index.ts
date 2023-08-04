@@ -7,10 +7,13 @@ const api = {
   trimSRTFile: (filePath: string) => ipcRenderer.invoke('process:trimSRTFile', filePath),
   previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath),
   openSaveDialog: () => ipcRenderer.invoke('file:saveDialog'),
-  saveFileTemp: ( filePath: string, content: string) => ipcRenderer.invoke('file:saveTemp', filePath, content),
+  saveFileTemp: (filePath: string, content: string) => ipcRenderer.invoke('file:saveTemp', filePath, content),
   saveFile: (content: string, filePath: string) => ipcRenderer.invoke('file:save', content, filePath),
   wordFrequency: (filePath: string) => ipcRenderer.invoke('tools:wordFrequency', filePath),
-}
+  getDecks: () => ipcRenderer.invoke('anki:getDecks'),
+  createClozeCard: (deck: string, sentence: string, clozeWords: string[]) =>
+    ipcRenderer.invoke('anki:createClozeCard', deck, sentence, clozeWords),
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

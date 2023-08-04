@@ -24,7 +24,7 @@ function FileActions(): JSX.Element {
   }
 
   const defaultActions = [
-    { label: 'Save', function: openSaveDialog },
+    { label: 'Save result', function: openSaveDialog },
     {
       label: 'Word Frequencies', function: async (arg) => {
         const result: WordFreq[] = await window.api.wordFrequency(arg);
