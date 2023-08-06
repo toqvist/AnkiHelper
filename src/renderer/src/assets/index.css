@@ -210,3 +210,9 @@ a:hover {
   display: flex;
   justify-content: space-between;
 }
+
+.word-frequency {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20%;
+}
