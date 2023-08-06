@@ -35,19 +35,23 @@ function Process(): JSX.Element {
   }, []);
 
 
-  async function getWordFrequency() {
+  async function getWordFrequency() : Promise<void> {
     const result: WordFreq[] = await window.api.wordFrequency(selectedFile)
     setLeftColumn(result);
   }
 
-  async function getSentences(word: string) {
+  async function getSentences(word: string): Promise<void> {
     console.log(await window.api.usedInSentences(selectedFile, word))
-    const result: string[] = await window.api.usedInSentences(selectedFile, word); 
+    const result: string[] = await window.api.usedInSentences(selectedFile, word);
     const sentences: Sentence[] = result.map((sent, i) => {
-      const sentence: Sentence = { words:  sent.split(" ") };
+      const sentence: Sentence = { words: sent.split(" ") };
       return sentence;
     });
     setRightColumn(sentences);
+  }
+
+  async function initiateClozeCreation(sentence: Sentence) {
+    
   }
 
   return (
@@ -68,7 +72,7 @@ function Process(): JSX.Element {
           {/* TODO: Force user to pick a deck if they want to add a cloze, i.e. disable cloze button if no deck is picked*/}
           {decks.length == 0
             ? <>
-              <i>No anki decks found</i>
+              <i>No anki decks found!</i>
               <button onClick={() => getDecks()}>Retry</button>
               <div>
                 <i>Make sure anki is running with <a href="https://ankiweb.net/shared/info/2055492159">AnkiConnect</a> installed</i>
@@ -80,18 +84,21 @@ function Process(): JSX.Element {
                 {decks.map((deck) => (
                   <option value={deck.name}>{deck.name}</option>
                 ))}
-              </select>
+                </select>
             </div>
           }
         </div>
         <h2>Used in sentences</h2>
-        <div className="">
+        <div>
           {rightColumn?.map((sentence, i) => {
-            return <p>
-              {sentence.words.map((word, i) => {
-                return <span>{word} </span>
-              })}
-            </p>
+            return <div className="sentence">
+              <a href="#" onClick={() => initiateClozeCreation(sentence)}>
+                {" • "}
+                {sentence.words.map((word, i) => {
+                  return <span>{word} </span>
+                })}
+              </a>
+            </div>
           })}
         </div>
       </div>

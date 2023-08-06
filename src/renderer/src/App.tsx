@@ -4,8 +4,8 @@ import FileActions from './components/FileActions'
 import { useFileContext } from './contexts/FileContext'
 import { WordFreq } from 'src/model/tools'
 import { useState } from 'react'
-import Process from './modes/Process'
-import Analyze from './modes/Analyze'
+import Process from './views/Process'
+import Analyze from './views/Analyze'
 
 declare global { //TODO: This is probably not the correct/best way to declare types
   interface Window {
