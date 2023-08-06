@@ -53,4 +53,23 @@ export default class Tools {
       }
     });
   }
+
+  static async usedInSentences(filePath: string, argWord: string): Promise<string[]> {
+    try {
+      const data = await FileHandler.readFile(filePath);
+      const lines = data.split(/\r?\n/); // Split the content by newline characters
+
+      const filteredLines = lines.filter(line => {
+        const words = line.trim().split(' ');
+        return words.some(word => word.toLowerCase().includes(argWord.toLowerCase()));
+      });
+
+      return filteredLines.map(line => line.trim());
+    } catch (error) {
+      console.error('Error reading the file:', error);
+      return []; // Return an empty array in case of an error.
+    }
+  }
+
+
 }

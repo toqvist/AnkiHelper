@@ -18,7 +18,8 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       saveFileTemp: (filePath: string, content: string) => string,
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
       getDecks: () => Promise<Deck[]>
-      createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>
+      createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>,
+      usedInSentences: (filePath: string, argWord: string) => Promise<string[]>,
     }
   }
 

@@ -28,6 +28,16 @@ function getToolHandlers() {
         const fileContent = await Tools.wordFrequency(filePath, '')
         return fileContent
     })
+
+    ipcMain.handle('tools:usedInSentences', async (event, filePath, argWord) => {
+        try {
+          const result = await Tools.usedInSentences(filePath, argWord);
+          return result;
+        } catch (error) {
+          console.error('Error in usedInSentences:', error);
+          return [];
+        }
+      });
 }
 
 function getFileHandlers() {

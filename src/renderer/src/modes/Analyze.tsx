@@ -40,8 +40,14 @@ function Process(): JSX.Element {
     setLeftColumn(result);
   }
 
-  async function getSentences() {
-
+  async function getSentences(word: string) {
+    console.log(await window.api.usedInSentences(selectedFile, word))
+    const result: string[] = await window.api.usedInSentences(selectedFile, word); 
+    const sentences: Sentence[] = result.map((sent, i) => {
+      const sentence: Sentence = { words:  sent.split(" ") };
+      return sentence;
+    });
+    setRightColumn(sentences);
   }
 
   return (
@@ -49,12 +55,10 @@ function Process(): JSX.Element {
 
       <div>
         <button onClick={() => getWordFrequency()}>Word Frequency</button>
-        {/* <h2>Words in text</h2>
-        <p>Words should be clickable</p>
-        <p>Clicking word brings up all sentences that uses that word on the right</p> */}
+        <h2>Words in text</h2>
         {leftColumn?.map((wordFreq, i) => {
           return <div className='word-frequency'>
-            <div><a href="#" onClick={() => getSentences()}>{wordFreq.word}</a></div>
+            <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
             <div>{wordFreq.frequency}</div>
           </div>
         })}
@@ -81,11 +85,11 @@ function Process(): JSX.Element {
           }
         </div>
         <h2>Used in sentences</h2>
-        <div className="sentence">
+        <div className="">
           {rightColumn?.map((sentence, i) => {
             return <p>
               {sentence.words.map((word, i) => {
-                return <a href="#">{word}</a>
+                return <span>{word} </span>
               })}
             </p>
           })}
