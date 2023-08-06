@@ -1,7 +1,4 @@
 import FileUpload from './components/FileUpload'
-import FilePreview from './components/FilePreview'
-import FileActions from './components/FileActions'
-import { useFileContext } from './contexts/FileContext'
 import { WordFreq } from 'src/model/tools'
 import { useState } from 'react'
 import Process from './views/Process'
