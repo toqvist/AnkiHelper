@@ -252,5 +252,13 @@ a:hover {
   align-items: center;
   border-radius: 4px;
   position: relative;
+}
 
+.text-clozed {
+  color: blue;
+  font-weight: 600;
+}
+
+.text-black{
+  color: black;
 }

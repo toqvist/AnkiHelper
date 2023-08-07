@@ -27,12 +27,14 @@ function ClozeModal({ sentence }: ClozeModalProps): JSX.Element {
         <p>
           {words.map((word, i) => {
             if (word.clozed) {
-              return <a href="#" onClick={() => toggleClozed(word)}>{word.text + ' '}</a>
+              return <a className="text-clozed" href="#" onClick={() => toggleClozed(word)}>{word.text + ' '}</a>
             } else {
-              return <span>{word.text + ' '}</span>
+              return <a className="text-black" href="#" onClick={() => toggleClozed(word)}>{word.text + ' '}</a>
             }
           })}
         </p>
+        <button>Add</button>
+        <i></i>
       </div>
     </div>
   )
