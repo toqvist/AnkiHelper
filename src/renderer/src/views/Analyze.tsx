@@ -79,11 +79,15 @@ function Process(): JSX.Element {
     setSelectedDeck(deck);
   };
 
+  function closeModal () {
+    setShowModal(false)
+  }
+
   return (
     <>
       {showModal &&
         <div className="modal">
-          <ClozeModal sentence={modalSentence} deck={selectedDeck} />
+          <ClozeModal sentence={modalSentence} deck={selectedDeck} closeModal={closeModal} />
           <div onClick={() => {setShowModal(false)}} className={`modal-overlay`} />
         </div>
       }

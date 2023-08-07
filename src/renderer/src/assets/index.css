@@ -239,7 +239,7 @@ a:hover {
 }
 
 .modal-content {
-  padding: 25%;
+  padding: 15%;
   z-index: 20;
 }
 
@@ -249,13 +249,15 @@ a:hover {
   z-index: 20; 
   border-radius: 4px;
   position: relative;
+  padding: 5% 5%; 
 }
 
 .modal-column {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  gap: 30px;
 }
 
 .text-clozed {
@@ -277,4 +279,16 @@ a:hover {
 
 .text-small {
   font-size: small;
+}
+
+.cloze-word { 
+  position: relative;
+}
+
+.cloze-hint {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
 }
