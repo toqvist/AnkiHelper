@@ -12,9 +12,6 @@ export class Translator {
             const response = await fetch(googleTranslateUrl);
             const result = await response.json();
 
-            console.log(result);
-            console.log(result[0]);
-
             const rawTranslations: any[] = result[0][0];
             rawTranslations.pop()
             const translations: string[] = rawTranslations.filter((value) => value !== null);
@@ -23,6 +20,24 @@ export class Translator {
         } catch (error) {
             console.error('Translation error:', error);
             return ['Translation failed'];
+        }
+    }
+
+    static async detectLanguage(text: string): Promise<string> {
+        try {
+            const googleTranslateUrl = `https://translation.googleapis.com/language/translate/v2/detect?key=${this.apiKey}&q=${encodeURIComponent(
+                text
+            )}`;
+
+            const response = await fetch(googleTranslateUrl);
+            const result = await response.json();
+
+            const detectedLanguage: string = result.data.detections[0][0].language;
+
+            return detectedLanguage;
+        } catch (error) {
+            console.error('Language detection error:', error);
+            return 'Detection failed';
         }
     }
 }

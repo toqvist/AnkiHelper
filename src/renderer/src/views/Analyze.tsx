@@ -18,6 +18,34 @@ export interface Word {
   clozed: boolean,
 }
 
+export interface Language {
+  name: string;
+  code: string;
+}
+
+const languages: Language[] = [
+  { name: 'English', code: 'en' },
+  { name: 'Arabic', code: 'ar' },
+  { name: 'Bengali', code: 'bn' },
+  { name: 'Chinese (Simplified)', code: 'zh-CN' },
+  { name: 'Czech', code: 'cs' },
+  { name: 'Dutch', code: 'nl' },
+  { name: 'French', code: 'fr' },
+  { name: 'German', code: 'de' },
+  { name: 'Greek', code: 'el' },
+  { name: 'Hindi', code: 'hi' },
+  { name: 'Italian', code: 'it' },
+  { name: 'Japanese', code: 'ja' },
+  { name: 'Polish', code: 'pl' },
+  { name: 'Portuguese', code: 'pt' },
+  { name: 'Punjabi', code: 'pa' },
+  { name: 'Romanian', code: 'ro' },
+  { name: 'Russian', code: 'ru' },
+  { name: 'Spanish', code: 'es' },
+  { name: 'Swedish', code: 'sv' },
+  { name: 'Turkish', code: 'tr' },
+];
+
 function Process(): JSX.Element {
 
   const { selectedFile, srcPreview, resultPreview } = useFileContext()
@@ -31,6 +59,8 @@ function Process(): JSX.Element {
   const [showModal, setShowModal] = useState<boolean>(false)
   const undefSent: Sentence = { words: [] }
   const [modalSentence, setModalSentence] = useState<Sentence>(undefSent)
+
+  const [language, setLanguage] = useState<Language>(languages[0])
 
   async function getDecks() {
     setDecks(await window.api.getDecks())
@@ -73,14 +103,22 @@ function Process(): JSX.Element {
     setShowModal(true);
   }
 
-  function selectDeck (event: React.ChangeEvent<HTMLSelectElement>) {
+  function selectDeck(event: React.ChangeEvent<HTMLSelectElement>) {
     const selectedDeckName = event.target.value;
     const deck = decks.find((deck) => deck.name === selectedDeckName);
     setSelectedDeck(deck);
   };
 
-  function closeModal () {
+  function closeModal() {
     setShowModal(false)
+  }
+
+
+
+  function selectLanguage(event: React.ChangeEvent<HTMLSelectElement>): void {
+    const selectedLanguage = event.target.value;
+    const language: Language | undefined = languages.find((lang) => lang.name === selectedLanguage);
+    if(language != undefined) setLanguage(language);
   }
 
   return (
@@ -88,7 +126,7 @@ function Process(): JSX.Element {
       {showModal &&
         <div className="modal">
           <ClozeModal sentence={modalSentence} deck={selectedDeck} closeModal={closeModal} />
-          <div onClick={() => {setShowModal(false)}} className={`modal-overlay`} />
+          <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
         </div>
       }
 
@@ -115,12 +153,27 @@ function Process(): JSX.Element {
                 </div>
               </>
               : <div>
-                <span>Deck: </span>
-                <select onChange={selectDeck}>
-                  {decks.map((deck) => (
-                    <option value={deck.name}>{deck.name}</option>
-                  ))}
-                </select>
+                <div>
+                  <span>Deck: </span>
+                  <select onChange={selectDeck}>
+                    {decks.map((deck) => (
+                      <option value={deck.name}>{deck.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <span>Translate to: </span>
+                  <select
+                    id="languageSelect"
+                    onChange={selectLanguage}>
+                    {languages.map((language) => (
+                      <option key={language.code} value={language.code}>
+                        {language.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             }
           </div>
