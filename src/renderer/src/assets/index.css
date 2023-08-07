@@ -247,11 +247,15 @@ a:hover {
   font-size: x-large;
   background-color: whitesmoke;
   z-index: 20; 
+  border-radius: 4px;
+  position: relative;
+}
+
+.modal-column {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 4px;
-  position: relative;
+  flex-direction: column;
 }
 
 .text-clozed {
@@ -261,4 +265,16 @@ a:hover {
 
 .text-black{
   color: black;
+}
+
+.text-large {
+  font-size: large;
+}
+
+.text-medium {
+  font-size: medium;
+}
+
+.text-small {
+  font-size: small;
 }

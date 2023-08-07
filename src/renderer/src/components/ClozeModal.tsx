@@ -2,7 +2,8 @@ import { Sentence, Word } from "@renderer/views/Analyze"
 import { useState } from 'react'
 
 export interface ClozeModalProps {
-  sentence: Sentence
+  sentence: Sentence;
+  deck: Deck | undefined;
 }
 
 
@@ -12,8 +13,8 @@ interface WordObject {
   clozed: boolean;
 }
 
-function ClozeModal({ sentence }: ClozeModalProps): JSX.Element {
-  
+function ClozeModal({ sentence, deck }: ClozeModalProps): JSX.Element {
+
   function sentenceToString(sentence: Sentence): string {
     return sentence.words.map((word) => word.text).join(' ');
   }
@@ -51,29 +52,71 @@ function ClozeModal({ sentence }: ClozeModalProps): JSX.Element {
     );
   }
 
+  function createCard(): void {
+    // Create a sentence out of the wordObjects array
+    const sentenceText = wordObjects.reduce((acc, wordObject) => {
+      if (!wordObject.isPunctuation) {
+        return acc + wordObject.text + ' ';
+      }
+      return acc + wordObject.text;
+    }, '');
+
+    const trimmedSentence = sentenceText.trim();
+    console.log(trimmedSentence);
+
+    // Create an array to hold the clozed words
+    const clozedWords: string[] = [];
+
+    // Check each wordObject for clozed set to true
+    wordObjects.forEach((wordObject) => {
+      if (wordObject.isPunctuation) {
+        // Skip punctuation
+        return;
+      }
+
+      if (wordObject.clozed) {
+        // If the word is clozed, add it to the clozedWords array
+        clozedWords.push(wordObject.text);
+      }
+    });
+
+    console.log(clozedWords);
+
+    // Now you can use the trimmedSentence and clozedWords as needed.
+    // Example: window.api.createClozeCard(deck, trimmedSentence, clozedWords);
+  }
+
   return (
+
     <div className="modal-content">
       <div className="modal-card">
-        <p>
-          {wordObjects.map((wordObject, i) => {
-            if (!wordObject.isPunctuation) {
-              return (
-                <a
-                  key={i}
-                  className={wordObject.clozed ? 'text-clozed' : 'text-black'}
-                  href="#"
-                  onClick={() => toggleClozed(wordObject)}
-                >
-                  {wordObject.text}
-                </a>
-              );
-            } else {
-              return <span key={i}>{wordObject.text}</span>;
-            }
-          })}
-        </p>
-        <button>Add</button>
-        <i></i>
+        {deck == undefined ? <p>No deck selected!</p>
+          : <div className="modal-column">
+            <div>
+              <i className="text-large">Add card to {deck.name}</i>
+            </div>
+            <p>
+              {wordObjects.map((wordObject, i) => {
+                if (!wordObject.isPunctuation) {
+                  return (
+                    <a
+                      key={i}
+                      className={wordObject.clozed ? 'text-clozed' : 'text-black'}
+                      href="#"
+                      onClick={() => toggleClozed(wordObject)}
+                    >
+                      {wordObject.text}
+                    </a>
+                  );
+                } else {
+                  return <span key={i}>{wordObject.text}</span>;
+                }
+              })}
+            </p>
+            <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>            <button onClick={() => createCard()}>Add</button>
+          </div>
+        }
+
       </div>
     </div>
   );

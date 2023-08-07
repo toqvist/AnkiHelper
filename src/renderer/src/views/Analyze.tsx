@@ -22,9 +22,9 @@ function Process(): JSX.Element {
 
   const { selectedFile, srcPreview, resultPreview } = useFileContext()
 
-  //  const decks: Deck[] = []
-
   const [decks, setDecks] = useState<Deck[]>([])
+  const [selectedDeck, setSelectedDeck] = useState<Deck>()
+
   const [leftColumn, setLeftColumn] = useState<WordFreq[]>([])
   const [rightColumn, setRightColumn] = useState<Sentence[]>([])
 
@@ -38,7 +38,15 @@ function Process(): JSX.Element {
 
   useEffect(() => {
     getDecks();
+
   }, []);
+
+  useEffect(() => {
+    if (decks.length > 0) {
+      setSelectedDeck(decks[0]);
+    }
+  }, [decks]);
+
 
 
   async function getWordFrequency(): Promise<void> {
@@ -65,11 +73,17 @@ function Process(): JSX.Element {
     setShowModal(true);
   }
 
+  function selectDeck (event: React.ChangeEvent<HTMLSelectElement>) {
+    const selectedDeckName = event.target.value;
+    const deck = decks.find((deck) => deck.name === selectedDeckName);
+    setSelectedDeck(deck);
+  };
+
   return (
     <>
       {showModal &&
         <div className="modal">
-          <ClozeModal sentence={modalSentence} />
+          <ClozeModal sentence={modalSentence} deck={selectedDeck} />
           <div onClick={() => {setShowModal(false)}} className={`modal-overlay`} />
         </div>
       }
@@ -98,7 +112,7 @@ function Process(): JSX.Element {
               </>
               : <div>
                 <span>Deck: </span>
-                <select>
+                <select onChange={selectDeck}>
                   {decks.map((deck) => (
                     <option value={deck.name}>{deck.name}</option>
                   ))}
