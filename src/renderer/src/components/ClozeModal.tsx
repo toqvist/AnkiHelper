@@ -53,37 +53,38 @@ function ClozeModal({ sentence, deck }: ClozeModalProps): JSX.Element {
   }
 
   function createCard(): void {
-    // Create a sentence out of the wordObjects array
-    const sentenceText = wordObjects.reduce((acc, wordObject) => {
+
+    if (deck == undefined) return
+
+    let sentenceText = '';
+
+    wordObjects.forEach((wordObject, index) => {
+      const isFirstWord = index === 0;
+      const previousWasPunctuation = index > 0 && wordObjects[index - 1].isPunctuation;
+
       if (!wordObject.isPunctuation) {
-        return acc + wordObject.text + ' ';
+        if (!isFirstWord && !previousWasPunctuation) {
+          sentenceText += ' ';
+        }
+        sentenceText += wordObject.text;
+      } else {
+        sentenceText += wordObject.text;
       }
-      return acc + wordObject.text;
-    }, '');
+    });
 
-    const trimmedSentence = sentenceText.trim();
-    console.log(trimmedSentence);
-
-    // Create an array to hold the clozed words
     const clozedWords: string[] = [];
 
-    // Check each wordObject for clozed set to true
     wordObjects.forEach((wordObject) => {
       if (wordObject.isPunctuation) {
-        // Skip punctuation
         return;
       }
 
       if (wordObject.clozed) {
-        // If the word is clozed, add it to the clozedWords array
         clozedWords.push(wordObject.text);
       }
     });
 
-    console.log(clozedWords);
-
-    // Now you can use the trimmedSentence and clozedWords as needed.
-    // Example: window.api.createClozeCard(deck, trimmedSentence, clozedWords);
+    window.api.createClozeCard(deck.name, sentenceText, clozedWords);
   }
 
   return (
@@ -113,7 +114,8 @@ function ClozeModal({ sentence, deck }: ClozeModalProps): JSX.Element {
                 }
               })}
             </p>
-            <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>            <button onClick={() => createCard()}>Add</button>
+            <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>
+            <button onClick={() => createCard()}>Add</button>
           </div>
         }
 
