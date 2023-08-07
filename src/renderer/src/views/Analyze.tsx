@@ -118,14 +118,19 @@ function Process(): JSX.Element {
   function selectLanguage(event: React.ChangeEvent<HTMLSelectElement>): void {
     const selectedLanguage = event.target.value;
     const language: Language | undefined = languages.find((lang) => lang.name === selectedLanguage);
-    if(language != undefined) setLanguage(language);
+    if (language != undefined) setLanguage(language);
   }
 
   return (
     <>
       {showModal &&
         <div className="modal">
-          <ClozeModal sentence={modalSentence} deck={selectedDeck} closeModal={closeModal} />
+          <ClozeModal 
+          sentence={modalSentence} 
+          deck={selectedDeck} 
+          closeModal={closeModal}
+          targetLanguage={language.code}
+           />
           <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
         </div>
       }

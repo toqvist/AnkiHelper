@@ -1,11 +1,12 @@
 import { Sentence, Word } from "@renderer/views/Analyze"
-import { KeyboardEvent, useState } from 'react'
+import { KeyboardEvent, useEffect, useState } from 'react'
 import ClozeWord from "./ClozeWord";
 
 export interface ClozeModalProps {
   sentence: Sentence;
   deck: Deck | undefined;
   closeModal: Function;
+  targetLanguage: string;
 }
 
 
@@ -13,17 +14,18 @@ export interface WordObject {
   text: string;
   isPunctuation: boolean;
   clozed: boolean;
-  hint: string
+  hint: string;
+  translations: string[];
 }
 
-function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Element {
+function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalProps): JSX.Element {
 
   function sentenceToString(sentence: Sentence): string {
     return sentence.words.map((word) => word.text).join(' ');
   }
 
   //TODO: Merge WordObject/Word and their associated functions
-  function getWordObjects(sentence: Sentence): WordObject[] {
+  async function getWordObjects(sentence: Sentence): Promise<WordObject[]> {
     const sentenceText = sentenceToString(sentence);
     const wordObjects: WordObject[] = [];
     const wordPattern = /\w+/g;
@@ -32,16 +34,28 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
     );
 
     if (wordsAndPunctuation) {
-      wordsAndPunctuation.forEach((text) => {
+      for (const text of wordsAndPunctuation) {
         const isPunctuation = !wordPattern.test(text) && text.trim() !== '';
-        wordObjects.push({ text, isPunctuation, clozed: false, hint: '' });
-      });
+        const translations: string[] = await window.api.translate(text, targetLanguage);
+        wordObjects.push({ text, isPunctuation, clozed: false, hint: translations[0], translations: translations });
+      }
     }
 
     return wordObjects;
   }
 
-  const [wordObjects, setWordObjects] = useState<WordObject[]>(getWordObjects(sentence));
+
+  const [wordObjects, setWordObjects] = useState<WordObject[]>([]);
+
+  useEffect(() => {
+    // Fetch the initial value asynchronously and update the state when resolved
+    async function fetchData() {
+      const initialWordObjects = await getWordObjects(sentence);
+      setWordObjects(initialWordObjects);
+    }
+
+    fetchData();
+  }, []);
   
   function updateWord(word: WordObject) {
     setWordObjects((prevWordObjects) =>
@@ -114,7 +128,7 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
             <p>
               {wordObjects.map((wordObject, i) => {
                 if (!wordObject.isPunctuation) {
-                  return <ClozeWord word={wordObject} updateWord={updateWord} />
+                  return <ClozeWord word={wordObject} updateWord={updateWord} translations={wordObject.translations} />
                 } else {
                   return <span className="text-black" key={i}>{wordObject.text}</span>;
                 }

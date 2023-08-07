@@ -6,12 +6,13 @@ import { useStateWithCallbackLazy } from 'use-state-with-callback';
 interface ClozeWordProps {
     word: WordObject;
     updateWord: Function;
+    translations: string[]
 }
-function ClozeWord({ word, updateWord }: ClozeWordProps): JSX.Element {
+function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Element {
 
     const [clozed, setClozed] = useState<boolean>(word.clozed)
 
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(translations[0]);
     const [showInput, setShowInput] = useStateWithCallbackLazy<boolean>(true)
     const inputRef = useRef<HTMLInputElement | null>(null);
 

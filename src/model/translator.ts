@@ -25,7 +25,7 @@ export class Translator {
 
     static async detectLanguage(text: string): Promise<string> {
         try {
-            const googleTranslateUrl = `https://translation.googleapis.com/language/translate/v2/detect?key=${this.apiKey}&q=${encodeURIComponent(
+            const googleTranslateUrl = `https://translation.googleapis.com/language/translate/v2/detect?key=${process.env.GOOGLE_KEY}&q=${encodeURIComponent(
                 text
             )}`;
 
