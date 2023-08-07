@@ -39,6 +39,12 @@ export class AnkiConnect {
     }
 
     static async createClozeCard(deck: string, sentence: string, clozeWords: string[]): Promise<void> {
+        
+        if (clozeWords.length === 0) {
+            console.error('Cloze words array cannot be empty.');
+            return;
+        }
+        
         let clozeContent = sentence;
         clozeWords.forEach((word, index) => {
             const clozeIndex = index + 1;
@@ -78,5 +84,28 @@ export class AnkiConnect {
         } catch (error) {
             console.error('An error occurred:', error);
         }
+    }
+    static async createBasicCard(deck: string, front: string, back: string): Promise<void> {
+
+        const defaultNote = {
+            note: {
+                deckName: deck,
+                modelName: "Basic",
+                fields: {
+                    Front: front,
+                    Back: back,
+                },
+                options: {
+                    allowDuplicate: false,
+                    duplicateScope: "deck",
+                    duplicateScopeOptions: {
+                        deckName: "Default",
+                        checkChildren: false,
+                        checkAllModels: false,
+                    },
+                },
+                tags: ["basic"],
+            },
+        };
     }
 }

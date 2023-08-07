@@ -34,17 +34,15 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
     if (wordsAndPunctuation) {
       wordsAndPunctuation.forEach((text) => {
         const isPunctuation = !wordPattern.test(text) && text.trim() !== '';
-        wordObjects.push({ text, isPunctuation, clozed: false, hint:''});
+        wordObjects.push({ text, isPunctuation, clozed: false, hint: '' });
       });
     }
 
     return wordObjects;
   }
 
-  //Used for initial render of words, word components handle graphical updates themselves
   const [wordObjects, setWordObjects] = useState<WordObject[]>(getWordObjects(sentence));
-  //const [outputWords, setOutputWords] = useState<WordObject[]>(getWordObjects(sentence))
-
+  
   function updateWord(word: WordObject) {
     setWordObjects((prevWordObjects) =>
       prevWordObjects.map((wordObject, i) => {
@@ -57,6 +55,14 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
     );
   }
 
+  function anyWordIsClozed(): boolean {
+    for (const word of wordObjects) {
+      if (word.clozed === true) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   function createCard(): void {
 
@@ -90,6 +96,8 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
       }
     });
 
+    if (clozedWords.length == 0) return;
+
     window.api.createClozeCard(deck.name, sentenceText, clozedWords).then(closeModal());
   }
 
@@ -113,7 +121,10 @@ function ClozeModal({ sentence, deck, closeModal }: ClozeModalProps): JSX.Elemen
               })}
             </p>
             <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>
-            <button onClick={() => createCard()}>Add</button>
+
+            <button onClick={() => createCard()} disabled={!anyWordIsClozed()}>
+              {anyWordIsClozed() ? 'Add' : 'Select at least one cloze'}
+            </button>
           </div>
 
         }
