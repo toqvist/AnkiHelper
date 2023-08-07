@@ -17,6 +17,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       getDecks: () => Promise<Deck[]>
       createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>,
       usedInSentences: (filePath: string, argWord: string) => Promise<string[]>,
+      translate: (text: string, targetLanguage: string) => Promise<string[]>
     }
   }
 
@@ -29,13 +30,17 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
 enum Mode { process, analyze }
 
 function App(): JSX.Element {
-  /*   const { selectedFile, srcPreview, resultPreview } = useFileContext() */
 
   const [mode, setMode] = useState<Mode>(Mode.analyze)
 
-
   return (
     <>
+      {/* <button onClick={async () => {
+        console.log(await window.api.translate("pretty", "es"))
+      }}>Pretty</button>
+      <button onClick={async () => {
+        console.log(await window.api.translate("big", "es"))
+      }}>Big</button> */}
       <FileUpload />
       <div className="tabs">
         <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>Analyze</button>

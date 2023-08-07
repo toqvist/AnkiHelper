@@ -3,6 +3,7 @@ import FileHandler from "../model/fileHandler"
 import FileProcessor from "../model/fileProcessor"
 import Tools, { WordFreq } from "../model/tools"
 import {Deck, AnkiConnect } from "../model/ankiConnect"
+import { Translator } from "../model/translator"
 
 export function getHandlers() {
     getProcessHandlers()
@@ -36,6 +37,16 @@ function getToolHandlers() {
         } catch (error) {
           console.error('Error in usedInSentences:', error);
           return [];
+        }
+      });
+
+      ipcMain.handle('tools:translate', async (event, text: string, targetLanguage: string): Promise<string[]> => {
+        try {
+          const translatedText = await Translator.translate(text, targetLanguage);
+          return translatedText;
+        } catch (error) {
+          console.error('Error translating text:', error);
+          throw error;
         }
       });
 }

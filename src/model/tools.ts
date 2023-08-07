@@ -70,6 +70,4 @@ export default class Tools {
       return []; // Return an empty array in case of an error.
     }
   }
-
-
 }

@@ -13,7 +13,8 @@ const api = {
   getDecks: () => ipcRenderer.invoke('anki:getDecks'),
   createClozeCard: (deck: string, sentence: string, clozeWords: string[]) =>
     ipcRenderer.invoke('anki:createClozeCard', deck, sentence, clozeWords),
-  usedInSentences: (filePath, argWord) => ipcRenderer.invoke('tools:usedInSentences', filePath, argWord),
+  usedInSentences: (filePath: string, argWord: string) => ipcRenderer.invoke('tools:usedInSentences', filePath, argWord),
+  translate: (text: string, targetLanguage: string) => ipcRenderer.invoke('tools:translate', text, targetLanguage),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
