@@ -60,15 +60,21 @@ export default class FileHandler {
   }
 
   static async saveFileTemp(filePath: string, content: string): Promise<string> {
-    const scriptDir = app.getAppPath();
-
+    
+    const binaryDirectory = __dirname;
+    const tempFolderName = 'temp';
+    const tempFolderPath = path.join(binaryDirectory, tempFolderName);
+    
+    if (!fs.existsSync(tempFolderPath)) {
+      fs.mkdirSync(tempFolderPath, { recursive: true });
+    }
     let targetPath: string;
 
     if (filePath === '') {
       const uuid: string = uuidv1();
       console.log(uuid)
       const newFileName: string = `${uuid}.txt`;
-      targetPath = path.join( scriptDir, newFileName);
+      targetPath = path.join( tempFolderPath, newFileName);
       console.log(targetPath)
     } else {
       const fileName = path.basename(filePath);
@@ -78,7 +84,7 @@ export default class FileHandler {
       const uuid = uuidv1().replace(/-/g, '');
 
       const newFileName = `${fileNameWithoutExtension}-${uuid}${fileExtension}`;
-      targetPath = path.join( scriptDir, newFileName);
+      targetPath = path.join( tempFolderPath, newFileName);
     }
 
     if (fs.existsSync(targetPath)) {
@@ -87,7 +93,22 @@ export default class FileHandler {
 
     await FileHandler.writeStringToFile(targetPath, content);
     return targetPath;
-    // TODO: Clean up temp file on exit
+    
+  }
+
+  static cleanUpTempFolder() {
+    console.log("-----------CLEANING UP")
+    const tempFolderName = 'temp';
+    const tempFolderPath = path.join(__dirname, tempFolderName);
+  
+    if (fs.existsSync(tempFolderPath)) {
+      fs.readdirSync(tempFolderPath).forEach(file => {
+        const filePath = path.join(tempFolderPath, file);
+        fs.unlinkSync(filePath); // Delete file
+      });
+  
+      fs.rmdirSync(tempFolderPath); // Delete empty folder
+    }
   }
 }
 

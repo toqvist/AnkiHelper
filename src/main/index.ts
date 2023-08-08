@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { getHandlers } from './ipcHandlers'
+import FileHandler from '../model/fileHandler'
 
 
 function createWindow(): void {
@@ -70,6 +71,11 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+app.on('before-quit', () => {
+  FileHandler.cleanUpTempFolder();
+});
+
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
