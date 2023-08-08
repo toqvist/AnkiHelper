@@ -6,6 +6,7 @@ import ClozeModal from '@renderer/components/ClozeModal';
 import WordFrequencies from '@renderer/components/WordFrequencies';
 import ClickableSentences from '@renderer/components/ClickableSentences';
 import SourceAsLines from '@renderer/components/SourceAsLines';
+import IntroText from '@renderer/components/IntroText';
 
 export interface WordFreq {
   word: string;
@@ -129,75 +130,79 @@ function Analyze(): JSX.Element {
 
   return (
     <>
-      {showModal &&
-        <div className="modal">
-          <ClozeModal
-            sentence={modalSentence}
-            deck={selectedDeck}
-            closeModal={closeModal}
-            targetLanguage={language.code}
-          />
-          <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
-        </div>
-      }
-
-      <div className='previews'>
-        <div>
-          <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
-          <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
-
-          {selectedFile != "" && <>
-            {activeMode == AnalyzeModes.lines && <>
-              <SourceAsLines onClick={initiateClozeCreation} />
-            </>}
-            {activeMode == AnalyzeModes.wordFrequencies && <>
-              <WordFrequencies getSentences={getSentences} />
-            </>}
-          </>
+      {selectedFile == "" ? <IntroText />
+        : <>
+          {showModal &&
+            <div className="modal">
+              <ClozeModal
+                sentence={modalSentence}
+                deck={selectedDeck}
+                closeModal={closeModal}
+                targetLanguage={language.code}
+              />
+              <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
+            </div>
           }
-        </div>
-        <div>
-          <div>
-            {decks.length == 0
-              ? <>
-                <i>No anki decks found!</i>
-                <button onClick={() => getDecks()}>Retry</button>
-                <div>
-                  <i>Make sure anki is running with <a href="https://ankiweb.net/shared/info/2055492159">AnkiConnect</a> installed</i>
-                </div>
+
+          <div className='previews'>
+            <div>
+              <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
+              <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
+
+              {selectedFile != "" && <>
+                {activeMode == AnalyzeModes.lines && <>
+                  <SourceAsLines onClick={initiateClozeCreation} />
+                </>}
+                {activeMode == AnalyzeModes.wordFrequencies && <>
+                  <WordFrequencies getSentences={getSentences} />
+                </>}
               </>
-              : <div>
-                <div>
-                  <span>Deck: </span>
-                  <select onChange={selectDeck}>
-                    {decks.map((deck) => (
-                      <option value={deck.name}>{deck.name}</option>
-                    ))}
-                  </select>
-                </div>
+              }
+            </div>
+            <div>
+              <div>
+                {decks.length == 0
+                  ? <>
+                    <i>No anki decks found!</i>
+                    <button onClick={() => getDecks()}>Retry</button>
+                    <div>
+                      <i>Make sure anki is running with <a href="https://ankiweb.net/shared/info/2055492159">AnkiConnect</a> installed</i>
+                    </div>
+                  </>
+                  : <div>
+                    <div>
+                      <span>Deck: </span>
+                      <select onChange={selectDeck}>
+                        {decks.map((deck) => (
+                          <option value={deck.name}>{deck.name}</option>
+                        ))}
+                      </select>
+                    </div>
 
-                <div>
-                  <span>Translate to: </span>
-                  <select
-                    id="languageSelect"
-                    onChange={selectLanguage}>
-                    {languages.map((language) => (
-                      <option key={language.code} value={language.code}>
-                        {language.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <div>
+                      <span>Translate to: </span>
+                      <select
+                        id="languageSelect"
+                        onChange={selectLanguage}>
+                        {languages.map((language) => (
+                          <option key={language.code} value={language.code}>
+                            {language.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                }
               </div>
-            }
-          </div>
-          {rightColumn.length > 0 && <div>
-            <h2>Used in sentences</h2>
-            <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />
-          </div>}
+              {rightColumn.length > 0 && <div>
+                <h2>Used in sentences</h2>
+                <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />
+              </div>}
 
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      }
     </>
   )
 }

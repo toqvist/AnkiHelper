@@ -319,3 +319,7 @@ a:hover {
 .flex-grow {
   flex: 1;
 }
+
+.center-text {
+  text-align: center;
+}
