@@ -297,6 +297,10 @@ a:hover {
   display: flex;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .fullscreen-input {
   width: 100%;
   height: 85vh;

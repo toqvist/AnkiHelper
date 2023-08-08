@@ -28,7 +28,7 @@ export default class Tools {
         frequency: wordFrequencyMap[word],
       }));
 
-      return wordFrequencyList;
+      return this.sortByFrequency(wordFrequencyList);
     } catch (error) {
       throw new Error('Error reading or processing the file.');
     }

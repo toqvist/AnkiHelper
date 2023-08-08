@@ -20,11 +20,11 @@ export default function SourceAsLines({ onClick }: SourceAsLinesProps): JSX.Elem
 
     async function getSentences() {
         setSentences(await window.api.readFileAsSentences(selectedFile, Infinity))
-        console.log(await window.api.readFileAsSentences(selectedFile, Infinity))
     }
 
     return (
         <>
+            <h2>Source content</h2>
             {sentences.length > 0 &&
                 <ClickableSentences sentences={sentences} onClick={onClick} />
             }

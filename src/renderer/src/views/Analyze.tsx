@@ -2,7 +2,7 @@ import FilePreview from '../components/FilePreview'
 import FileActions from '../components/FileActions'
 import { useFileContext } from '../contexts/FileContext'
 import { useEffect, useState } from 'react'
-import ClozeModal, { ClozeModalProps, WordObject } from '@renderer/components/ClozeModal';
+import ClozeModal from '@renderer/components/ClozeModal';
 import WordFrequencies from '@renderer/components/WordFrequencies';
 import ClickableSentences from '@renderer/components/ClickableSentences';
 import SourceAsLines from '@renderer/components/SourceAsLines';
@@ -55,12 +55,11 @@ const languages: Language[] = [
 
 function Analyze(): JSX.Element {
 
-  const { selectedFile, srcPreview, resultPreview } = useFileContext()
+  const { selectedFile } = useFileContext()
 
   const [decks, setDecks] = useState<Deck[]>([])
   const [selectedDeck, setSelectedDeck] = useState<Deck>()
 
-  const [leftColumn, setLeftColumn] = useState<WordFreq[] | WordObject[]>([])
   const [rightColumn, setRightColumn] = useState<Sentence[]>([])
 
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -146,10 +145,14 @@ function Analyze(): JSX.Element {
         <div>
           <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
           <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
-          <h2>Words in text</h2>
+
           {selectedFile != "" && <>
-            {activeMode == AnalyzeModes.lines && <SourceAsLines onClick={initiateClozeCreation}/>}
-            {activeMode == AnalyzeModes.wordFrequencies && <WordFrequencies getSentences={getSentences} />}
+            {activeMode == AnalyzeModes.lines && <>
+              <SourceAsLines onClick={initiateClozeCreation} />
+            </>}
+            {activeMode == AnalyzeModes.wordFrequencies && <>
+              <WordFrequencies getSentences={getSentences} />
+            </>}
           </>
           }
         </div>
@@ -188,20 +191,11 @@ function Analyze(): JSX.Element {
               </div>
             }
           </div>
-          <h2>Used in sentences</h2>
-          <div>
-            {/* {rightColumn?.map((sentence, i) => {
-              return <div className="sentence">
-                <a href="#" onClick={() => initiateClozeCreation(sentence)}>
-                  {" • "}
-                  {sentence.words.map((word, i) => {
-                    return <span>{word.text} </span>
-                  })}
-                </a>
-              </div>
-            })} */}
-            {rightColumn.length > 0 && <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />}
-          </div>
+          {rightColumn.length > 0 && <div>
+            <h2>Used in sentences</h2>
+            <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />
+          </div>}
+
         </div>
       </div>
     </>

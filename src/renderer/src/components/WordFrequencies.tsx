@@ -23,6 +23,11 @@ export default function WordFrequencies({ getSentences }: WordFrequenciesProps):
 
     return (
         <>
+            <h2>Words from source</h2>
+            <div className='display-flex word-frequency'>
+                <button>Sort alphabetically</button>
+                <button>Sort by occurances</button>
+            </div>
             {wordFreqs.map((wordFreq, i) => {
                 return <div key={i} className='word-frequency'>
                     <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
