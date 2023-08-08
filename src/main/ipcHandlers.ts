@@ -5,6 +5,7 @@ import Tools, { WordFreq } from "../model/tools"
 import {Deck, AnkiConnect } from "../model/ankiConnect"
 import { Translator } from "../model/translator"
 
+
 export function getHandlers() {
     getProcessHandlers()
     getToolHandlers()
@@ -30,7 +31,7 @@ function getToolHandlers() {
         return fileContent
     })
 
-    ipcMain.handle('tools:usedInSentences', async (event, filePath, argWord) => {
+    ipcMain.handle('tools:usedInSentences', async (event, filePath: string, argWord: string) => {
         try {
           const result = await Tools.usedInSentences(filePath, argWord);
           return result;
@@ -62,6 +63,15 @@ function getFileHandlers() {
         }
     })
 
+    ipcMain.handle('file:readFileAsSentences', async (event, filePath: string, numLines: number) => {
+        try {
+          const result = await FileHandler.readFileAsSentences(filePath, numLines);
+          return result;
+        } catch (error: any) {
+          throw new Error('Error previewing file: ' + error.message);
+        }
+      });
+
     ipcMain.handle('file:saveDialog', async (event): Promise<string | undefined> => {
         const result: Electron.SaveDialogReturnValue = await dialog.showSaveDialog({})
         return result.filePath;
@@ -74,6 +84,8 @@ function getFileHandlers() {
             console.error('Error while saving the file:', error)
             return null
         }
+
+        
     })
 
     ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {

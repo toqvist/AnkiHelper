@@ -2,6 +2,7 @@ import fs from 'fs'
 import * as path from 'path';
 import { app, dialog } from 'electron';
 import { v1 as uuidv1, uuid } from 'uuid';
+import { Sentence, Word } from '@renderer/views/Analyze';
 
 export default class FileHandler {
 
@@ -59,12 +60,46 @@ export default class FileHandler {
     }
   }
 
+  static async readFileAsSentences(filePath: string, numLines: number): Promise<Sentence[]> {
+    try {
+      const fileContent = await this.readFile(filePath);
+      const lines = fileContent.split('\n');
+      const linesToReturn = Math.min(numLines, lines.length);
+
+      const sentences: Sentence[] = [];
+
+      const wordPattern = /[a-zA-Z0-9'-]+/;
+      const punctuationPattern = /[^\w\s]/;
+
+      for (let i = 0; i < linesToReturn; i++) {
+        const sentenceText = lines[i];
+        const wordsAndPunctuation = sentenceText.match(
+          new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'g')
+        );
+
+        if (wordsAndPunctuation) {
+          const words: Word[] = wordsAndPunctuation.map((item) => {
+            const isPunctuation = punctuationPattern.test(item);
+            return { text: item, clozed: false, isPunctuation };
+          });
+
+          const sentence: Sentence = { words };
+          sentences.push(sentence);
+        }
+      }
+
+      return sentences;
+    } catch (error: any) {
+      throw new Error('Error reading the file: ' + error.message);
+    }
+  }
+
   static async saveFileTemp(filePath: string, content: string): Promise<string> {
-    
+
     const binaryDirectory = __dirname;
     const tempFolderName = 'temp';
     const tempFolderPath = path.join(binaryDirectory, tempFolderName);
-    
+
     if (!fs.existsSync(tempFolderPath)) {
       fs.mkdirSync(tempFolderPath, { recursive: true });
     }
@@ -73,7 +108,7 @@ export default class FileHandler {
     if (filePath === '') {
       const uuid: string = uuidv1();
       const newFileName: string = `${uuid}.txt`;
-      targetPath = path.join( tempFolderPath, newFileName);
+      targetPath = path.join(tempFolderPath, newFileName);
     } else {
       const fileName = path.basename(filePath);
       const fileExtension = path.extname(fileName);
@@ -82,7 +117,7 @@ export default class FileHandler {
       const uuid = uuidv1().replace(/-/g, '');
 
       const newFileName = `${fileNameWithoutExtension}-${uuid}${fileExtension}`;
-      targetPath = path.join( tempFolderPath, newFileName);
+      targetPath = path.join(tempFolderPath, newFileName);
     }
 
     if (fs.existsSync(targetPath)) {
@@ -91,19 +126,19 @@ export default class FileHandler {
 
     await FileHandler.writeStringToFile(targetPath, content);
     return targetPath;
-    
+
   }
 
   static cleanUpTempFolder() {
     const tempFolderName = 'temp';
     const tempFolderPath = path.join(__dirname, tempFolderName);
-  
+
     if (fs.existsSync(tempFolderPath)) {
       fs.readdirSync(tempFolderPath).forEach(file => {
         const filePath = path.join(tempFolderPath, file);
-        fs.unlinkSync(filePath); 
+        fs.unlinkSync(filePath);
       });
-  
+
       fs.rmdirSync(tempFolderPath);
     }
   }

@@ -2,7 +2,7 @@ import FileUpload from './components/FileUpload'
 import { WordFreq } from 'src/model/tools'
 import { useState } from 'react'
 import Process from './views/Process'
-import Analyze from './views/Analyze'
+import Analyze, { Sentence } from './views/Analyze'
 import InputText from './views/InputText'
 
 declare global { //TODO: This is probably not the correct/best way to declare types
@@ -11,6 +11,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       trimSRTFile: () => string
       trimSRT: () => string
       previewFile: (filePath: string, lines: number) => Promise<string[]>
+      readFileAsSentences: (filePath: string, lines: number) => Promise<Sentence[]>
       openSaveDialog: () => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<string>
       saveFileTemp: (filePath: string, content: string) => Promise<string>,

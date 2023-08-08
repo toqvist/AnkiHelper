@@ -4,6 +4,7 @@ import { useFileContext } from '../contexts/FileContext'
 import { useEffect, useState } from 'react'
 import ClozeModal, { ClozeModalProps, WordObject } from '@renderer/components/ClozeModal';
 import WordFrequencies from '@renderer/components/WordFrequencies';
+import ClickableSentences from '@renderer/components/ClickableSentences';
 import SourceAsLines from '@renderer/components/SourceAsLines';
 
 export interface WordFreq {
@@ -189,7 +190,7 @@ function Analyze(): JSX.Element {
           </div>
           <h2>Used in sentences</h2>
           <div>
-            {rightColumn?.map((sentence, i) => {
+            {/* {rightColumn?.map((sentence, i) => {
               return <div className="sentence">
                 <a href="#" onClick={() => initiateClozeCreation(sentence)}>
                   {" • "}
@@ -198,7 +199,8 @@ function Analyze(): JSX.Element {
                   })}
                 </a>
               </div>
-            })}
+            })} */}
+            {rightColumn.length > 0 && <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />}
           </div>
         </div>
       </div>
