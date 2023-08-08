@@ -4,6 +4,7 @@ import { useFileContext } from '../contexts/FileContext'
 import { useEffect, useState } from 'react'
 import ClozeModal, { ClozeModalProps, WordObject } from '@renderer/components/ClozeModal';
 import WordFrequencies from '@renderer/components/WordFrequencies';
+import SourceAsLines from '@renderer/components/SourceAsLines';
 
 export interface WordFreq {
   word: string;
@@ -142,10 +143,14 @@ function Analyze(): JSX.Element {
 
       <div className='previews'>
         <div>
-          <button onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
-          <button onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
+          <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
+          <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
           <h2>Words in text</h2>
-          {activeMode == AnalyzeModes.wordFrequencies && <WordFrequencies getSentences={getSentences} />}
+          {selectedFile != "" && <>
+            {activeMode == AnalyzeModes.lines && <SourceAsLines />}
+            {activeMode == AnalyzeModes.wordFrequencies && <WordFrequencies getSentences={getSentences} />}
+          </>
+          }
         </div>
         <div>
           <div>
