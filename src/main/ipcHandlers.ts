@@ -52,9 +52,9 @@ function getToolHandlers() {
 }
 
 function getFileHandlers() {
-    ipcMain.handle('file:preview', async (event, filePath: string) => {
+    ipcMain.handle('file:preview', async (event, filePath: string, lines: number) => {
         try {
-            const fileContent = await FileHandler.previewFile(filePath)
+            const fileContent = await FileHandler.previewFile(filePath, lines)
             return fileContent
         } catch (error) {
             console.error('Error while reading the file:', error)

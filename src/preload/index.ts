@@ -5,7 +5,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   trimSRT: (content: string) => ipcRenderer.invoke('process:trimSRT', content),
   trimSRTFile: (filePath: string) => ipcRenderer.invoke('process:trimSRTFile', filePath),
-  previewFile: (filePath: string) => ipcRenderer.invoke('file:preview', filePath),
+  previewFile: (filePath: string, lines: number) => ipcRenderer.invoke('file:preview', filePath, lines),
   openSaveDialog: () => ipcRenderer.invoke('file:saveDialog'),
   saveFileTemp: (filePath: string, content: string) => ipcRenderer.invoke('file:saveTemp', filePath, content),
   saveFile: (content: string, filePath: string) => ipcRenderer.invoke('file:save', content, filePath),

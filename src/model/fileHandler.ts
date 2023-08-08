@@ -46,7 +46,7 @@ export default class FileHandler {
     })
   }
 
-  static async previewFile(filePath: string, numLines = 10): Promise<string[]> {
+  static async previewFile(filePath: string, numLines: number): Promise<string[]> {
     try {
       const fileContent = await this.readFile(filePath)
       const lines = fileContent.split('\n')

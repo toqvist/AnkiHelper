@@ -24,7 +24,7 @@ export default function WordFrequencies({ getSentences }: WordFrequenciesProps):
     return (
         <>
             {wordFreqs.map((wordFreq, i) => {
-                return <div className='word-frequency'>
+                return <div key={i} className='word-frequency'>
                     <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
                     <div>{wordFreq.frequency}</div>
                 </div>

@@ -14,14 +14,14 @@ export default function SourceAsLines(): JSX.Element {
     }, [])
 
     async function getLines() {
-        setLines(await window.api.previewFile(selectedFile))
+        setLines(await window.api.previewFile(selectedFile, Infinity))
     }
 
     return (
         <>
             {lines.length > 0 &&
                 lines.map((line, i) => {
-                    return <p>{line}</p>
+                    return <p key={i}>{line}</p>
                 })}
         </>
     );

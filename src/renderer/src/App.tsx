@@ -10,7 +10,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
     api: {
       trimSRTFile: () => string
       trimSRT: () => string
-      previewFile: (filePath: string) => Promise<string[]>
+      previewFile: (filePath: string, lines: number) => Promise<string[]>
       openSaveDialog: () => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<string>
       saveFileTemp: (filePath: string, content: string) => Promise<string>,
