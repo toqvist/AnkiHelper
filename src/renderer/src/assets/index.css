@@ -246,10 +246,10 @@ a:hover {
 .modal-card {
   font-size: x-large;
   background-color: whitesmoke;
-  z-index: 20; 
+  z-index: 20;
   border-radius: 4px;
   position: relative;
-  padding: 5% 5%; 
+  padding: 5% 5%;
 }
 
 .modal-column {
@@ -265,7 +265,7 @@ a:hover {
   font-weight: 600;
 }
 
-.text-black{
+.text-black {
   color: black;
 }
 
@@ -281,7 +281,7 @@ a:hover {
   font-size: small;
 }
 
-.cloze-word { 
+.cloze-word {
   position: relative;
 }
 
@@ -291,4 +291,27 @@ a:hover {
   left: 50%;
   transform: translateX(-50%);
   z-index: 25;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.fullscreen-input {
+  width: 100%;
+  height: 85vh;
+  padding: 5px;
+}
+
+.flex-column {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.flex-grow {
+  flex: 1;
 }

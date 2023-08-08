@@ -11,6 +11,7 @@ interface FileContextType {
   updateResultPreview: (content: string) => void
   openSaveDialog: () => void
   resultToSource: (content: string) => Promise<void>
+  inputToSource: (content: string) => Promise<void>
 }
 
 const FileContext = createContext<FileContextType | undefined>(undefined)
@@ -65,6 +66,11 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     updateResult("")
   }
 
+  async function inputToSource(content: string): Promise<void> {
+    const resultPath = await window.api.saveFileTemp('', content)
+    updateSrc(resultPath);
+  }
+
   return (
     <FileContext.Provider
       value={{
@@ -77,7 +83,8 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
         updateSrc,
         updateResultPreview,
         openSaveDialog,
-        resultToSource
+        resultToSource,
+        inputToSource,
       }}
     >
       {children}

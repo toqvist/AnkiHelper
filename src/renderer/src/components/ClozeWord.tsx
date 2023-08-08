@@ -23,15 +23,15 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
     function handleEnter(event: KeyboardEvent<HTMLInputElement>): void {
         if (event.key === 'Enter') {
             updateWord({ ...word, clozed: clozed, hint: inputValue })
-            setShowInput(false, () => {})
+            setShowInput(false, () => { })
         }
     }
 
     function toggleClozed() {
         if (clozed == true) {
-            setShowInput(false, () => {});
+            setShowInput(false, () => { });
         } else {
-            setShowInput(true, () => {inputRef.current?.focus()})
+            setShowInput(true, () => { inputRef.current?.focus() })
         }
         updateWord({ ...word, clozed: !clozed, hint: inputValue })
         setClozed(!clozed);

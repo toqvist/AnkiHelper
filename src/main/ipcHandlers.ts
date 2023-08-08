@@ -78,7 +78,7 @@ function getFileHandlers() {
 
     ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {
         try {
-            return FileHandler.writeStringToFile(filePath, content)
+            return FileHandler.saveFileTemp(filePath, content)
         } catch (error) {
             console.error('Error while saving the file:', error)
             return null

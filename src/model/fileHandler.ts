@@ -1,7 +1,7 @@
 import fs from 'fs'
 import * as path from 'path';
 import { app, dialog } from 'electron';
-import { v1 as uuidv1 } from 'uuid';
+import { v1 as uuidv1, uuid } from 'uuid';
 
 export default class FileHandler {
 
@@ -62,22 +62,32 @@ export default class FileHandler {
   static async saveFileTemp(filePath: string, content: string): Promise<string> {
     const scriptDir = app.getAppPath();
 
-    const fileName = path.basename(filePath);
-    const fileExtension = path.extname(fileName);
-    const fileNameWithoutExtension = path.basename(fileName, fileExtension);
+    let targetPath: string;
 
-    const uuid = uuidv1().replace(/-/g, '');
+    if (filePath === '') {
+      const uuid: string = uuidv1();
+      console.log(uuid)
+      const newFileName: string = `${uuid}.txt`;
+      targetPath = path.join( scriptDir, newFileName);
+      console.log(targetPath)
+    } else {
+      const fileName = path.basename(filePath);
+      const fileExtension = path.extname(fileName);
+      const fileNameWithoutExtension = path.basename(fileName, fileExtension);
 
-    const newFileName = `${fileNameWithoutExtension}-${uuid}${fileExtension}`;
-    const targetPath = path.join('temp', scriptDir, newFileName);
-    
+      const uuid = uuidv1().replace(/-/g, '');
+
+      const newFileName = `${fileNameWithoutExtension}-${uuid}${fileExtension}`;
+      targetPath = path.join( scriptDir, newFileName);
+    }
+
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }
 
-    FileHandler.writeStringToFile(targetPath, content)
-    return targetPath
-    //TODO Clean up temp file on exit
+    await FileHandler.writeStringToFile(targetPath, content);
+    return targetPath;
+    // TODO: Clean up temp file on exit
   }
 }
 

@@ -46,7 +46,7 @@ const languages: Language[] = [
   { name: 'Turkish', code: 'tr' },
 ];
 
-function Process(): JSX.Element {
+function Analyze(): JSX.Element {
 
   const { selectedFile, srcPreview, resultPreview } = useFileContext()
 
@@ -201,4 +201,4 @@ function Process(): JSX.Element {
   )
 }
 
-export default Process
+export default Analyze
