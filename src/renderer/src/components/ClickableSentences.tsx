@@ -10,19 +10,6 @@ interface ClickableSentencesProps {
 }
 
 export default function ClickableSentences({ sentences, onClick }: ClickableSentencesProps): JSX.Element {
-
-    /*    const { selectedFile } = useFileContext()
-       const [lines, setLines] = useState<string[]>([]);
-   
-       useEffect(() => {
-           if (lines.length == 0)
-               getLines()
-       }, [])
-   
-       async function getLines() {
-           setLines(await window.api.previewFile(selectedFile, Infinity))
-       }
-    */
     return (
         <>
             {sentences.map((sentence, i) => {

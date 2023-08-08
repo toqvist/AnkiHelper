@@ -1,28 +1,33 @@
 import { useFileContext } from '@renderer/contexts/FileContext';
 import React, { useEffect, useState } from 'react'
 import { WordFreq } from 'src/model/tools';
+import ClickableSentences from './ClickableSentences';
+import { Sentence } from '@renderer/views/Analyze';
 
+interface SourceAsLinesProps {
+    onClick: Function
+}
 
-export default function SourceAsLines(): JSX.Element {
+export default function SourceAsLines({ onClick }: SourceAsLinesProps): JSX.Element {
 
     const { selectedFile } = useFileContext()
-    const [lines, setLines] = useState<string[]>([]);
+    const [sentences, setSentences] = useState<Sentence[]>([]);
 
     useEffect(() => {
-        if (lines.length == 0)
-            getLines()
+        if (sentences.length == 0)
+            getSentences()
     }, [])
 
-    async function getLines() {
-        setLines(await window.api.previewFile(selectedFile, Infinity))
+    async function getSentences() {
+        setSentences(await window.api.readFileAsSentences(selectedFile, Infinity))
+        console.log(await window.api.readFileAsSentences(selectedFile, Infinity))
     }
 
     return (
         <>
-            {lines.length > 0 &&
-                lines.map((line, i) => {
-                    return <p key={i}>{line}</p>
-                })}
+            {sentences.length > 0 &&
+                <ClickableSentences sentences={sentences} onClick={onClick} />
+            }
         </>
     );
 }

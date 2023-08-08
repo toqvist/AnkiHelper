@@ -148,7 +148,7 @@ function Analyze(): JSX.Element {
           <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
           <h2>Words in text</h2>
           {selectedFile != "" && <>
-            {activeMode == AnalyzeModes.lines && <SourceAsLines />}
+            {activeMode == AnalyzeModes.lines && <SourceAsLines onClick={initiateClozeCreation}/>}
             {activeMode == AnalyzeModes.wordFrequencies && <WordFrequencies getSentences={getSentences} />}
           </>
           }
