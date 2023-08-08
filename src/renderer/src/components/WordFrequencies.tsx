@@ -7,10 +7,20 @@ interface WordFrequenciesProps {
     getSentences: Function;
 }
 
+enum Sort {
+    alphabeticallyDescending,
+    alphabeticallyAscending,
+    wordFrequencyDescending,
+    wordFrequencyAscending,
+}
+
 export default function WordFrequencies({ getSentences }: WordFrequenciesProps): JSX.Element {
 
     const { selectedFile } = useFileContext()
     const [wordFreqs, setWordFreqs] = useState<WordFreq[]>([]);
+
+    const [sortedBy, setSortedBy] = useState<Sort>(Sort.alphabeticallyDescending)
+
 
     useEffect(() => {
         if (wordFreqs.length == 0)
@@ -21,12 +31,54 @@ export default function WordFrequencies({ getSentences }: WordFrequenciesProps):
         setWordFreqs(await window.api.wordFrequency(selectedFile))
     }
 
+    function sortByFrequency(): void {
+        let descending: boolean = true;
+
+        if (sortedBy == Sort.wordFrequencyAscending) {
+            descending = true;
+            setSortedBy(Sort.wordFrequencyDescending)
+        } else {
+            descending = false;
+            setSortedBy(Sort.wordFrequencyAscending);
+        }
+        const sorted: WordFreq[] = wordFreqs.sort((a, b) => {
+            if (descending) {
+                return b.frequency - a.frequency; // Sort in descending order
+            } else {
+                return a.frequency - b.frequency; // Sort in ascending order
+            }
+        })
+
+        setWordFreqs(sorted);
+    }
+
+    function sortAlphabetically(): void {
+        let descending: boolean = true;
+
+        if (sortedBy == Sort.alphabeticallyAscending) {
+            descending = true;
+            setSortedBy(Sort.alphabeticallyDescending)
+        } else {
+            descending = false;
+            setSortedBy(Sort.alphabeticallyAscending)
+        }
+        const sorted: WordFreq[] = wordFreqs.sort((a, b) => {
+            if (descending) {
+                return b.word.localeCompare(a.word); // Sort in descending order (reverse alphabetical)
+            } else {
+                return a.word.localeCompare(b.word); // Sort in ascending order (alphabetical)
+            }
+        })
+
+        setWordFreqs(sorted);
+    }
+
     return (
         <>
             <h2>Words from source</h2>
             <div className='display-flex word-frequency'>
-                <button>Sort alphabetically</button>
-                <button>Sort by occurances</button>
+                <button onClick={() => sortAlphabetically()}>Sort alphabetically</button>
+                <button onClick={() => sortByFrequency()}>Sort by occurances</button>
             </div>
             {wordFreqs.map((wordFreq, i) => {
                 return <div key={i} className='word-frequency'>
