@@ -65,34 +65,39 @@ export default class FileHandler {
       const fileContent = await this.readFile(filePath);
       const lines = fileContent.split('\n');
       const linesToReturn = Math.min(numLines, lines.length);
-
+  
       const sentences: Sentence[] = [];
-
-      const wordPattern = /[a-zA-Z0-9'-]+/;
-      const punctuationPattern = /[^\w\s]/;
-
+  
+      // Unicode character classes for words and punctuation
+      const wordPattern = /[\p{L}\p{N}'-]+/gu;
+      const punctuationPattern = /[^\p{L}\p{N}\s'-]+/gu;
+  
       for (let i = 0; i < linesToReturn; i++) {
         const sentenceText = lines[i];
         const wordsAndPunctuation = sentenceText.match(
-          new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'g')
+          new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'gu')
         );
-
-        if (wordsAndPunctuation) {
+  
+        // Check if the line contains valid words before adding to the result
+        if (wordsAndPunctuation && wordsAndPunctuation.some(item => wordPattern.test(item))) {
           const words: Word[] = wordsAndPunctuation.map((item) => {
             const isPunctuation = punctuationPattern.test(item);
             return { text: item, clozed: false, isPunctuation };
           });
-
+  
           const sentence: Sentence = { words };
           sentences.push(sentence);
         }
       }
-
+  
       return sentences;
     } catch (error: any) {
       throw new Error('Error reading the file: ' + error.message);
     }
   }
+  
+
+
 
   static async saveFileTemp(filePath: string, content: string): Promise<string> {
 
