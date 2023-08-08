@@ -148,7 +148,6 @@ function Analyze(): JSX.Element {
         </div>
         <div>
           <div>
-            {/* TODO: Force user to pick a deck if they want to add a cloze, i.e. disable cloze button if no deck is picked*/}
             {decks.length == 0
               ? <>
                 <i>No anki decks found!</i>

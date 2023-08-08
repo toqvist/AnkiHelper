@@ -72,10 +72,8 @@ export default class FileHandler {
 
     if (filePath === '') {
       const uuid: string = uuidv1();
-      console.log(uuid)
       const newFileName: string = `${uuid}.txt`;
       targetPath = path.join( tempFolderPath, newFileName);
-      console.log(targetPath)
     } else {
       const fileName = path.basename(filePath);
       const fileExtension = path.extname(fileName);
@@ -97,17 +95,16 @@ export default class FileHandler {
   }
 
   static cleanUpTempFolder() {
-    console.log("-----------CLEANING UP")
     const tempFolderName = 'temp';
     const tempFolderPath = path.join(__dirname, tempFolderName);
   
     if (fs.existsSync(tempFolderPath)) {
       fs.readdirSync(tempFolderPath).forEach(file => {
         const filePath = path.join(tempFolderPath, file);
-        fs.unlinkSync(filePath); // Delete file
+        fs.unlinkSync(filePath); 
       });
   
-      fs.rmdirSync(tempFolderPath); // Delete empty folder
+      fs.rmdirSync(tempFolderPath);
     }
   }
 }
