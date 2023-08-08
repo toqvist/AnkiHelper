@@ -2,7 +2,8 @@ import FilePreview from '../components/FilePreview'
 import FileActions from '../components/FileActions'
 import { useFileContext } from '../contexts/FileContext'
 import { useEffect, useState } from 'react'
-import ClozeModal, { ClozeModalProps } from '@renderer/components/ClozeModal';
+import ClozeModal, { ClozeModalProps, WordObject } from '@renderer/components/ClozeModal';
+import WordFrequencies from '@renderer/components/WordFrequencies';
 
 export interface WordFreq {
   word: string;
@@ -21,6 +22,10 @@ export interface Word {
 export interface Language {
   name: string;
   code: string;
+}
+
+enum AnalyzeModes {
+  lines, wordFrequencies
 }
 
 const languages: Language[] = [
@@ -53,7 +58,7 @@ function Analyze(): JSX.Element {
   const [decks, setDecks] = useState<Deck[]>([])
   const [selectedDeck, setSelectedDeck] = useState<Deck>()
 
-  const [leftColumn, setLeftColumn] = useState<WordFreq[]>([])
+  const [leftColumn, setLeftColumn] = useState<WordFreq[] | WordObject[]>([])
   const [rightColumn, setRightColumn] = useState<Sentence[]>([])
 
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -61,6 +66,8 @@ function Analyze(): JSX.Element {
   const [modalSentence, setModalSentence] = useState<Sentence>(undefSent)
 
   const [language, setLanguage] = useState<Language>(languages[0])
+
+  const [activeMode, setActiveMode] = useState<AnalyzeModes>(AnalyzeModes.lines);
 
   async function getDecks() {
     setDecks(await window.api.getDecks())
@@ -80,8 +87,7 @@ function Analyze(): JSX.Element {
 
 
   async function getWordFrequency(): Promise<void> {
-    const result: WordFreq[] = await window.api.wordFrequency(selectedFile)
-    setLeftColumn(result);
+    setActiveMode(AnalyzeModes.wordFrequencies)
   }
 
   async function getSentences(word: string): Promise<void> {
@@ -113,38 +119,33 @@ function Analyze(): JSX.Element {
     setShowModal(false)
   }
 
-
-
   function selectLanguage(event: React.ChangeEvent<HTMLSelectElement>): void {
     const selectedLanguage = event.target.value;
     const language: Language | undefined = languages.find((lang) => lang.name === selectedLanguage);
     if (language != undefined) setLanguage(language);
   }
 
+
   return (
     <>
       {showModal &&
         <div className="modal">
-          <ClozeModal 
-          sentence={modalSentence} 
-          deck={selectedDeck} 
-          closeModal={closeModal}
-          targetLanguage={language.code}
-           />
+          <ClozeModal
+            sentence={modalSentence}
+            deck={selectedDeck}
+            closeModal={closeModal}
+            targetLanguage={language.code}
+          />
           <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
         </div>
       }
 
       <div className='previews'>
         <div>
-          <button onClick={() => getWordFrequency()}>Word Frequency</button>
+          <button onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
+          <button onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
           <h2>Words in text</h2>
-          {leftColumn?.map((wordFreq, i) => {
-            return <div className='word-frequency'>
-              <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
-              <div>{wordFreq.frequency}</div>
-            </div>
-          })}
+          {activeMode == AnalyzeModes.wordFrequencies && <WordFrequencies getSentences={getSentences} />}
         </div>
         <div>
           <div>

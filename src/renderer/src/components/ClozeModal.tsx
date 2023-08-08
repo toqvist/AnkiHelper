@@ -9,7 +9,6 @@ export interface ClozeModalProps {
   targetLanguage: string;
 }
 
-
 export interface WordObject {
   text: string;
   isPunctuation: boolean;
