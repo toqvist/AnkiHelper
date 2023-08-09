@@ -1,5 +1,5 @@
 import { Sentence, Word } from "@renderer/views/Analyze"
-import { KeyboardEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ClozeWord from "./ClozeWord";
 
 export interface ClozeModalProps {
@@ -9,18 +9,10 @@ export interface ClozeModalProps {
   targetLanguage: string;
 }
 
-export interface WordObject {
-  text: string;
-  isPunctuation: boolean;
-  clozed: boolean;
-  hint: string;
-  translations: string[];
-}
-
 function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalProps): JSX.Element {
 
 
-  const [wordObjects, setWordObjects] = useState<WordObject[]>([]);
+  const [wordObjects, setWordObjects] = useState<Word[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -44,7 +36,7 @@ function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalPr
     return wordObjects;
   }
 
-  function updateWord(word: WordObject) {
+  function updateWord(word: Word) {
     setWordObjects((prevWordObjects) =>
       prevWordObjects.map((wordObject, i) => {
         if (wordObject.text === word.text) {

@@ -1,3 +1,4 @@
+import { Sentence } from "@renderer/views/Analyze";
 import FileHandler from "./fileHandler";
 
 export interface WordFreq {
@@ -54,20 +55,20 @@ export default class Tools {
     });
   }
 
-  static async usedInSentences(filePath: string, argWord: string): Promise<string[]> {
+  static async usedInSentences(filePath: string, argWord: string): Promise<Sentence[]> {
     try {
-      const data = await FileHandler.readFile(filePath);
-      const lines = data.split(/\r?\n/); // Split the content by newline characters
+      const sentences = await FileHandler.readFileAsSentences(filePath, Infinity);
 
-      const filteredLines = lines.filter(line => {
-        const words = line.trim().split(' ');
-        return words.some(word => word.toLowerCase().includes(argWord.toLowerCase()));
+      const filteredSentences = sentences.filter(sentence => {
+        return sentence.words.some(word => word.text.toLowerCase().includes(argWord.toLowerCase()));
       });
 
-      return filteredLines.map(line => line.trim());
+      return filteredSentences;
     } catch (error) {
       console.error('Error reading the file:', error);
-      return []; // Return an empty array in case of an error.
+      return [];
     }
   }
+
+
 }

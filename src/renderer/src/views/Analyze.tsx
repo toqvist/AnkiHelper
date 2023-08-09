@@ -89,21 +89,9 @@ function Analyze(): JSX.Element {
     }
   }, [decks]);
 
-
-
-  async function getWordFrequency(): Promise<void> {
-    setActiveMode(AnalyzeModes.wordFrequencies)
-  }
-
   async function getSentences(word: string): Promise<void> {
     try {
-      const result: string[] = await window.api.usedInSentences(selectedFile, word);
-      const sentences: Sentence[] = result.map((sent) => {
-        const words: Word[] = sent.split(" ").map((text) => ({ text, clozed: false }));
-        const sentence: Sentence = { words };
-        return sentence;
-      });
-      setRightColumn(sentences);
+      setRightColumn(await window.api.usedInSentences(selectedFile, word));
     } catch (error) {
       console.error("Error fetching sentences:", error);
     }
