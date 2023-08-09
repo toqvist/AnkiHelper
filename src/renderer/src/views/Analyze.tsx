@@ -111,8 +111,11 @@ function Analyze(): JSX.Element {
 
   function selectLanguage(event: React.ChangeEvent<HTMLSelectElement>): void {
     const selectedLanguage = event.target.value;
-    const language: Language | undefined = languages.find((lang) => lang.name === selectedLanguage);
-    if (language != undefined) setLanguage(language);
+    const language: Language | undefined = languages.find((lang) => lang.code === selectedLanguage);
+
+    if (language !== undefined) {
+      setLanguage(language); 
+    }
   }
 
 
