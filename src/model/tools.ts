@@ -10,18 +10,16 @@ export default class Tools {
 
   static async wordFrequency(filePath: string, argumentWord: string): Promise<WordFreq[]> {
     try {
-      const data: string = await FileHandler.readFile(filePath);
+      const sentences: Sentence[] = await FileHandler.readFileAsSentences(filePath, 100); // Adjust the numLines parameter as needed
       const wordFrequencyMap: { [key: string]: number } = {};
 
-      const words: string[] = data
-        .toLowerCase()
-        .replace(/[.,?!]/g, '')
-        .split(/\s+/);
-
-      words.forEach((word) => {
-        if (word.includes(argumentWord.toLowerCase())) {
-          wordFrequencyMap[word] = (wordFrequencyMap[word] || 0) + 1;
-        }
+      sentences.forEach((sentence) => {
+        sentence.words.forEach((word) => {
+          const normalizedWord = word.text.toLowerCase(); // Normalize the word to lowercase
+          if (!word.isPunctuation && normalizedWord.trim() !== '' && normalizedWord.includes(argumentWord.toLowerCase())) {
+            wordFrequencyMap[normalizedWord] = (wordFrequencyMap[normalizedWord] || 0) + 1;
+          }
+        });
       });
 
       const wordFrequencyList: WordFreq[] = Object.keys(wordFrequencyMap).map((word) => ({

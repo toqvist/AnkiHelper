@@ -1,5 +1,3 @@
-import FilePreview from '../components/FilePreview'
-import FileActions from '../components/FileActions'
 import { useFileContext } from '../contexts/FileContext'
 import { useEffect, useState } from 'react'
 import ClozeModal from '@renderer/components/ClozeModal';
@@ -80,7 +78,6 @@ function Analyze(): JSX.Element {
 
   useEffect(() => {
     getDecks();
-
   }, []);
 
   useEffect(() => {

@@ -63,44 +63,36 @@ export default class FileHandler {
   static async readFileAsSentences(filePath: string, numLines: number): Promise<Sentence[]> {
     try {
       const fileContent = await this.readFile(filePath);
-      const lines = fileContent.split('\n');
-      const linesToReturn = Math.min(numLines, lines.length);
-  
+      const lines = fileContent.split('\n').slice(0, numLines);
+
       const sentences: Sentence[] = [];
-  
-      // Unicode character classes for words and punctuation
+
       const wordPattern = /[\p{L}\p{N}'-]+/gu;
       const punctuationPattern = /[^\p{L}\p{N}\s'-]+/gu;
-  
-      for (let i = 0; i < linesToReturn; i++) {
-        const sentenceText = lines[i];
-        const wordsAndPunctuation = sentenceText.match(
-          new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'gu')
-        );
-  
-        // Check if the line contains valid words before adding to the result
-        if (wordsAndPunctuation && wordsAndPunctuation.some(item => wordPattern.test(item))) {
-          const words: Word[] = wordsAndPunctuation.map((item) => {
-            const isPunctuation = punctuationPattern.test(item);
-            return { text: item, clozed: false, isPunctuation, translations: [], hint: '' };
-          });
-  
-          const sentence: Sentence = { words };
-          sentences.push(sentence);
+
+      for (const sentenceText of lines) {
+        const wordsAndPunctuation = sentenceText.match(new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'gu'));
+
+        if (wordsAndPunctuation?.some(item => wordPattern.test(item))) {
+          const words: Word[] = wordsAndPunctuation.map(item => ({
+            text: item,
+            clozed: false,
+            isPunctuation: punctuationPattern.test(item),
+            translations: [],
+            hint: ''
+          }));
+          console.log(words)
+          sentences.push({ words });
         }
       }
-  
+
       return sentences;
     } catch (error: any) {
       throw new Error('Error reading the file: ' + error.message);
     }
   }
-  
-
-
 
   static async saveFileTemp(filePath: string, content: string): Promise<string> {
-
     const binaryDirectory = __dirname;
     const tempFolderName = 'temp';
     const tempFolderPath = path.join(binaryDirectory, tempFolderName);
