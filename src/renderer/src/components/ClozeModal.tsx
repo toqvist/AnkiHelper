@@ -9,8 +9,7 @@ export interface ClozeModalProps {
   targetLanguage: string;
 }
 
-function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalProps): JSX.Element {
-
+export default function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalProps): JSX.Element {
 
   const [wordObjects, setWordObjects] = useState<Word[]>([]);
 
@@ -22,6 +21,7 @@ function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalPr
 
     fetchData();
   }, []);
+
 
   async function getHints(sentence: Sentence, targetLanguage: string): Promise<Word[]> {
     const wordObjects: Word[] = await Promise.all(sentence.words.map(async (word) => {
@@ -94,6 +94,32 @@ function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalPr
     window.api.createClozeCard(deck.name, sentenceText, clozedWords).then(closeModal());
   }
 
+  function normalizeAsSentence(): void {
+    console.log(wordObjects)
+    if (wordObjects.length === 0) {
+      return;
+    }
+
+    let normalizedSentence: Word[] = [...wordObjects];
+
+    const newFirstWord = { ...wordObjects[0] };
+    newFirstWord.text = newFirstWord.text.charAt(0).toUpperCase() + newFirstWord.text.slice(1);
+    normalizedSentence[0] = newFirstWord;
+
+    const lastWord: Word = wordObjects[wordObjects.length - 1]
+
+    if (lastWord.isPunctuation) {
+      normalizedSentence.pop()
+      normalizedSentence.push({ ...lastWord, text: '.' })
+    }
+
+    setWordObjects(normalizedSentence);
+  }
+
+  function trimSpecialCharacter() {
+    //Filter out symbols that are not .,?!
+  }
+
 
   return (
 
@@ -118,6 +144,9 @@ function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalPr
             <button onClick={() => createCard()} disabled={!anyWordIsClozed()}>
               {anyWordIsClozed() ? 'Add' : 'Select at least one cloze'}
             </button>
+            <button onClick={() => normalizeAsSentence()}>
+              Normalize
+            </button>
           </div>
 
         }
@@ -125,5 +154,3 @@ function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalPr
     </div>
   );
 }
-
-export default ClozeModal

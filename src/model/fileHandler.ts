@@ -63,7 +63,8 @@ export default class FileHandler {
   static async readFileAsSentences(filePath: string, numLines: number): Promise<Sentence[]> {
     try {
       const fileContent = await this.readFile(filePath);
-      const lines = fileContent.split('\n').slice(0, numLines);
+      const lines = fileContent.split(/\r?\n/).slice(0, numLines);
+
 
       const sentences: Sentence[] = [];
 
@@ -81,14 +82,13 @@ export default class FileHandler {
             translations: [],
             hint: ''
           }));
-          console.log(words)
           sentences.push({ words });
         }
       }
 
       return sentences;
     } catch (error: any) {
-      throw new Error('Error reading the file: ' + error.message);
+      throw new Error('Error processing the file content: ' + error.message);
     }
   }
 
