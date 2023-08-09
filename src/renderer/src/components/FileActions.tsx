@@ -57,6 +57,7 @@ function FileActions(): JSX.Element {
           actions.map((action, i) => {
             return (
               <button
+                key={i}
                 onClick={async () => {
                   const result: string = await action.function(selectedFile)
                   updateResult(result)

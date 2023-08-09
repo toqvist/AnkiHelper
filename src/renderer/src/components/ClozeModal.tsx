@@ -27,7 +27,6 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
 
   async function getHints(sentence: Sentence, targetLanguage: string): Promise<Word[]> {
-    console.log(sentence)
     const wordObjects: Word[] = await Promise.all(sentence.words.map(async (word) => {
       if (word.isPunctuation) {
         return word;
@@ -150,15 +149,15 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
             <div>
               <i className="text-large">Add card to {deck.name}</i>
             </div>
-            <p>
+            <div>
               {wordObjects.map((wordObject, i) => {
                 if (!wordObject.isPunctuation) {
-                  return <ClozeWord word={wordObject} updateWord={updateWord} translations={wordObject.translations} />
+                  return <ClozeWord key={i} word={wordObject} updateWord={updateWord} translations={wordObject.translations} />
                 } else {
-                  return <span className="text-black" key={i}>{wordObject.text}</span>;
+                  return <span key={i} className="text-black">{wordObject.text}</span>;
                 }
               })}
-            </p>
+            </div>
             <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>
 
             <div>

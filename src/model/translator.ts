@@ -13,8 +13,6 @@ export class Translator {
             const result = await response.json();
 
             const rawTranslations: any[] = result[0];
-            console.log(word);
-            console.log(rawTranslations);
             const translations: string[] = rawTranslations
                 .filter((value) => value && value[0] !== word)
                 .map((value) => value[0]);

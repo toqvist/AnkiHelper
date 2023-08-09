@@ -37,12 +37,6 @@ function App(): JSX.Element {
 
   return (
     <>
-      {/* <button onClick={async () => {
-        console.log(await window.api.translate("pretty", "es"))
-      }}>Pretty</button>
-      <button onClick={async () => {
-        console.log(await window.api.translate("big", "es"))
-      }}>Big</button> */}
       <FileUpload />
       <div className="tabs">
         <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>Analyze</button>

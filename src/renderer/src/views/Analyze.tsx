@@ -114,7 +114,7 @@ function Analyze(): JSX.Element {
     const language: Language | undefined = languages.find((lang) => lang.code === selectedLanguage);
 
     if (language !== undefined) {
-      setLanguage(language); 
+      setLanguage(language);
     }
   }
 
@@ -165,7 +165,7 @@ function Analyze(): JSX.Element {
                       <span>Deck: </span>
                       <select onChange={selectDeck}>
                         {decks.map((deck) => (
-                          <option value={deck.name}>{deck.name}</option>
+                          <option key={deck.id} value={deck.name}>{deck.name}</option>
                         ))}
                       </select>
                     </div>
