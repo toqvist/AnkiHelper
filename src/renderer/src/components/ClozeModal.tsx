@@ -27,17 +27,18 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
 
   async function getHints(sentence: Sentence, targetLanguage: string): Promise<Word[]> {
+    console.log(sentence)
     const wordObjects: Word[] = await Promise.all(sentence.words.map(async (word) => {
       if (word.isPunctuation) {
         return word;
       }
 
       const translations: string[] = await window.api.translate(word.text, targetLanguage);
-      /*   if(translations[0] == word.text) {
-          return { ...word, hint: '', translations: ['']};
-        } else {
-        } */
-      return { ...word, hint: translations[0], translations };
+      if (translations[0] == word.text) {
+        return { ...word, hint: '', translations: [] };
+      } else {
+        return { ...word, hint: translations[0], translations };
+      }
     }));
 
     return wordObjects;

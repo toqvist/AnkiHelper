@@ -12,11 +12,13 @@ export class Translator {
             const response = await fetch(googleTranslateUrl);
             const result = await response.json();
 
-            const rawTranslations: any[] = result[0][0];
-            rawTranslations.pop()
-            const translations: string[] = rawTranslations.filter((value) => value !== null);
-
-            console.log(translations)
+            const rawTranslations: any[] = result[0];
+            console.log(word);
+            console.log(rawTranslations);
+            const translations: string[] = rawTranslations
+                .filter((value) => value && value[0] !== word)
+                .map((value) => value[0]);
+           
             return translations;
         } catch (error) {
             console.error('Translation error:', error);

@@ -1,4 +1,5 @@
 import { Word } from "@renderer/views/Analyze"
+import { randomUUID } from "crypto";
 import { KeyboardEvent, useRef, useState } from 'react'
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
@@ -40,7 +41,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
         <span className="cloze-word">
             <a
                 href="#"
-                /* key={i} */
+                key={word.text}
                 className={clozed ? 'text-clozed' : 'text-black'}
                 onClick={() => toggleClozed()}
             >
@@ -61,11 +62,13 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
                         onKeyDown={(e) => handleEnter(e)}
                         defaultValue={inputValue}
                     />
-                    <select name="" id="">
-                        {translations.map((translation) => {
-                            return <option value={translation}>{translation}</option>
-                        })}
-                    </select>
+                    {translations.length > 1 &&
+                        <select name="" id="">
+                            {translations.map((translation) => {
+                                return <option value={translation}>{translation}</option>
+                            })}
+                        </select>
+                    }
                 </div>
             }
         </span>

@@ -65,7 +65,6 @@ export default class FileHandler {
       const fileContent = await this.readFile(filePath);
       const lines = fileContent.split(/\r?\n/).slice(0, numLines);
 
-
       const sentences: Sentence[] = [];
 
       const wordPattern = /[\p{L}\p{N}'-]+/gu;
@@ -74,11 +73,11 @@ export default class FileHandler {
       for (const sentenceText of lines) {
         const wordsAndPunctuation = sentenceText.match(new RegExp(`${wordPattern.source}|\\s|${punctuationPattern.source}`, 'gu'));
 
-        if (wordsAndPunctuation?.some(item => wordPattern.test(item))) {
+        if (wordsAndPunctuation?.length) {
           const words: Word[] = wordsAndPunctuation.map(item => ({
             text: item,
             clozed: false,
-            isPunctuation: punctuationPattern.test(item),
+            isPunctuation: item.trim() === '' || punctuationPattern.test(item),
             translations: [],
             hint: ''
           }));
@@ -87,8 +86,10 @@ export default class FileHandler {
       }
 
       return sentences;
-    } catch (error: any) {
-      throw new Error('Error processing the file content: ' + error.message);
+    } catch (error) {
+      // Handle any potential errors here
+      console.error(error);
+      return [];
     }
   }
 
