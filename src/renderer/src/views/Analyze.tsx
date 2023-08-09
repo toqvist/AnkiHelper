@@ -18,8 +18,11 @@ export interface Sentence {
 }
 
 export interface Word {
-  text: string,
-  clozed: boolean,
+  text: string;
+  isPunctuation: boolean;
+  clozed: boolean;
+  hint: string;
+  translations: string[];
 }
 
 export interface Language {

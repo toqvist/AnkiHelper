@@ -82,7 +82,7 @@ export default class FileHandler {
         if (wordsAndPunctuation && wordsAndPunctuation.some(item => wordPattern.test(item))) {
           const words: Word[] = wordsAndPunctuation.map((item) => {
             const isPunctuation = punctuationPattern.test(item);
-            return { text: item, clozed: false, isPunctuation };
+            return { text: item, clozed: false, isPunctuation, translations: [], hint: '' };
           });
   
           const sentence: Sentence = { words };

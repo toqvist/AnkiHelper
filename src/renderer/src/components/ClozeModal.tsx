@@ -19,43 +19,31 @@ export interface WordObject {
 
 function ClozeModal({ sentence, deck, closeModal, targetLanguage }: ClozeModalProps): JSX.Element {
 
-  function sentenceToString(sentence: Sentence): string {
-    return sentence.words.map((word) => word.text).join(' ');
-  }
-
-  //TODO: Merge WordObject/Word and their associated functions
-  async function getWordObjects(sentence: Sentence): Promise<WordObject[]> {
-    const sentenceText = sentenceToString(sentence);
-    const wordObjects: WordObject[] = [];
-    const wordPattern = /\w+/g;
-    const wordsAndPunctuation = sentenceText.match(
-      new RegExp(`${wordPattern.source}|\\s|[^\\w\\s]`, 'g')
-    );
-
-    if (wordsAndPunctuation) {
-      for (const text of wordsAndPunctuation) {
-        const isPunctuation = !wordPattern.test(text) && text.trim() !== '';
-        const translations: string[] = await window.api.translate(text, targetLanguage);
-        wordObjects.push({ text, isPunctuation, clozed: false, hint: translations[0], translations: translations });
-      }
-    }
-
-    return wordObjects;
-  }
-
 
   const [wordObjects, setWordObjects] = useState<WordObject[]>([]);
 
   useEffect(() => {
-    // Fetch the initial value asynchronously and update the state when resolved
     async function fetchData() {
-      const initialWordObjects = await getWordObjects(sentence);
+      const initialWordObjects = await getHints(sentence, targetLanguage);
       setWordObjects(initialWordObjects);
     }
 
     fetchData();
   }, []);
-  
+
+  async function getHints(sentence: Sentence, targetLanguage: string): Promise<Word[]> {
+    const wordObjects: Word[] = await Promise.all(sentence.words.map(async (word) => {
+      if (word.isPunctuation) {
+        return word;
+      }
+
+      const translations: string[] = await window.api.translate(word.text, targetLanguage);
+      return { ...word, hint: translations[0], translations };
+    }));
+
+    return wordObjects;
+  }
+
   function updateWord(word: WordObject) {
     setWordObjects((prevWordObjects) =>
       prevWordObjects.map((wordObject, i) => {
