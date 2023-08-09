@@ -95,7 +95,6 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
   }
 
   function normalizeAsSentence(): void {
-    console.log(wordObjects)
     if (wordObjects.length === 0) {
       return;
     }
@@ -116,8 +115,18 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
     setWordObjects(normalizedSentence);
   }
 
-  function trimSpecialCharacter() {
-    //Filter out symbols that are not .,?!
+  function removeSpecialCharacters() {
+
+    const validCharacters = ['.', ',', '?', '!', ' '];
+    const validWords = wordObjects.filter(word => {
+      if (word.isPunctuation) {
+        return validCharacters.includes(word.text);
+      } else {
+        return /^[a-zA-Z ]*$/.test(word.text);
+      }
+    });
+
+    setWordObjects(validWords)
   }
 
 
@@ -147,6 +156,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
             <button onClick={() => normalizeAsSentence()}>
               Normalize
             </button>
+            <button onClick={() => removeSpecialCharacters()}>Remove special characters</button>
           </div>
 
         }
