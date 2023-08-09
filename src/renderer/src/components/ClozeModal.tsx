@@ -13,6 +13,9 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
   const [wordObjects, setWordObjects] = useState<Word[]>([]);
 
+  const [normalized, setNormalized] = useState<boolean>(false);
+  const [noSpecials, setNoSpecials] = useState<boolean>(false);
+
   useEffect(() => {
     async function fetchData() {
       const initialWordObjects = await getHints(sentence, targetLanguage);
@@ -93,6 +96,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
     window.api.createClozeCard(deck.name, sentenceText, clozedWords).then(closeModal());
   }
+  
 
   function normalizeAsSentence(): void {
     if (wordObjects.length === 0) {
@@ -113,6 +117,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
     }
 
     setWordObjects(normalizedSentence);
+    setNormalized(true);
   }
 
   function removeSpecialCharacters() {
@@ -126,7 +131,8 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       }
     });
 
-    setWordObjects(validWords)
+    setWordObjects(validWords);
+    setNoSpecials(true);
   }
 
 
@@ -150,13 +156,15 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
             </p>
             <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>
 
+            <div>
+              <button disabled={normalized} onClick={() => normalizeAsSentence()}>
+                Normalize
+              </button>
+              <button disabled={noSpecials} onClick={() => removeSpecialCharacters()}>Remove special characters</button>
+            </div>
             <button onClick={() => createCard()} disabled={!anyWordIsClozed()}>
               {anyWordIsClozed() ? 'Add' : 'Select at least one cloze'}
             </button>
-            <button onClick={() => normalizeAsSentence()}>
-              Normalize
-            </button>
-            <button onClick={() => removeSpecialCharacters()}>Remove special characters</button>
           </div>
 
         }
