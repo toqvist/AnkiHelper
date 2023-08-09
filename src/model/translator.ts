@@ -16,6 +16,7 @@ export class Translator {
             rawTranslations.pop()
             const translations: string[] = rawTranslations.filter((value) => value !== null);
 
+            console.log(translations)
             return translations;
         } catch (error) {
             console.error('Translation error:', error);

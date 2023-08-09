@@ -33,6 +33,10 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       }
 
       const translations: string[] = await window.api.translate(word.text, targetLanguage);
+      /*   if(translations[0] == word.text) {
+          return { ...word, hint: '', translations: ['']};
+        } else {
+        } */
       return { ...word, hint: translations[0], translations };
     }));
 
@@ -96,7 +100,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
     window.api.createClozeCard(deck.name, sentenceText, clozedWords).then(closeModal());
   }
-  
+
 
   function normalizeAsSentence(): void {
     if (wordObjects.length === 0) {

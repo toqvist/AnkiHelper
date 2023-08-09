@@ -1,10 +1,9 @@
-import { Sentence, Word } from "@renderer/views/Analyze"
-import { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { WordObject } from "./ClozeModal";
+import { Word } from "@renderer/views/Analyze"
+import { KeyboardEvent, useRef, useState } from 'react'
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
 interface ClozeWordProps {
-    word: WordObject;
+    word: Word;
     updateWord: Function;
     translations: string[]
 }
@@ -49,18 +48,25 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
             </a>
 
             {(word.text !== ' ') &&
-                <input
-                    ref={inputRef}
+                <div
                     className='cloze-hint'
                     style={{
-                        display: clozed && showInput ? 'block' : 'none'
-                    }}
-                    type="text"
-                    placeholder="hint"
-                    onChange={(e) => handleInputChange(e)}
-                    onKeyDown={(e) => handleEnter(e)}
-                    defaultValue={inputValue}
-                />
+                        display: clozed && showInput ? 'flex' : 'none'
+                    }}>
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        placeholder="hint"
+                        onChange={(e) => handleInputChange(e)}
+                        onKeyDown={(e) => handleEnter(e)}
+                        defaultValue={inputValue}
+                    />
+                    <select name="" id="">
+                        {translations.map((translation) => {
+                            return <option value={translation}>{translation}</option>
+                        })}
+                    </select>
+                </div>
             }
         </span>
 
