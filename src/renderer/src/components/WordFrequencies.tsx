@@ -2,6 +2,7 @@ import { useFileContext } from '@renderer/contexts/FileContext';
 import React, { useEffect, useState } from 'react'
 import { WordFreq } from 'src/model/tools';
 import pLimit from 'p-limit';
+import Spinner from './Spinner';
 
 
 interface WordFrequenciesProps {
@@ -18,6 +19,8 @@ enum Sort {
 
 export default function WordFrequencies({ getSentences, selectedDeck }: WordFrequenciesProps): JSX.Element {
 
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
     const { selectedFile } = useFileContext()
     const [wordFreqs, setWordFreqs] = useState<WordFreq[]>([]);
 
@@ -31,6 +34,7 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
 
     async function getWordFreqs() {
         setWordFreqs(await window.api.wordFrequency(selectedFile))
+        setIsLoading(false)
     }
 
     function sortByFrequency(): void {
@@ -76,11 +80,12 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
     }
 
     async function getNewWords(): Promise<void> {
+        setIsLoading(true)
         if (selectedDeck === undefined) return;
-    
+
         const newWords: WordFreq[] = [];
         const limit = pLimit(5);
-    
+
         await Promise.all(
             wordFreqs.map(async (wordFreq) => {
                 await limit(async () => {
@@ -90,24 +95,32 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
                 });
             })
         );
-    
         setWordFreqs(newWords);
+        setIsLoading(false)
     }
 
     return (
         <>
             <h2>Words from source</h2>
-            <button onClick={() => getNewWords()}>Show only new words</button>
+            <button onClick={() => getNewWords()}>New words</button>
             <div className='display-flex word-frequency'>
                 <button onClick={() => sortAlphabetically()}>Sort alphabetically</button>
                 <button onClick={() => sortByFrequency()}>Sort by occurances</button>
             </div>
-            {wordFreqs.map((wordFreq, i) => {
-                return <div key={i} className='word-frequency'>
-                    <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
-                    <div>{wordFreq.frequency}</div>
+            {
+                (wordFreqs.length == 0 || isLoading) &&
+                <div className='display-flex justify-center word-frequency'>
+                    <Spinner />
                 </div>
-            })}
+            }
+            {isLoading == false &&
+                wordFreqs.map((wordFreq, i) => {
+                    return <div key={i} className='word-frequency'>
+                        <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
+                        <div>{wordFreq.frequency}</div>
+                    </div>
+                })
+            }
         </>
     );
 }

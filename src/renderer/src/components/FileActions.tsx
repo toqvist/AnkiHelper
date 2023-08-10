@@ -8,10 +8,7 @@ interface Action {
   function: Function
 }
 
-// TODO: Move actions to context or other
-
 function FileActions(): JSX.Element {
-  /* const [actions, setActions] = useState<Action[]>([]); */
   const { selectedFile, updateResult, openSaveDialog, resultToSource, result } = useFileContext()
 
   function getFileExtension(filename: string): string {

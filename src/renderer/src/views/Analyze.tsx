@@ -29,7 +29,7 @@ export interface Language {
 }
 
 enum AnalyzeModes {
-  lines, wordFrequencies, newWords
+  lines, wordFrequencies
 }
 
 const languages: Language[] = [
@@ -141,7 +141,6 @@ function Analyze(): JSX.Element {
             <div>
               <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
               <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Words in text</button>
-              {(selectedDeck !== undefined && selectDeck !== null) && <button disabled={activeMode == AnalyzeModes.newWords} onClick={() => setActiveMode(AnalyzeModes.newWords)}>New Words</button>}
 
               {selectedFile != "" && <>
                 {activeMode == AnalyzeModes.lines && <>
