@@ -18,6 +18,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
       getDecks: () => Promise<Deck[]>
       createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>,
+      isWordNew: (word: string, deck: string) => Promise<boolean>,
       usedInSentences: (filePath: string, argWord: string) => Promise<Sentence[]>,
       translate: (text: string, targetLanguage: string) => Promise<string[]>
     }

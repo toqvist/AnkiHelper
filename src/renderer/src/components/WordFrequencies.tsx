@@ -1,10 +1,12 @@
 import { useFileContext } from '@renderer/contexts/FileContext';
 import React, { useEffect, useState } from 'react'
 import { WordFreq } from 'src/model/tools';
+import pLimit from 'p-limit';
 
 
 interface WordFrequenciesProps {
     getSentences: Function;
+    selectedDeck: Deck | undefined;
 }
 
 enum Sort {
@@ -14,7 +16,7 @@ enum Sort {
     wordFrequencyAscending,
 }
 
-export default function WordFrequencies({ getSentences }: WordFrequenciesProps): JSX.Element {
+export default function WordFrequencies({ getSentences, selectedDeck }: WordFrequenciesProps): JSX.Element {
 
     const { selectedFile } = useFileContext()
     const [wordFreqs, setWordFreqs] = useState<WordFreq[]>([]);
@@ -73,9 +75,29 @@ export default function WordFrequencies({ getSentences }: WordFrequenciesProps):
         setWordFreqs(sorted);
     }
 
+    async function getNewWords(): Promise<void> {
+        if (selectedDeck === undefined) return;
+    
+        const newWords: WordFreq[] = [];
+        const limit = pLimit(5);
+    
+        await Promise.all(
+            wordFreqs.map(async (wordFreq) => {
+                await limit(async () => {
+                    if (await window.api.isWordNew(wordFreq.word, selectedDeck.name)) {
+                        newWords.push(wordFreq);
+                    }
+                });
+            })
+        );
+    
+        setWordFreqs(newWords);
+    }
+
     return (
         <>
             <h2>Words from source</h2>
+            <button onClick={() => getNewWords()}>Show only new words</button>
             <div className='display-flex word-frequency'>
                 <button onClick={() => sortAlphabetically()}>Sort alphabetically</button>
                 <button onClick={() => sortByFrequency()}>Sort by occurances</button>

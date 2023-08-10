@@ -2,7 +2,7 @@ import { dialog, ipcMain } from "electron"
 import FileHandler from "../model/fileHandler"
 import FileProcessor from "../model/fileProcessor"
 import Tools, { WordFreq } from "../model/tools"
-import {Deck, AnkiConnect } from "../model/ankiConnect"
+import { Deck, AnkiConnect } from "../model/ankiConnect"
 import { Translator } from "../model/translator"
 
 
@@ -33,23 +33,23 @@ function getToolHandlers() {
 
     ipcMain.handle('tools:usedInSentences', async (event, filePath: string, argWord: string) => {
         try {
-          const result = await Tools.usedInSentences(filePath, argWord);
-          return result;
+            const result = await Tools.usedInSentences(filePath, argWord);
+            return result;
         } catch (error) {
-          console.error('Error in usedInSentences:', error);
-          return [];
+            console.error('Error in usedInSentences:', error);
+            return [];
         }
-      });
+    });
 
-      ipcMain.handle('tools:translate', async (event, text: string, targetLanguage: string): Promise<string[]> => {
+    ipcMain.handle('tools:translate', async (event, text: string, targetLanguage: string): Promise<string[]> => {
         try {
-          const translatedText = await Translator.translate(text, targetLanguage);
-          return translatedText;
+            const translatedText = await Translator.translate(text, targetLanguage);
+            return translatedText;
         } catch (error) {
-          console.error('Error translating text:', error);
-          throw error;
+            console.error('Error translating text:', error);
+            throw error;
         }
-      });
+    });
 }
 
 function getFileHandlers() {
@@ -65,12 +65,12 @@ function getFileHandlers() {
 
     ipcMain.handle('file:readFileAsSentences', async (event, filePath: string, numLines: number) => {
         try {
-          const result = await FileHandler.readFileAsSentences(filePath, numLines);
-          return result;
+            const result = await FileHandler.readFileAsSentences(filePath, numLines);
+            return result;
         } catch (error: any) {
-          throw new Error('Error previewing file: ' + error.message);
+            throw new Error('Error previewing file: ' + error.message);
         }
-      });
+    });
 
     ipcMain.handle('file:saveDialog', async (event): Promise<string | undefined> => {
         const result: Electron.SaveDialogReturnValue = await dialog.showSaveDialog({})
@@ -85,7 +85,7 @@ function getFileHandlers() {
             return null
         }
 
-        
+
     })
 
     ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {
@@ -108,7 +108,7 @@ function getAnkiHandlers() {
             return [];
         }
     });
-    
+
     ipcMain.handle('anki:createClozeCard', async (event, deck: string, sentence: string, clozeWords: string[]): Promise<boolean> => {
         try {
             await AnkiConnect.createClozeCard(deck, sentence, clozeWords);
@@ -117,5 +117,10 @@ function getAnkiHandlers() {
             console.error('An error occurred:', error);
             return false;
         }
+    });
+
+    ipcMain.handle('anki:isWordNew', async (event, word, deckName) => {
+        const isNew = !(await AnkiConnect.isWordNew(word, deckName));
+        return isNew;
     });
 }

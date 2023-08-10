@@ -38,17 +38,18 @@ export class AnkiConnect {
         }
     }
 
+    //Add hints as {{c1::word:hint}}
     static async createClozeCard(deck: string, sentence: string, clozeWords: string[]): Promise<void> {
-        
+
         if (clozeWords.length === 0) {
             console.error('Cloze words array cannot be empty.');
             return;
         }
-        
+
         let clozeContent = sentence;
         clozeWords.forEach((word, index) => {
             const clozeIndex = index + 1;
-            const hint = "..." //TODO: Get translation and use as hint
+            const hint = "..."
             const clozePlaceholder = `{{c${clozeIndex}::${word}::${hint}}}`;
             clozeContent = clozeContent.replace(word, clozePlaceholder);
         });
@@ -60,7 +61,7 @@ export class AnkiConnect {
                 Text: clozeContent,
             },
             options: {
-                allowDuplicate: false,
+                allowDuplicate: true,
             },
             tags: ['cloze'],
         };
@@ -107,5 +108,35 @@ export class AnkiConnect {
                 tags: ["basic"],
             },
         };
+    }
+
+    static async isWordNew(word: string, deckName: string): Promise<boolean> {
+        try {
+            const requestData = {
+                action: 'findNotes',
+                version: 6,
+                params: {
+                    query: `deck:${deckName} nc:${word}`,
+                },
+            };
+
+            console.log('Request data:', requestData);
+
+            const response = await fetch(apiURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            const data = await response.json();
+            console.log(`Response data for "${word}":`, data);
+
+            return data.result.length > 0;
+        } catch (error) {
+            console.error(`Error checking word "${word}" in Anki deck:`, error);
+            return false;
+        }
     }
 }

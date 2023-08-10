@@ -29,7 +29,7 @@ export interface Language {
 }
 
 enum AnalyzeModes {
-  lines, wordFrequencies
+  lines, wordFrequencies, newWords
 }
 
 const languages: Language[] = [
@@ -118,6 +118,8 @@ function Analyze(): JSX.Element {
     }
   }
 
+  
+
 
   return (
     <>
@@ -138,14 +140,15 @@ function Analyze(): JSX.Element {
           <div className='previews'>
             <div>
               <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
-              <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Word Frequency</button>
+              <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Words in text</button>
+              {(selectedDeck !== undefined && selectDeck !== null) && <button disabled={activeMode == AnalyzeModes.newWords} onClick={() => setActiveMode(AnalyzeModes.newWords)}>New Words</button>}
 
               {selectedFile != "" && <>
                 {activeMode == AnalyzeModes.lines && <>
                   <SourceAsLines onClick={initiateClozeCreation} />
                 </>}
                 {activeMode == AnalyzeModes.wordFrequencies && <>
-                  <WordFrequencies getSentences={getSentences} />
+                  <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck}/>
                 </>}
               </>
               }
