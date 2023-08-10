@@ -41,8 +41,6 @@ export class AnkiConnect {
 
     static async createClozeCard(deck: string, words: Word[]): Promise<void> {
 
-        console.log(words)
-
         let clozeIndex: number = 1;
         const wordArr: string[] = words.map((word) => {
             if(word.clozed) {
@@ -54,10 +52,7 @@ export class AnkiConnect {
             }
         })
 
-        console.log(wordArr)
-
         let noteContent: string = wordArr.join('');
-        console.log(noteContent)
 
         const note = {
             deckName: deck,
@@ -126,8 +121,6 @@ export class AnkiConnect {
                 },
             };
 
-            console.log('Request data:', requestData);
-
             const response = await fetch(apiURL, {
                 method: 'POST',
                 headers: {
@@ -137,7 +130,6 @@ export class AnkiConnect {
             });
 
             const data = await response.json();
-            console.log(`Response data for "${word}":`, data);
 
             return data.result.length > 0;
         } catch (error) {

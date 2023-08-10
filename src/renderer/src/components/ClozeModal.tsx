@@ -86,7 +86,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
     if (wordObjects.length == 0) return;
 
-    window.api.createClozeCard(deck.name, sentenceText, wordObjects).then(closeModal());
+    window.api.createClozeCard(deck.name, wordObjects).then(closeModal());
   }
 
 

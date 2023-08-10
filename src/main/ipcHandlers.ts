@@ -22,24 +22,24 @@ interface Word {
   }
 
 function getProcessHandlers() {
-    ipcMain.handle('process:trimSRT', async (event, content: string) => {
+    ipcMain.handle('process:trimSRT', async (_event, content: string) => {
         const fileContent = await FileProcessor.trimSRTMetadata(content)
         return fileContent
     })
 
-    ipcMain.handle('process:trimSRTFile', async (event, filePath: string) => {
+    ipcMain.handle('process:trimSRTFile', async (_event, filePath: string) => {
         const fileContent = await FileProcessor.trimSRTFile(filePath)
         return fileContent
     })
 }
 
 function getToolHandlers() {
-    ipcMain.handle('tools:wordFrequency', async (event, filePath: string): Promise<WordFreq[]> => {
+    ipcMain.handle('tools:wordFrequency', async (_event, filePath: string): Promise<WordFreq[]> => {
         const fileContent = await Tools.wordFrequency(filePath, '')
         return fileContent
     })
 
-    ipcMain.handle('tools:usedInSentences', async (event, filePath: string, argWord: string) => {
+    ipcMain.handle('tools:usedInSentences', async (_event, filePath: string, argWord: string) => {
         try {
             const result = await Tools.usedInSentences(filePath, argWord);
             return result;
@@ -49,7 +49,7 @@ function getToolHandlers() {
         }
     });
 
-    ipcMain.handle('tools:translate', async (event, text: string, targetLanguage: string): Promise<string[]> => {
+    ipcMain.handle('tools:translate', async (_event, text: string, targetLanguage: string): Promise<string[]> => {
         try {
             const translatedText = await Translator.translate(text, targetLanguage);
             return translatedText;
@@ -61,7 +61,7 @@ function getToolHandlers() {
 }
 
 function getFileHandlers() {
-    ipcMain.handle('file:preview', async (event, filePath: string, lines: number) => {
+    ipcMain.handle('file:preview', async (_event, filePath: string, lines: number) => {
         try {
             const fileContent = await FileHandler.previewFile(filePath, lines)
             return fileContent
@@ -71,7 +71,7 @@ function getFileHandlers() {
         }
     })
 
-    ipcMain.handle('file:readFileAsSentences', async (event, filePath: string, numLines: number) => {
+    ipcMain.handle('file:readFileAsSentences', async (_event, filePath: string, numLines: number) => {
         try {
             const result = await FileHandler.readFileAsSentences(filePath, numLines);
             return result;
@@ -80,12 +80,12 @@ function getFileHandlers() {
         }
     });
 
-    ipcMain.handle('file:saveDialog', async (event): Promise<string | undefined> => {
+    ipcMain.handle('file:saveDialog', async (_event): Promise<string | undefined> => {
         const result: Electron.SaveDialogReturnValue = await dialog.showSaveDialog({})
         return result.filePath;
     })
 
-    ipcMain.handle('file:save', async (event, filePath: string, content: string,) => {
+    ipcMain.handle('file:save', async (_event, filePath: string, content: string) => {
         try {
             FileHandler.writeStringToFile(filePath, content)
         } catch (error) {
@@ -96,7 +96,7 @@ function getFileHandlers() {
 
     })
 
-    ipcMain.handle('file:saveTemp', async (event, filePath: string, content: string): Promise<string | null> => {
+    ipcMain.handle('file:saveTemp', async (_event, filePath: string, content: string): Promise<string | null> => {
         try {
             return FileHandler.saveFileTemp(filePath, content)
         } catch (error) {
@@ -107,7 +107,7 @@ function getFileHandlers() {
 }
 
 function getAnkiHandlers() {
-    ipcMain.handle('anki:getDecks', async (event): Promise<Deck[]> => {
+    ipcMain.handle('anki:getDecks', async (_event): Promise<Deck[]> => {
         try {
             const decks = await AnkiConnect.getDecks();
             return decks;
@@ -117,7 +117,7 @@ function getAnkiHandlers() {
         }
     });
 
-    ipcMain.handle('anki:createClozeCard', async (event, deck: string, sentence: string, clozeWords: Word[]): Promise<boolean> => {
+    ipcMain.handle('anki:createClozeCard', async (_event, deck: string, clozeWords: Word[]): Promise<boolean> => {
         try {
             await AnkiConnect.createClozeCard(deck, clozeWords);
             return true;
@@ -127,7 +127,7 @@ function getAnkiHandlers() {
         }
     });
 
-    ipcMain.handle('anki:isWordNew', async (event, word, deckName) => {
+    ipcMain.handle('anki:isWordNew', async (_event, word, deckName) => {
         const isNew = !(await AnkiConnect.isWordNew(word, deckName));
         return isNew;
     });

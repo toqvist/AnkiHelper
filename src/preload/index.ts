@@ -12,8 +12,8 @@ const api = {
   saveFile: (content: string, filePath: string) => ipcRenderer.invoke('file:save', content, filePath),
   wordFrequency: (filePath: string) => ipcRenderer.invoke('tools:wordFrequency', filePath),
   getDecks: () => ipcRenderer.invoke('anki:getDecks'),
-  createClozeCard: (deck: string, sentence: string, clozeWords: string[]) =>
-    ipcRenderer.invoke('anki:createClozeCard', deck, sentence, clozeWords),
+  createClozeCard: (deck: string, clozeWords: string[]) =>
+    ipcRenderer.invoke('anki:createClozeCard', deck, clozeWords),
   isWordNew: (word, deck) => ipcRenderer.invoke('anki:isWordNew', word, deck),
   usedInSentences: (filePath: string, argWord: string) => ipcRenderer.invoke('tools:usedInSentences', filePath, argWord),
   translate: (text: string, targetLanguage: string) => ipcRenderer.invoke('tools:translate', text, targetLanguage),
