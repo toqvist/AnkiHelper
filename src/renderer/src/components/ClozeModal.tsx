@@ -84,18 +84,6 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       }
     });
 
-    /* const clozedWords: Word[] = [];
-
-    wordObjects.forEach((wordObject) => {
-      if (wordObject.isPunctuation) {
-        return;
-      }
-
-      if (wordObject.clozed) {
-        clozedWords.push(wordObject.text);
-      }
-    }); */
-
     if (wordObjects.length == 0) return;
 
     window.api.createClozeCard(deck.name, sentenceText, wordObjects).then(closeModal());

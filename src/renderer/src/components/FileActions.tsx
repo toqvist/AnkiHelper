@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { useFileContext } from '../contexts/FileContext'
-import FilePreview from './FilePreview'
 import { WordFreq } from 'src/model/tools'
 
 interface Action {

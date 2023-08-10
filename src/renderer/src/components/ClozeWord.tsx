@@ -1,5 +1,4 @@
 import { Word } from "@renderer/views/Analyze"
-import { randomUUID } from "crypto";
 import { KeyboardEvent, useRef, useState } from 'react'
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 

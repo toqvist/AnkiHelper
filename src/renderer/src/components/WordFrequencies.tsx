@@ -1,5 +1,5 @@
 import { useFileContext } from '@renderer/contexts/FileContext';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { WordFreq } from 'src/model/tools';
 import pLimit from 'p-limit';
 import Spinner from './Spinner';
@@ -49,9 +49,9 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
         }
         const sorted: WordFreq[] = wordFreqs.sort((a, b) => {
             if (descending) {
-                return b.frequency - a.frequency; // Sort in descending order
+                return b.frequency - a.frequency;
             } else {
-                return a.frequency - b.frequency; // Sort in ascending order
+                return a.frequency - b.frequency;
             }
         })
 
@@ -70,9 +70,9 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
         }
         const sorted: WordFreq[] = wordFreqs.sort((a, b) => {
             if (descending) {
-                return b.word.localeCompare(a.word); // Sort in descending order (reverse alphabetical)
+                return b.word.localeCompare(a.word);
             } else {
-                return a.word.localeCompare(b.word); // Sort in ascending order (alphabetical)
+                return a.word.localeCompare(b.word);
             }
         })
 

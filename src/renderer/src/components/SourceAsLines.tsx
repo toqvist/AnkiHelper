@@ -1,6 +1,5 @@
 import { useFileContext } from '@renderer/contexts/FileContext';
-import React, { useEffect, useState } from 'react'
-import { WordFreq } from 'src/model/tools';
+import { useEffect, useState } from 'react'
 import ClickableSentences from './ClickableSentences';
 import { Sentence } from '@renderer/views/Analyze';
 

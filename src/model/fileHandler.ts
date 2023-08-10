@@ -1,7 +1,6 @@
 import fs from 'fs'
 import * as path from 'path';
-import { app, dialog } from 'electron';
-import { v1 as uuidv1, uuid } from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 import { Sentence, Word } from '@renderer/views/Analyze';
 
 export default class FileHandler {

@@ -1,8 +1,4 @@
-import { useFileContext } from '@renderer/contexts/FileContext';
 import { Sentence } from '@renderer/views/Analyze';
-import React, { useEffect, useState } from 'react'
-import { WordFreq } from 'src/model/tools';
-
 
 interface ClickableSentencesProps {
     sentences: Sentence[];
