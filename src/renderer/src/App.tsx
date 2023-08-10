@@ -40,9 +40,9 @@ function App(): JSX.Element {
     <>
       <FileUpload />
       <div className="tabs">
-        <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>Analyze</button>
-        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>Process</button>
-        <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>Input Text</button>
+        <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>🔎 Analyze</button>
+        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>🥽 Process</button>
+        <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>📃 Input Text</button>
       </div>
       <div className="container">
         {/* <h1 className="hero-text">📖 LangTool</h1> */}

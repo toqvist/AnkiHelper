@@ -104,9 +104,18 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
             <h2>Words from source</h2>
             <button onClick={() => getNewWords()}>New words</button>
             <div className='display-flex word-frequency'>
-                <button onClick={() => sortAlphabetically()}>Sort alphabetically</button>
-                <button onClick={() => sortByFrequency()}>Sort by occurances</button>
+                <button
+                    onClick={() => sortAlphabetically()}>
+                    A-Z
+                    {sortedBy === Sort.alphabeticallyAscending ? '▲' : sortedBy === Sort.alphabeticallyDescending ? '▼' : '○'}
+                </button>
+                <button
+                    onClick={() => sortByFrequency()}>
+                    # 
+                    {sortedBy === Sort.wordFrequencyAscending ? '▲' : sortedBy === Sort.wordFrequencyDescending ? '▼' : '○'}
+                </button>
             </div>
+
             {
                 (wordFreqs.length == 0 || isLoading) &&
                 <div className='display-flex justify-center word-frequency'>
