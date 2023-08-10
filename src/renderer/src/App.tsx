@@ -2,7 +2,7 @@ import FileUpload from './components/FileUpload'
 import { WordFreq } from 'src/model/tools'
 import { useState } from 'react'
 import Process from './views/Process'
-import Analyze, { Sentence } from './views/Analyze'
+import Analyze, { Sentence, Word } from './views/Analyze'
 import InputText from './views/InputText'
 
 declare global { //TODO: This is probably not the correct/best way to declare types
@@ -17,7 +17,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       saveFileTemp: (filePath: string, content: string) => Promise<string>,
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
       getDecks: () => Promise<Deck[]>
-      createClozeCard: (deck: string, sentence: string, clozeWords: string[]) => Promise<void>,
+      createClozeCard: (deck: string, sentence: string, clozeWords: Word[]) => Promise<void>,
       isWordNew: (word: string, deck: string) => Promise<boolean>,
       usedInSentences: (filePath: string, argWord: string) => Promise<Sentence[]>,
       translate: (text: string, targetLanguage: string) => Promise<string[]>

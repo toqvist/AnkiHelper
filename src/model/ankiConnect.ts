@@ -1,3 +1,4 @@
+import { Word } from '@renderer/views/Analyze';
 import fetch from 'cross-fetch'
 
 export interface Deck {
@@ -38,27 +39,31 @@ export class AnkiConnect {
         }
     }
 
-    //Add hints as {{c1::word:hint}}
-    static async createClozeCard(deck: string, sentence: string, clozeWords: string[]): Promise<void> {
+    static async createClozeCard(deck: string, words: Word[]): Promise<void> {
 
-        if (clozeWords.length === 0) {
-            console.error('Cloze words array cannot be empty.');
-            return;
-        }
+        console.log(words)
 
-        let clozeContent = sentence;
-        clozeWords.forEach((word, index) => {
-            const clozeIndex = index + 1;
-            const hint = "..."
-            const clozePlaceholder = `{{c${clozeIndex}::${word}::${hint}}}`;
-            clozeContent = clozeContent.replace(word, clozePlaceholder);
-        });
+        let clozeIndex: number = 1;
+        const wordArr: string[] = words.map((word) => {
+            if(word.clozed) {
+                clozeIndex++;
+                return `{{c${clozeIndex}::${word.text}::${word.hint}}}`
+            }
+            else {
+                return word.text
+            }
+        })
+
+        console.log(wordArr)
+
+        let noteContent: string = wordArr.join('');
+        console.log(noteContent)
 
         const note = {
             deckName: deck,
             modelName: 'Cloze',
             fields: {
-                Text: clozeContent,
+                Text: noteContent,
             },
             options: {
                 allowDuplicate: true,
@@ -81,11 +86,12 @@ export class AnkiConnect {
             });
 
             const data = await response.json();
-            console.log('Cloze card created:', data);
+            /* console.log('Cloze card created:', data); */
         } catch (error) {
             console.error('An error occurred:', error);
         }
     }
+
     static async createBasicCard(deck: string, front: string, back: string): Promise<void> {
 
         const defaultNote = {

@@ -84,7 +84,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       }
     });
 
-    const clozedWords: string[] = [];
+    /* const clozedWords: Word[] = [];
 
     wordObjects.forEach((wordObject) => {
       if (wordObject.isPunctuation) {
@@ -94,11 +94,11 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       if (wordObject.clozed) {
         clozedWords.push(wordObject.text);
       }
-    });
+    }); */
 
-    if (clozedWords.length == 0) return;
+    if (wordObjects.length == 0) return;
 
-    window.api.createClozeCard(deck.name, sentenceText, clozedWords).then(closeModal());
+    window.api.createClozeCard(deck.name, sentenceText, wordObjects).then(closeModal());
   }
 
 

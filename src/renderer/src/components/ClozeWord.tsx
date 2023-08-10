@@ -17,6 +17,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const handleInputChange = (event) => {
+        updateWord({ ...word, clozed: clozed, hint: event.target.value })
         setInputValue(event.target.value);
     };
 

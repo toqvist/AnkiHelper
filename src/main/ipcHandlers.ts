@@ -13,6 +13,14 @@ export function getHandlers() {
     getAnkiHandlers()
 }
 
+interface Word {
+    text: string;
+    isPunctuation: boolean;
+    clozed: boolean;
+    hint: string;
+    translations: string[];
+  }
+
 function getProcessHandlers() {
     ipcMain.handle('process:trimSRT', async (event, content: string) => {
         const fileContent = await FileProcessor.trimSRTMetadata(content)
@@ -109,9 +117,9 @@ function getAnkiHandlers() {
         }
     });
 
-    ipcMain.handle('anki:createClozeCard', async (event, deck: string, sentence: string, clozeWords: string[]): Promise<boolean> => {
+    ipcMain.handle('anki:createClozeCard', async (event, deck: string, sentence: string, clozeWords: Word[]): Promise<boolean> => {
         try {
-            await AnkiConnect.createClozeCard(deck, sentence, clozeWords);
+            await AnkiConnect.createClozeCard(deck, clozeWords);
             return true;
         } catch (error) {
             console.error('An error occurred:', error);
