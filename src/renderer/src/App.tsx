@@ -45,7 +45,6 @@ function App(): JSX.Element {
         <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>📃 Input Text</button>
       </div>
       <div className="container">
-        {/* <h1 className="hero-text">📖 LangTool</h1> */}
         {mode === Mode.analyze && <Analyze />}
         {mode === Mode.process && <Process />}
         {mode === Mode.inputText && <InputText />}
@@ -55,3 +54,11 @@ function App(): JSX.Element {
 }
 
 export default App
+
+
+//TODO: FTR/ Alternative filetypes: pdf, epub, mobi
+//TODO: FTR/ Basic note creation
+//TDOD: ENH/ Visual overhaul
+//TODO: ENH/ Back-side of cloze cards
+//TODO: ENH/ Cloze input box should close when another one opens 
+//TODO: BUG/ Input box not focused when cloze selected
