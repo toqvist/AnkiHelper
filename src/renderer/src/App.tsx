@@ -45,7 +45,7 @@ function App(): JSX.Element {
         <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>📃 Input Text</button>
       </div>
       <div className="container">
-        {/* <h1 className="hero-text">📖 LangTool</h1> */}
+        <h1 className="text-blue-500">📖 LangTool</h1>
         {mode === Mode.analyze && <Analyze />}
         {mode === Mode.process && <Process />}
         {mode === Mode.inputText && <InputText />}
