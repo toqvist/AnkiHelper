@@ -25,7 +25,7 @@ export default class FileHandler {
       fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
           reject(err)
-          return
+          return '';
         }
 
         resolve(data)
@@ -55,6 +55,7 @@ export default class FileHandler {
       const result = lines.slice(0, linesToReturn)
       return result
     } catch (error: any) {
+      return []
       throw new Error('Error reading the file: ' + error.message)
     }
   }

@@ -55,3 +55,11 @@ function App(): JSX.Element {
 }
 
 export default App
+
+
+//TODO: FTR/ Alternative filetypes: pdf, epub, mobi
+//TODO: FTR/ Basic note creation
+//TDOD: ENH/ Visual overhaul
+//TODO: ENH/ Back-side of cloze cards
+//TODO: ENH/ Cloze input box should close when another one opens 
+//TODO: BUG/ Input box not focused when cloze selected
