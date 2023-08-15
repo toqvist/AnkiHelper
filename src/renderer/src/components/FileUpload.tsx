@@ -13,9 +13,13 @@ function FileUpload(): JSX.Element {
 
   return (
     <div className="upload">
-      <input type="file" accept=".txt, .srt" onChange={handleFileChange} />
-      {/* {selectedFile && <p>{selectedFile}</p>} */}
-      {selectedFile}
+      <input
+        type="file"
+        accept=".txt, .srt"
+        onChange={handleFileChange} />
+      <p>
+        {selectedFile && <p>{selectedFile}</p>}
+      </p>
     </div>
   )
 }

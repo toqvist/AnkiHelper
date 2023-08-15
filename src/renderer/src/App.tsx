@@ -34,21 +34,37 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
 
 enum Mode { process, analyze, inputText }
 
-
 function App(): JSX.Element {
 
   const [mode, setMode] = useState<Mode>(Mode.analyze)
 
   return (
     <>
-      <FileUpload />
-      <div className="tabs">
-        <button disabled={mode == Mode.analyze} onClick={() => setMode(Mode.analyze)}>🔎 Analyze</button>
-        <button disabled={mode == Mode.process} onClick={() => setMode(Mode.process)}>🥽 Process</button>
-        <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>📃 Input Text</button>
+      <div className="border-b-2">
+        <div className='tabs'>
+          <button
+            className={`${mode === Mode.analyze ? 'bg-slate-600' : 'bg-slate-700'}`}
+            disabled={mode == Mode.analyze}
+            onClick={() => setMode(Mode.analyze)}>
+            🔎 Analyze
+          </button>
+          <button
+            className={`${mode === Mode.process ? 'bg-slate-600' : 'bg-slate-700'}`}
+            disabled={mode == Mode.process}
+            onClick={() => setMode(Mode.process)}>
+            🥽 Process
+          </button>
+          <button
+            className={`${mode === Mode.inputText ? 'bg-slate-600' : 'bg-slate-700'}`}
+            disabled={mode == Mode.inputText}
+            onClick={() => setMode(Mode.inputText)}>
+            📃 Input
+            Text
+          </button>
+        </div>
+        <FileUpload />
       </div>
       <div className="container">
-        {/* <h1 className="text-red-500 text-xl">📖 LangTool</h1> */}
         {mode === Mode.analyze && <Analyze />}
         {mode === Mode.process && <Process />}
         {mode === Mode.inputText && <InputText />}

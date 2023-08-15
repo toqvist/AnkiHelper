@@ -26,14 +26,14 @@ function InputText(): JSX.Element {
 
     return (
         <div className='flex-column'>
-            <div className='display-flex'>
-                <button className='flex-grow' onClick={() => submit()}>Done</button>
+            <div>
+                <button className='flex-grow bg-slate-600 py-2 px-8 mb-3 rounded-md' onClick={() => submit()}>Done</button>
             </div>
             <textarea
                 ref={textareaRef}
                 value={text}
                 onChange={handleTextChange}
-                className='fullscreen-input text-large'
+                className='fullscreen-input text-large text-slate-900 rounded-sm'
             />
         </div>
     );
