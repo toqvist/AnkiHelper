@@ -118,9 +118,6 @@ function Analyze(): JSX.Element {
     }
   }
 
-  
-
-
   return (
     <>
       {selectedFile == "" ? <IntroText />

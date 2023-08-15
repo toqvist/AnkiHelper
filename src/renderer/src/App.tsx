@@ -40,7 +40,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <div className="border-b-2">
+      <div className="">
         <div className='tabs'>
           <button
             className={`${mode === Mode.analyze ? 'bg-slate-600' : 'bg-slate-700'}`}

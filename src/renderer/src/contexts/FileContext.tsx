@@ -35,7 +35,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
   }
 
   async function updateSrcPreview(filePath: string): Promise<void> {
-    const filePreview = await window.api.previewFile(filePath)
+    const filePreview = await window.api.previewFile(filePath, Infinity)
     setSrcPreview(filePreview)
   }
 

@@ -18,7 +18,6 @@ const api = {
   isWordNew: (word, deck) => ipcRenderer.invoke('anki:isWordNew', word, deck),
   usedInSentences: (filePath: string, argWord: string) => ipcRenderer.invoke('tools:usedInSentences', filePath, argWord),
   translate: (text: string, targetLanguage: string) => ipcRenderer.invoke('tools:translate', text, targetLanguage),
-  getCurrentWebContents: () => mainWindow.webContents,
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

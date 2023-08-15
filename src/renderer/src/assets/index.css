@@ -615,10 +615,6 @@ h2 {
   border-radius: 0.125rem;
 }
 
-.border-b-2 {
-  border-bottom-width: 2px;
-}
-
 .bg-slate-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(71 85 105 / var(--tw-bg-opacity));
@@ -627,6 +623,11 @@ h2 {
 .bg-slate-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+}
+
+.bg-slate-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity));
 }
 
 .px-8 {

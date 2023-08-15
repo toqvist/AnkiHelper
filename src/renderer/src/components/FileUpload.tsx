@@ -7,7 +7,8 @@ function FileUpload(): JSX.Element {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
     if (file != null) {
-      updateSrc(file.name)
+      const filePath = file.path || file.name;
+      updateSrc(filePath);
     }
   }
 
@@ -17,9 +18,7 @@ function FileUpload(): JSX.Element {
         type="file"
         accept=".txt, .srt"
         onChange={handleFileChange} />
-      <p>
         {selectedFile && <p>{selectedFile}</p>}
-      </p>
     </div>
   )
 }
