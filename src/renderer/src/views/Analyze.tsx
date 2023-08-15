@@ -81,12 +81,12 @@ function Analyze(): JSX.Element {
     getDecks();
   }, []);
 
-/*   useEffect(() => {
-    if (decks.length > 0) {
-      setSelectedDeck(decks[0]);
-    }
-  }, [decks]);
- */
+  /*   useEffect(() => {
+      if (decks.length > 0) {
+        setSelectedDeck(decks[0]);
+      }
+    }, [decks]);
+   */
   async function getSentences(word: string): Promise<void> {
     try {
       setRightColumn(await window.api.usedInSentences(selectedFile, word));
@@ -101,11 +101,9 @@ function Analyze(): JSX.Element {
   }
 
   function selectDeck(event: React.ChangeEvent<HTMLSelectElement>) {
-    if (event.target.value !== '') {
       const selectedDeckName = event.target.value;
       const deck = decks.find((deck) => deck.name === selectedDeckName);
       setSelectedDeck(deck);
-    }
   };
 
   function closeModal() {
@@ -146,7 +144,7 @@ function Analyze(): JSX.Element {
 
               {selectedFile != "" && <>
                 {activeMode == AnalyzeModes.lines && <>
-                  <SourceAsLines onClick={initiateClozeCreation} />
+                  <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
                 </>}
                 {activeMode == AnalyzeModes.wordFrequencies && <>
                   <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
@@ -194,7 +192,7 @@ function Analyze(): JSX.Element {
               </div>
               {rightColumn.length > 0 && <div>
                 <h2>Used in sentences</h2>
-                <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} />
+                <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
               </div>}
 
             </div>

@@ -4,10 +4,11 @@ import ClickableSentences from './ClickableSentences';
 import { Sentence } from '@renderer/views/Analyze';
 
 interface SourceAsLinesProps {
-    onClick: Function
+    onClick: Function;
+    disabled: boolean;
 }
 
-export default function SourceAsLines({ onClick }: SourceAsLinesProps): JSX.Element {
+export default function SourceAsLines({ onClick, disabled }: SourceAsLinesProps): JSX.Element {
 
     const { selectedFile } = useFileContext()
     const [sentences, setSentences] = useState<Sentence[]>([]);
@@ -25,7 +26,7 @@ export default function SourceAsLines({ onClick }: SourceAsLinesProps): JSX.Elem
         <>
             <h2>Source content</h2>
             {sentences.length > 0 &&
-                <ClickableSentences sentences={sentences} onClick={onClick} />
+                <ClickableSentences sentences={sentences} onClick={onClick} disabled={disabled} />
             }
         </>
     );

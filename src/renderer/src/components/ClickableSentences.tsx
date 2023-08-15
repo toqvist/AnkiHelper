@@ -3,19 +3,27 @@ import { Sentence } from '@renderer/views/Analyze';
 interface ClickableSentencesProps {
     sentences: Sentence[];
     onClick: Function;
+    disabled: boolean;
 }
-
-export default function ClickableSentences({ sentences, onClick }: ClickableSentencesProps): JSX.Element {
+//TODO: Disable clicking if no deck is selected
+export default function ClickableSentences({ sentences, onClick, disabled }: ClickableSentencesProps): JSX.Element {
     return (
         <>
             {sentences.map((sentence, i) => {
                 return <div className="sentence" key={i}>
-                    <a href="#" onClick={() => onClick(sentence)}>
-                        {" • "}
-                        {sentence.words.map((word, i) => {
-                            return <span>{word.text} </span>
-                        })}
-                    </a>
+                    {disabled
+                        ? <a href="#" onClick={() => onClick(sentence)}>
+                            {" • "}
+                            {sentence.words.map((word, i) => {
+                                return <span>{word.text} </span>
+                            })}
+                        </a>
+                        : <p>
+                            {sentence.words.map((word, i) => {
+                                return <span>{word.text} </span>
+                            })}
+                        </p>
+                    }
                 </div>
             })}
         </>
