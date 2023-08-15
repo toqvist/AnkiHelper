@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Process from './views/Process'
 import Analyze, { Sentence, Word } from './views/Analyze'
 import InputText from './views/InputText'
+import { WebContents, ipcRenderer } from 'electron'
 
 declare global { //TODO: This is probably not the correct/best way to declare types
   interface Window {
@@ -20,7 +21,8 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       createClozeCard: (deck: string, clozeWords: Word[]) => Promise<void>,
       isWordNew: (word: string, deck: string) => Promise<boolean>,
       usedInSentences: (filePath: string, argWord: string) => Promise<Sentence[]>,
-      translate: (text: string, targetLanguage: string) => Promise<string[]>
+      translate: (text: string, targetLanguage: string) => Promise<string[]>,
+      getCurrentWebContents: () => WebContents
     }
   }
 
@@ -31,6 +33,9 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
 }
 
 enum Mode { process, analyze, inputText }
+
+
+
 
 function App(): JSX.Element {
 
@@ -59,7 +64,7 @@ export default App
 
 //TODO: FTR/ Alternative filetypes: pdf, epub, mobi
 //TODO: FTR/ Basic note creation
-//TDOD: ENH/ Visual overhaul
+//TODO: ENH/ Visual overhaul
 //TODO: ENH/ Back-side of cloze cards
-//TODO: ENH/ Cloze input box should close when another one opens 
+//TODO: ENH/ Cloze input box should close when another one opens
 //TODO: BUG/ Input box not focused when cloze selected

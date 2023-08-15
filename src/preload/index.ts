@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { mainWindow } from '../main/index'
 
 // Custom APIs for renderer
 const api = {
@@ -17,6 +18,7 @@ const api = {
   isWordNew: (word, deck) => ipcRenderer.invoke('anki:isWordNew', word, deck),
   usedInSentences: (filePath: string, argWord: string) => ipcRenderer.invoke('tools:usedInSentences', filePath, argWord),
   translate: (text: string, targetLanguage: string) => ipcRenderer.invoke('tools:translate', text, targetLanguage),
+  getCurrentWebContents: () => mainWindow.webContents,
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -35,7 +37,3 @@ if (process.contextIsolated) {
   // @ts-ignore (define in dts)
   window.api = api
 }
-
-/* contextBridge.exposeInMainWorld('electronAPI', {
-  openFile: () => ipcRenderer.invoke('dialog:openFile')
-}) */
