@@ -35,8 +35,6 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
 enum Mode { process, analyze, inputText }
 
 
-
-
 function App(): JSX.Element {
 
   const [mode, setMode] = useState<Mode>(Mode.analyze)
@@ -50,7 +48,7 @@ function App(): JSX.Element {
         <button disabled={mode == Mode.inputText} onClick={() => setMode(Mode.inputText)}>📃 Input Text</button>
       </div>
       <div className="container">
-        <h1 className="text-blue-500">📖 LangTool</h1>
+        {/* <h1 className="text-red-500 text-xl">📖 LangTool</h1> */}
         {mode === Mode.analyze && <Analyze />}
         {mode === Mode.process && <Process />}
         {mode === Mode.inputText && <InputText />}
