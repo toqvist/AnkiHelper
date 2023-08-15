@@ -33,6 +33,7 @@ enum AnalyzeModes {
 }
 
 const languages: Language[] = [
+  { name: 'Hint translation', code: '' },
   { name: 'English', code: 'en' },
   { name: 'Arabic', code: 'ar' },
   { name: 'Bengali', code: 'bn' },
@@ -80,12 +81,12 @@ function Analyze(): JSX.Element {
     getDecks();
   }, []);
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (decks.length > 0) {
       setSelectedDeck(decks[0]);
     }
   }, [decks]);
-
+ */
   async function getSentences(word: string): Promise<void> {
     try {
       setRightColumn(await window.api.usedInSentences(selectedFile, word));
@@ -100,9 +101,11 @@ function Analyze(): JSX.Element {
   }
 
   function selectDeck(event: React.ChangeEvent<HTMLSelectElement>) {
-    const selectedDeckName = event.target.value;
-    const deck = decks.find((deck) => deck.name === selectedDeckName);
-    setSelectedDeck(deck);
+    if (event.target.value !== '') {
+      const selectedDeckName = event.target.value;
+      const deck = decks.find((deck) => deck.name === selectedDeckName);
+      setSelectedDeck(deck);
+    }
   };
 
   function closeModal() {
@@ -110,11 +113,13 @@ function Analyze(): JSX.Element {
   }
 
   function selectLanguage(event: React.ChangeEvent<HTMLSelectElement>): void {
-    const selectedLanguage = event.target.value;
-    const language: Language | undefined = languages.find((lang) => lang.code === selectedLanguage);
+    if (event.target.value !== '') {
+      const selectedLanguage = event.target.value;
+      const language: Language | undefined = languages.find((lang) => lang.code === selectedLanguage);
 
-    if (language !== undefined) {
-      setLanguage(language);
+      if (language !== undefined) {
+        setLanguage(language);
+      }
     }
   }
 
@@ -144,7 +149,7 @@ function Analyze(): JSX.Element {
                   <SourceAsLines onClick={initiateClozeCreation} />
                 </>}
                 {activeMode == AnalyzeModes.wordFrequencies && <>
-                  <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck}/>
+                  <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
                 </>}
               </>
               }
@@ -153,16 +158,19 @@ function Analyze(): JSX.Element {
               <div>
                 {decks.length == 0
                   ? <>
-                    <i>No anki decks found!</i>
-                    <button onClick={() => getDecks()}>Retry</button>
+                    <div>
+                      <i>No anki decks found!</i>
+                      <button onClick={() => getDecks()}>Retry</button>
+                    </div>
+
                     <div>
                       <i>Make sure anki is running with <a href="https://ankiweb.net/shared/info/2055492159">AnkiConnect</a> installed</i>
                     </div>
                   </>
-                  : <div>
+                  : <div className='flex flex-end gap-1 rounded-sm'>
                     <div>
-                      <span>Deck: </span>
-                      <select onChange={selectDeck}>
+                      <select className='bg-slate-600' onChange={selectDeck}>
+                        <option value="">Deck</option>
                         {decks.map((deck) => (
                           <option key={deck.id} value={deck.name}>{deck.name}</option>
                         ))}
@@ -170,8 +178,8 @@ function Analyze(): JSX.Element {
                     </div>
 
                     <div>
-                      <span>Translate to: </span>
                       <select
+                        className='bg-slate-600'
                         id="languageSelect"
                         onChange={selectLanguage}>
                         {languages.map((language) => (
