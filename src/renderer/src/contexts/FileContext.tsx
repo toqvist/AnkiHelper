@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 interface FileContextType {
-  selectedFile: string
-  setSelectedFile: (fileName: string) => void
+  resetFile: () => void,
+  selectedFile: File
+  setSelectedFile: (fileName: File) => void
   result: string
   updateResult: (result: string) => void
   srcPreview: string[]
   resultPreview: string[]
-  updateSrc: (fileName: string) => void
+  updateSrc: (file: File) => void
   updateResultPreview: (content: string) => void
   openSaveDialog: () => void
   resultToSource: (content: string) => Promise<void>
@@ -21,7 +22,8 @@ interface FileProviderProps {
 }
 
 export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
-  const [selectedFile, setSelectedFile] = useState<string>('')
+  const defaultFile = new File([], '', { type: 'text/plain' });
+  const [selectedFile, setSelectedFile] = useState<File>(defaultFile)
   const [srcPreview, setSrcPreview] = useState<string[]>([])
 
   const [result, setResult] = useState<string>('')
@@ -29,13 +31,17 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   const [processing, setProcessing] = useState<boolean>(false)
 
-  async function updateSrc(filePath: string): Promise<void> {
-    setSelectedFile(filePath)
-    updateSrcPreview(filePath)
+  function resetFile() {
+    setSelectedFile(defaultFile);
+  };
+
+  async function updateSrc(file: File): Promise<void> {
+    setSelectedFile(file)
+    updateSrcPreview(file)
   }
 
-  async function updateSrcPreview(filePath: string): Promise<void> {
-    const filePreview = await window.api.previewFile(filePath, Infinity)
+  async function updateSrcPreview(file: File): Promise<void> {
+    const filePreview = await window.api.previewFile(file.path, Infinity)
     setSrcPreview(filePreview)
   }
 
@@ -61,14 +67,16 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
   }
 
   async function resultToSource(content: string): Promise<void> {
-    const resultPath = await window.api.saveFileTemp(selectedFile, content)
-    updateSrc(resultPath);
-    updateResult("")
+    if (selectedFile !== undefined) {
+      const result: File = await window.api.saveFileTemp(selectedFile.path, content)
+      updateSrc(result);
+      updateResult("")
+    }
   }
 
   async function inputToSource(content: string): Promise<void> {
-    const resultPath = await window.api.saveFileTemp('', content)
-    updateSrc(resultPath);
+    const resultFile: File = await window.api.saveFileTemp('', content)
+    updateSrc(resultFile);
   }
 
   return (
@@ -85,6 +93,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
         openSaveDialog,
         resultToSource,
         inputToSource,
+        resetFile,
       }}
     >
       {children}
