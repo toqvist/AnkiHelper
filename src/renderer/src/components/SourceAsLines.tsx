@@ -24,7 +24,7 @@ export default function SourceAsLines({ onClick, disabled }: SourceAsLinesProps)
 
     return (
         <>
-            <h2>Source content</h2>
+            <h2 className='mb-4'>Source content</h2>
             {sentences.length > 0 &&
                 <ClickableSentences sentences={sentences} onClick={onClick} disabled={disabled} />
             }

@@ -5,6 +5,7 @@ import WordFrequencies from '@renderer/components/WordFrequencies';
 import ClickableSentences from '@renderer/components/ClickableSentences';
 import SourceAsLines from '@renderer/components/SourceAsLines';
 import IntroText from '@renderer/components/IntroText';
+import { openExternalLink } from '@renderer/helpers/externalLink';
 
 export interface WordFreq {
   word: string;
@@ -81,12 +82,6 @@ function Analyze(): JSX.Element {
     getDecks();
   }, []);
 
-  /*   useEffect(() => {
-      if (decks.length > 0) {
-        setSelectedDeck(decks[0]);
-      }
-    }, [decks]);
-   */
   async function getSentences(word: string): Promise<void> {
     try {
       setRightColumn(await window.api.usedInSentences(selectedFile, word));
@@ -101,9 +96,9 @@ function Analyze(): JSX.Element {
   }
 
   function selectDeck(event: React.ChangeEvent<HTMLSelectElement>) {
-      const selectedDeckName = event.target.value;
-      const deck = decks.find((deck) => deck.name === selectedDeckName);
-      setSelectedDeck(deck);
+    const selectedDeckName = event.target.value;
+    const deck = decks.find((deck) => deck.name === selectedDeckName);
+    setSelectedDeck(deck);
   };
 
   function closeModal() {
@@ -139,8 +134,16 @@ function Analyze(): JSX.Element {
 
           <div className='previews'>
             <div>
-              <button disabled={activeMode == AnalyzeModes.lines} onClick={() => setActiveMode(AnalyzeModes.lines)}>Source</button>
-              <button disabled={activeMode == AnalyzeModes.wordFrequencies} onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}>Words in text</button>
+              <div className="flex gap-1 mb-3">
+                <button disabled={activeMode == AnalyzeModes.lines}
+                  onClick={() => setActiveMode(AnalyzeModes.lines)}
+                >
+                  Source</button>
+                <button disabled={activeMode == AnalyzeModes.wordFrequencies}
+                  onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
+                >
+                  Words in text</button>
+              </div>
 
               {selectedFile != "" && <>
                 {activeMode == AnalyzeModes.lines && <>
@@ -156,13 +159,22 @@ function Analyze(): JSX.Element {
               <div>
                 {decks.length == 0
                   ? <>
-                    <div>
-                      <i>No anki decks found!</i>
+                    <div className='flex justify-between align-middle mb-4'>
+                      <p className='font-bold text-lg'>No anki decks found!</p>
                       <button onClick={() => getDecks()}>Retry</button>
                     </div>
 
                     <div>
-                      <i>Make sure anki is running with <a href="https://ankiweb.net/shared/info/2055492159">AnkiConnect</a> installed</i>
+                      <p className='mb-4'>Make sure <a href="https://apps.ankiweb.net/" onClick={(e) => {
+                        e.preventDefault();
+                        openExternalLink('https://apps.ankiweb.net/');
+                      }}>Anki </a>
+                        is running with
+                        <a href="https://ankiweb.net/shared/info/2055492159" onClick={(e) => {
+                          e.preventDefault();
+                          openExternalLink('https://ankiweb.net/shared/info/2055492159');
+                        }}> AnkiConnect</a> installed!</p>
+                      <p>{`Install AnkiConnect by going to Tools > Add-ons > Get Add-ons and entering the code:`} <strong>2055492159</strong></p>
                     </div>
                   </>
                   : <div className='flex flex-end gap-1 rounded-sm'>

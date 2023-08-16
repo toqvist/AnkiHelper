@@ -18,6 +18,14 @@
     @apply font-bold;
   }
  
+  button {
+    @apply font-bold ;
+    @apply bg-slate-600 ;
+    @apply py-1;
+    @apply px-4 ;
+    @apply rounded-sm;
+    @apply hover:bg-slate-500;
+  }
 }
 
 body {
@@ -327,10 +335,10 @@ a:hover {
 }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 10px solid #f3f3f3;
-  border-top: 10px solid #2f3241;
+  width: 35px;
+  height: 35px;
+  border: 7px solid #334155 ;
+  border-top: 7px solid #f8fafc;
   border-radius: 50%;
-  animation: spinner 1.5s linear infinite;
+  animation: spinner 0.8s linear infinite;
 }

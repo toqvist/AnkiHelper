@@ -19,6 +19,7 @@ export default function ClickableSentences({ sentences, onClick, disabled }: Cli
                             })}
                         </a>
                         : <p>
+                            {" • "}
                             {sentence.words.map((word, i) => {
                                 return <span>{word.text} </span>
                             })}
