@@ -24,9 +24,11 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^1.0.2",
+    "@heroicons/react": "^2.0.18",
     "dotenv": "^16.3.1",
     "electron-find": "^1.0.7",
     "electron-updater": "^5.3.0",
+    "heroicons": "^2.0.18",
     "use-state-with-callback": "^3.0.2",
     "uuid": "^9.0.0"
   },
