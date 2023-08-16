@@ -104,32 +104,37 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
         <>
             <h2>Words from source</h2>
             <button disabled={selectedDeck === undefined || selectedDeck.name === ""} onClick={() => getNewWords()}>New words</button>
-            <div className='display-flex word-frequency'>
-                <button
-                    onClick={() => sortAlphabetically()}>
-                    A-Z
-                    {sortedBy === Sort.alphabeticallyAscending ? ' ▲' : sortedBy === Sort.alphabeticallyDescending ? ' ▼' : ''}
-                </button>
-                <button
-                    onClick={() => sortByFrequency()}>
-                    #
-                    {sortedBy === Sort.wordFrequencyAscending ? ' ▲' : sortedBy === Sort.wordFrequencyDescending ? ' ▼' : ''}
-                </button>
-            </div>
-            {
-                (wordFreqs.length == 0 || isLoading) &&
-                <div className='display-flex justify-center word-frequency'>
-                    <Spinner />
-                </div>
-            }
-            {isLoading == false &&
-                wordFreqs.map((wordFreq, i) => {
-                    return <div key={i} className='word-frequency'>
-                        <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
-                        <div>{wordFreq.frequency}</div>
+            <div className='flex flex-col'>
+
+                {
+                    (wordFreqs.length == 0 || isLoading) &&
+                    <div className='display-flex justify-center word-frequency'>
+                        <Spinner />
                     </div>
-                })
-            }
+                }
+                {isLoading == false &&
+                    <div className='grid grid-cols-2'>
+                        <button
+                            className='rounded-none'
+                            onClick={() => sortAlphabetically()}>
+                            A-Z
+                            {sortedBy === Sort.alphabeticallyAscending ? ' ▲' : sortedBy === Sort.alphabeticallyDescending ? ' ▼' : ''}
+                        </button>
+                        <button
+                            className='rounded-none'
+                            onClick={() => sortByFrequency()}>
+                            #
+                            {sortedBy === Sort.wordFrequencyAscending ? ' ▲' : sortedBy === Sort.wordFrequencyDescending ? ' ▼' : ''}
+                        </button>
+                        {wordFreqs.map((wordFreq, i) => {
+                            return <>
+                                <div><a href="#" onClick={() => getSentences(wordFreq.word)}>{wordFreq.word}</a></div>
+                                <div className='text-center'>{wordFreq.frequency}</div>
+                            </>
+                        })}
+                    </div>
+                }
+            </div>
         </>
     );
 }
