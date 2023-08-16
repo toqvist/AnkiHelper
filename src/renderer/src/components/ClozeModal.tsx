@@ -151,7 +151,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
               <p className="text-sm text-slate-950">Words marked blue will be <span className="text-clozed">[clozed]</span></p>
             </div>
 
-            <div>
+            <div className="mb-6">
               {wordObjects.map((wordObject, i) => {
                 if (!wordObject.isPunctuation) {
                   return <ClozeWord key={i} word={wordObject} updateWord={updateWord} translations={wordObject.translations} />

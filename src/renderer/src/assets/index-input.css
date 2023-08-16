@@ -17,16 +17,21 @@
     @apply text-3xl;
     @apply font-bold;
   }
- 
+
   button {
-    @apply font-bold ;
-    @apply bg-slate-600 ;
+    @apply font-bold;
+    @apply bg-slate-600;
     @apply py-1;
-    @apply px-4 ;
+    @apply px-4;
     @apply rounded-sm;
     @apply hover:bg-slate-500;
     @apply disabled:opacity-60;
     @apply disabled:cursor-not-allowed;
+  }
+
+  select {
+    @apply py-1;
+    @apply px-4;
   }
 }
 
@@ -339,7 +344,7 @@ a:hover {
 .loading-spinner {
   width: 35px;
   height: 35px;
-  border: 7px solid #334155 ;
+  border: 7px solid #334155;
   border-top: 7px solid #f8fafc;
   border-bottom: 7px solid #f8fafc;
   border-radius: 50%;
