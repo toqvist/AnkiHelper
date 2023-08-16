@@ -16,9 +16,15 @@ export default class Tools {
       sentences.forEach((sentence) => {
         sentence.words.forEach((word) => {
           const normalizedWord = word.text.toLowerCase(); // Normalize the word to lowercase
-          if (!word.isPunctuation && normalizedWord.trim() !== '' && normalizedWord.includes(argumentWord.toLowerCase())) {
-            wordFrequencyMap[normalizedWord] = (wordFrequencyMap[normalizedWord] || 0) + 1;
-          }
+
+          // Split the word by non-alphanumeric characters
+          const wordsInWord = normalizedWord.split(/[^a-zA-Z0-9]+/);
+
+          wordsInWord.forEach((subWord) => {
+            if (!word.isPunctuation && subWord.trim() !== '' && subWord.includes(argumentWord.toLowerCase())) {
+              wordFrequencyMap[subWord] = (wordFrequencyMap[subWord] || 0) + 1;
+            }
+          });
         });
       });
 
@@ -32,6 +38,7 @@ export default class Tools {
       throw new Error('Error reading or processing the file.');
     }
   }
+
 
   static sortByFrequency(wordFrequencyList: WordFreq[], descending = true): WordFreq[] {
     return wordFrequencyList.sort((a, b) => {
