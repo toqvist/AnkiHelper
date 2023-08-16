@@ -16,6 +16,8 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
   const [normalized, setNormalized] = useState<boolean>(false);
   const [noSpecials, setNoSpecials] = useState<boolean>(false);
 
+  const [optionsHidden, setOptionsHidden ] = useState<boolean>(true);
+
   useEffect(() => {
     async function fetchData() {
       const initialWordObjects = await getHints(sentence, targetLanguage);
@@ -134,29 +136,49 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
       <div className="modal-card">
         {deck == undefined ? <p>No deck selected!</p>
           : <div className="modal-column">
-            <div>
-              <i className="text-large">Add card to {deck.name}</i>
+            <div className="flex flex-col items-center">
+              <h1 className="text-lg text-slate-950 font-semibold">Add card to {deck.name}</h1>
+              <p className="text-sm text-slate-950">Words marked blue will be <span className="text-clozed">[clozed]</span></p>
             </div>
+
             <div>
               {wordObjects.map((wordObject, i) => {
                 if (!wordObject.isPunctuation) {
                   return <ClozeWord key={i} word={wordObject} updateWord={updateWord} translations={wordObject.translations} />
                 } else {
-                  return <span key={i} className="text-black">{wordObject.text}</span>;
+                  return <span key={i} className="text-slate-950 text-3xl">{wordObject.text}</span>;
                 }
               })}
             </div>
-            <i className="text-medium">Words marked blue will be <span className="text-clozed">[clozed]</span></i>
 
-            <div>
-              <button disabled={normalized} onClick={() => normalizeAsSentence()}>
-                Normalize
+            <div className="flex gap-1">
+              <div className="relative">
+                <button className="bg-slate-200 border-slate-200 border-2 text-slate-950 px-2 py-2 rounded-md text-sm hover:bg-slate-300 hover:border-slate-300"
+                onClick={() => setOptionsHidden(!optionsHidden)}>
+                Options ▼
+                </button>
+
+                <div className={`absolute z-10 right-0 mt-2 py-2 w-32 bg-slate-200 border-slate-300 rounded-md shadow ${optionsHidden ? 'hidden' : ''}`}>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-slate-950 bg-slate-200 border-slate-300 hover:bg-slate-100 disabled:bg-gray-300 disabled:cursor-not-allowed  text-xs"
+                    disabled={normalized}
+                    onClick={() => normalizeAsSentence()}
+                  >
+                    Normalize
+                  </button>
+                  <button
+                    className="block w-full text-left px-4 py-2 text-slate-950 bg-slate-200 border-slate-300 hover:bg-slate-100 disabled:bg-gray-300 disabled:cursor-not-allowed  text-xs"
+                    disabled={noSpecials}
+                    onClick={() => removeSpecialCharacters()}
+                  >
+                    Remove special characters
+                  </button>
+                </div>
+              </div>
+              <button className='text-slate-950 bg-slate-200 border-2 rounded-md text-sm hover:bg-slate-300 hover:border-slate-300' onClick={() => createCard()} disabled={!anyWordIsClozed()}>
+                {anyWordIsClozed() ? 'Create card' : 'Select at least one cloze'}
               </button>
-              <button disabled={noSpecials} onClick={() => removeSpecialCharacters()}>Remove special characters</button>
             </div>
-            <button onClick={() => createCard()} disabled={!anyWordIsClozed()}>
-              {anyWordIsClozed() ? 'Add' : 'Select at least one cloze'}
-            </button>
           </div>
 
         }

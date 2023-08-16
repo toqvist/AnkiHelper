@@ -25,6 +25,8 @@
     @apply px-4 ;
     @apply rounded-sm;
     @apply hover:bg-slate-500;
+    @apply disabled:opacity-60;
+    @apply disabled:cursor-not-allowed;
   }
 }
 
@@ -339,6 +341,7 @@ a:hover {
   height: 35px;
   border: 7px solid #334155 ;
   border-top: 7px solid #f8fafc;
+  border-bottom: 7px solid #f8fafc;
   border-radius: 50%;
-  animation: spinner 0.8s linear infinite;
+  animation: spinner 1.5s linear infinite;
 }

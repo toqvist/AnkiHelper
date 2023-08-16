@@ -5,7 +5,7 @@ interface ClickableSentencesProps {
     onClick: Function;
     disabled: boolean;
 }
-//TODO: Disable clicking if no deck is selected
+
 export default function ClickableSentences({ sentences, onClick, disabled }: ClickableSentencesProps): JSX.Element {
     return (
         <>
@@ -15,13 +15,13 @@ export default function ClickableSentences({ sentences, onClick, disabled }: Cli
                         ? <a href="#" onClick={() => onClick(sentence)}>
                             {" • "}
                             {sentence.words.map((word, i) => {
-                                return <span>{word.text} </span>
+                                return <span key={i}>{word.text} </span>
                             })}
                         </a>
                         : <p>
                             {" • "}
                             {sentence.words.map((word, i) => {
-                                return <span>{word.text} </span>
+                                return <span key={i}>{word.text} </span>
                             })}
                         </p>
                     }

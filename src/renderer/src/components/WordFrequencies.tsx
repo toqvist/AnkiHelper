@@ -80,12 +80,12 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
     }
 
     async function getNewWords(): Promise<void> {
-        setIsLoading(true)
         if (selectedDeck === undefined) return;
+        setIsLoading(true)
 
         const newWords: WordFreq[] = [];
         const limit = pLimit(5);
-
+        console.log("fetching new words")
         await Promise.all(
             wordFreqs.map(async (wordFreq) => {
                 await limit(async () => {
@@ -95,6 +95,7 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
                 });
             })
         );
+        console.log(newWords)
         setWordFreqs(newWords);
         setIsLoading(false)
     }
@@ -102,7 +103,7 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
     return (
         <>
             <h2>Words from source</h2>
-            <button onClick={() => getNewWords()}>New words</button>
+            <button disabled={selectedDeck === undefined || selectedDeck.name === ""} onClick={() => getNewWords()}>New words</button>
             <div className='display-flex word-frequency'>
                 <button
                     onClick={() => sortAlphabetically()}>

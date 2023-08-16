@@ -42,7 +42,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
             <a
                 href="#"
                 key={word.text}
-                className={clozed ? 'text-clozed' : 'text-black'}
+                className={`text-3xl ${clozed ? 'text-clozed' : 'text-slate-950'}`}
                 onClick={() => toggleClozed()}
             >
                 {word.text}
@@ -55,6 +55,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
                         display: clozed && showInput ? 'flex' : 'none'
                     }}>
                     <input
+                        className="text-slate-950 border-2 border-slate-400 rounded-md text-sm z-50 mt-2"
                         ref={inputRef}
                         type="text"
                         placeholder="hint"

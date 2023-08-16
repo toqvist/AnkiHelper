@@ -40,7 +40,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <div className="">
+      <div>
         <div className='tabs'>
           <button
             className={`${mode === Mode.analyze ? 'bg-slate-600' : 'bg-slate-700'}`}
@@ -82,3 +82,4 @@ export default App
 //TODO: ENH/ Back-side of cloze cards
 //TODO: ENH/ Cloze input box should close when another one opens
 //TODO: BUG/ Input box not focused when cloze selected
+//TODO: FTR/ More languages/add languages to selector
