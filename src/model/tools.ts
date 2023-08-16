@@ -17,8 +17,8 @@ export default class Tools {
         sentence.words.forEach((word) => {
           const normalizedWord = word.text.toLowerCase(); // Normalize the word to lowercase
 
-          // Split the word by non-alphanumeric characters
-          const wordsInWord = normalizedWord.split(/[^a-zA-Z0-9]+/);
+          // Split the word by non-letter characters (including accented characters)
+          const wordsInWord = normalizedWord.split(/[^a-zA-ZÀ-ÿ0-9]+/);
 
           wordsInWord.forEach((subWord) => {
             if (!word.isPunctuation && subWord.trim() !== '' && subWord.includes(argumentWord.toLowerCase())) {
@@ -38,7 +38,6 @@ export default class Tools {
       throw new Error('Error reading or processing the file.');
     }
   }
-
 
   static sortByFrequency(wordFrequencyList: WordFreq[], descending = true): WordFreq[] {
     return wordFrequencyList.sort((a, b) => {
@@ -65,7 +64,11 @@ export default class Tools {
       const sentences = await FileHandler.readFileAsSentences(filePath, Infinity);
 
       const filteredSentences = sentences.filter(sentence => {
-        return sentence.words.some(word => word.text.toLowerCase().includes(argWord.toLowerCase()));
+        return sentence.words.some(word => {
+          const lowerCaseWord = word.text.toLowerCase();
+          const lowerCaseArgWord = argWord.toLowerCase();
+          return lowerCaseWord === lowerCaseArgWord || lowerCaseWord.includes(` ${lowerCaseArgWord} `);
+        });
       });
 
       return filteredSentences;
@@ -74,6 +77,7 @@ export default class Tools {
       return [];
     }
   }
+
 
 
 }
