@@ -6,6 +6,7 @@ import { getHandlers } from './ipcHandlers'
 import FileHandler from '../model/fileHandler'
 import electronFind from 'electron-find';
 
+
 export let mainWindow;
 
 function createWindow(): void {
@@ -20,7 +21,13 @@ function createWindow(): void {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
-    }
+    },
+    titleBarStyle: 'customButtonsOnHover',
+    titleBarOverlay: {
+      color: '#334155',
+      symbolColor: '#74b1be',
+      height: 60
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -32,13 +39,17 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+
 
   /* globalShortcut.register('CommandOrControl+F', () => {
     mainWindow.webContents.send('on-find');
