@@ -16,7 +16,7 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
   const [normalized, setNormalized] = useState<boolean>(false);
   const [noSpecials, setNoSpecials] = useState<boolean>(false);
 
-  const [optionsHidden, setOptionsHidden ] = useState<boolean>(true);
+  const [optionsHidden, setOptionsHidden] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,21 +29,31 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
 
 
   async function getHints(sentence: Sentence, targetLanguage: string): Promise<Word[]> {
+
+    if (targetLanguage === '') {
+      const words: Word[] = sentence.words.map((word) => {
+        return word;
+      })
+      return words;
+    }
+
     const wordObjects: Word[] = await Promise.all(sentence.words.map(async (word) => {
       if (word.isPunctuation) {
         return word;
       }
 
       const translations: string[] = await window.api.translate(word.text, targetLanguage);
-      if (translations[0] == word.text) {
+      if (translations[0] === word.text) {
         return { ...word, hint: '', translations: [] };
       } else {
         return { ...word, hint: translations[0], translations };
       }
+
     }));
 
     return wordObjects;
   }
+
 
   function updateWord(word: Word) {
     setWordObjects((prevWordObjects) =>
@@ -154,8 +164,8 @@ export default function ClozeModal({ sentence, deck, closeModal, targetLanguage 
             <div className="flex gap-1">
               <div className="relative">
                 <button className="bg-slate-200 border-slate-200 border-2 text-slate-950 px-2 py-2 rounded-md text-sm hover:bg-slate-300 hover:border-slate-300"
-                onClick={() => setOptionsHidden(!optionsHidden)}>
-                Options ▼
+                  onClick={() => setOptionsHidden(!optionsHidden)}>
+                  Options ▼
                 </button>
 
                 <div className={`absolute z-10 right-0 mt-2 py-2 w-32 bg-slate-200 border-slate-300 rounded-md shadow ${optionsHidden ? 'hidden' : ''}`}>
