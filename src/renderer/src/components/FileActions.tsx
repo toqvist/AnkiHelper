@@ -20,13 +20,6 @@ function FileActions(): JSX.Element {
 
   const defaultActions = [
     { label: 'Save result', function: openSaveDialog },
-    {
-      label: 'Word Frequencies', function: async (arg) => {
-        const result: WordFreq[] = await window.api.wordFrequency(arg);
-        const resultAsString = result.map((wordFreq, i) => { return `${wordFreq.word} - [${wordFreq.frequency}]` }).join('\n')
-        updateResult(resultAsString)
-      }
-    }
   ]
 
   const srtActions = [
@@ -49,7 +42,7 @@ function FileActions(): JSX.Element {
       <div>
         {result && <button onClick={() => resultToSource(result)} >Set result as active file</button>}
         {selectedFile &&
-          actions.map((action, i) => {
+          actions.map((action, i) => {11
             return (
               <button
                 key={i}

@@ -49,25 +49,24 @@ function App(): JSX.Element {
             🔎 Analyze
           </button>
           <button
+            className={`disabled:opacity-100 ${mode === Mode.inputText ? 'bg-slate-600' : 'bg-slate-700'}`}
+            disabled={mode == Mode.inputText}
+            onClick={() => setMode(Mode.inputText)}>
+            📃 Input Text
+          </button>
+          <button
             className={`disabled:opacity-100 ${mode === Mode.process ? 'bg-slate-600' : 'bg-slate-700'}`}
             disabled={mode == Mode.process}
             onClick={() => setMode(Mode.process)}>
             🥽 Process
           </button>
-          <button
-            className={`disabled:opacity-100 ${mode === Mode.inputText ? 'bg-slate-600' : 'bg-slate-700'}`}
-            disabled={mode == Mode.inputText}
-            onClick={() => setMode(Mode.inputText)}>
-            📃 Input
-            Text
-          </button>
         </div>
         <FileUpload />
       </div>
-      <div className="container">
+      <div >
         {mode === Mode.analyze && <Analyze />}
-        {mode === Mode.process && <Process />}
         {mode === Mode.inputText && <InputText />}
+        {mode === Mode.process && <Process />}
       </div>
     </>
   )
@@ -80,6 +79,6 @@ export default App
 //TODO: FTR/ Basic note creation
 //TODO: ENH/ Visual overhaul
 //TODO: ENH/ Back-side of cloze cards
-//TODO: ENH/ Cloze input box should close when another one opens
+//TODO: ENH/ Cloze input box should closed when another one opens
 //TODO: BUG/ Input box not focused when cloze selected
 //TODO: FTR/ More languages/add languages to selector

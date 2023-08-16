@@ -13,8 +13,9 @@ function Process(): JSX.Element {
             {selectedFile == "" ? <IntroText />
                 : <div>
                     <FileActions />
+                    <i>The processor can automatically process files. Currently removing SRT timestamps is the only option. Try opening movie subitles!</i>
                     {selectedFile && (
-                        <div className="previews">
+                        <div className="flex justify-between mx-6">
                             <div>
                                 <h2>Source</h2>
                                 <FilePreview previewLines={srcPreview} />

@@ -132,7 +132,7 @@ function Analyze(): JSX.Element {
             </div>
           }
 
-          <div className='previews'>
+          <div className='flex gap-4 justify-between mx-4'>
             <div>
               <div className="flex gap-1 mb-3">
                 <button disabled={activeMode == AnalyzeModes.lines}

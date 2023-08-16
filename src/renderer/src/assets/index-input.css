@@ -194,11 +194,6 @@ a:hover {
   }
 }
 
-.previews {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 .tabs {
   display: flex;
   justify-content: space-evenly;

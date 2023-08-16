@@ -25,7 +25,7 @@ function InputText(): JSX.Element {
     }, [text]);
 
     return (
-        <div className='flex-column'>
+        <div className='flex-column mx-6'>
             <div>
                 <button className='flex-grow bg-slate-600 py-2 px-8 mb-3 rounded-md' onClick={() => submit()}>Done</button>
             </div>
