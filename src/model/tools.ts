@@ -10,14 +10,13 @@ export default class Tools {
 
   static async wordFrequency(filePath: string, argumentWord: string): Promise<WordFreq[]> {
     try {
-      const sentences: Sentence[] = await FileHandler.readFileAsSentences(filePath, 100); // Adjust the numLines parameter as needed
+      const sentences: Sentence[] = await FileHandler.readFileAsSentences(filePath, Infinity);
       const wordFrequencyMap: { [key: string]: number } = {};
 
       sentences.forEach((sentence) => {
         sentence.words.forEach((word) => {
-          const normalizedWord = word.text.toLowerCase(); // Normalize the word to lowercase
+          const normalizedWord = word.text.toLowerCase();
 
-          // Split the word by non-letter characters (including accented characters)
           const wordsInWord = normalizedWord.split(/[^a-zA-ZÀ-ÿ0-9]+/);
 
           wordsInWord.forEach((subWord) => {
