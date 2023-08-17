@@ -1,3 +1,4 @@
+import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
 import { Word } from "@renderer/views/Analyze"
 import { KeyboardEvent, useRef, useState } from 'react'
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
@@ -27,6 +28,10 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
         }
     }
 
+    function hideInput() {
+        setShowInput(false, () => { })
+    }
+
     function toggleClozed() {
         if (clozed == true) {
             setShowInput(false, () => { });
@@ -49,28 +54,30 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
             </a>
 
             {(word.text !== ' ') &&
-                <div
-                    className='cloze-hint'
-                    style={{
-                        display: clozed && showInput ? 'flex' : 'none'
-                    }}>
-                    <input
-                        className="text-slate-950 border-2 border-slate-400 rounded-md text-sm z-50 mt-2"
-                        ref={inputRef}
-                        type="text"
-                        placeholder="hint"
-                        onChange={(e) => handleInputChange(e)}
-                        onKeyDown={(e) => handleEnter(e)}
-                        defaultValue={inputValue}
-                    />
-                    {translations.length > 1 &&
+                <div className={`cloze-hint ${clozed && showInput ? 'flex' : 'opacity-0'}`}>
+                    <div className="flex items-center m-0">
+                        <input
+                            className="text-slate-950 border-2 border-slate-200 text-sm z-50 rounded-w-md h-7 py-0"
+                            ref={inputRef}
+                            type="text"
+                            placeholder="hint"
+                            onChange={(e) => handleInputChange(e)}
+                            onKeyDown={(e) => handleEnter(e)}
+                            defaultValue={inputValue}
+                        />
+                        <button onClick={() => hideInput()} className="bg-slate-200 border-slate-200 border-2 text-slate-950 p-1 rounded-e-md text-sm hover:bg-slate-300 hover:border-slate-300 m-0">
+                            <CheckIcon className="w-6 h-4 stroke-slate-950" />
+                        </button>
+                        {/* {translations.length > 1 &&
                         <select name="" id="">
                             {translations.map((translation) => {
                                 return <option value={translation}>{translation}</option>
                             })}
                         </select>
-                    }
+                    } */}
+                    </div>
                 </div>
+
             }
         </span>
 
