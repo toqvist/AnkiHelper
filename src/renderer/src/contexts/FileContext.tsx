@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 interface FileContextType {
   resetFile: () => void,
-  selectedFile: File
+  selectedFile: CustomFile
   setSelectedFile: (fileName: File) => void
   result: string
   updateResult: (result: string) => void
@@ -21,9 +21,21 @@ interface FileProviderProps {
   children: ReactNode
 }
 
+interface CustomFile {
+  name: string,
+  path: string,
+  type: string,
+}
+
 export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
-  const defaultFile = new File([], '', { type: 'text/plain' });
-  const [selectedFile, setSelectedFile] = useState<File>(defaultFile)
+
+  const defaultFile: CustomFile = {
+    name: "",
+    path: "",
+    type: "",
+  };
+
+  const [selectedFile, setSelectedFile] = useState<CustomFile>(defaultFile)
   const [srcPreview, setSrcPreview] = useState<string[]>([])
 
   const [result, setResult] = useState<string>('')
@@ -35,12 +47,12 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
     setSelectedFile(defaultFile);
   };
 
-  async function updateSrc(file: File): Promise<void> {
+  async function updateSrc(file: CustomFile): Promise<void> {
     setSelectedFile(file)
     updateSrcPreview(file)
   }
 
-  async function updateSrcPreview(file: File): Promise<void> {
+  async function updateSrcPreview(file: CustomFile): Promise<void> {
     const filePreview = await window.api.previewFile(file.path, Infinity)
     setSrcPreview(filePreview)
   }
@@ -68,16 +80,34 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   async function resultToSource(content: string): Promise<void> {
     if (selectedFile !== undefined) {
-      const result: File = await window.api.saveFileTemp(selectedFile.path, content)
-      updateSrc(result);
-      updateResult("")
+      const resultPath: string = await window.api.saveFileTemp(selectedFile.path, content);
+      const fileName: string = resultPath.split('/').pop() || '';
+
+      const fileObj: CustomFile = {
+        name: fileName,
+        path: resultPath,
+        type: 'text/plain',
+      };
+
+      updateSrc(fileObj);
+      updateResult("");
     }
   }
 
+
   async function inputToSource(content: string): Promise<void> {
-    const resultFile: File = await window.api.saveFileTemp('', content)
-    updateSrc(resultFile);
+    const resultPath: string = await window.api.saveFileTemp('', content);
+    const fileName: string = resultPath.split('/').pop() || '';
+
+    const fileObj: CustomFile = {
+      name: fileName,
+      path: resultPath,
+      type: 'text/plain',
+    };
+
+    setSelectedFile(fileObj); // Update the selectedFile state
   }
+
 
   return (
     <FileContext.Provider

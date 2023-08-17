@@ -93,7 +93,7 @@ export default class FileHandler {
     }
   }
 
-  static async saveFileTemp(filePath: string, content: string): Promise<File> {
+  static async saveFileTemp(filePath: string, content: string): Promise<string> {
     const binaryDirectory = __dirname;
     const tempFolderName = 'temp';
     const tempFolderPath = path.join(binaryDirectory, tempFolderName);
@@ -101,7 +101,6 @@ export default class FileHandler {
     if (!fs.existsSync(tempFolderPath)) {
       fs.mkdirSync(tempFolderPath, { recursive: true });
     }
-
     let targetPath: string;
 
     if (filePath === '') {
@@ -122,24 +121,25 @@ export default class FileHandler {
     if (fs.existsSync(targetPath)) {
       fs.unlinkSync(targetPath);
     }
-    await FileHandler.writeStringToFile(targetPath, content);
 
-    const fileObj = new File([content], path.basename(targetPath), { type: 'text/plain' });
-    return fileObj;
+    console.log("wrote file to: " + targetPath)
+    await FileHandler.writeStringToFile(targetPath, content);
+    return targetPath;
   }
+
 
   static cleanUpTempFolder() {
-  const tempFolderName = 'temp';
-  const tempFolderPath = path.join(__dirname, tempFolderName);
+    const tempFolderName = 'temp';
+    const tempFolderPath = path.join(__dirname, tempFolderName);
 
-  if (fs.existsSync(tempFolderPath)) {
-    fs.readdirSync(tempFolderPath).forEach(file => {
-      const filePath = path.join(tempFolderPath, file);
-      fs.unlinkSync(filePath);
-    });
+    if (fs.existsSync(tempFolderPath)) {
+      fs.readdirSync(tempFolderPath).forEach(file => {
+        const filePath = path.join(tempFolderPath, file);
+        fs.unlinkSync(filePath);
+      });
 
-    fs.rmdirSync(tempFolderPath);
+      fs.rmdirSync(tempFolderPath);
+    }
   }
-}
 }
 

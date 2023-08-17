@@ -15,7 +15,7 @@ declare global { //TODO: This is probably not the correct/best way to declare ty
       readFileAsSentences: (filePath: string, lines: number) => Promise<Sentence[]>
       openSaveDialog: () => Promise<string>
       saveFile: (filePath: string, content: string) => Promise<string>
-      saveFileTemp: (filePath: string, content: string) => Promise<File>,
+      saveFileTemp: (filePath: string, content: string) => Promise<string>,
       wordFrequency: (filePath: string) => Promise<WordFreq[]>,
       getDecks: () => Promise<Deck[]>
       createClozeCard: (deck: string, clozeWords: Word[]) => Promise<void>,

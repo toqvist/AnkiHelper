@@ -6,7 +6,6 @@ export default class FileProcessor {
     const filteredLines = lines.filter((line) => !/^\d/.test(line))
 
     const trimmedContent = filteredLines.join('\n').trim()
-    console.log(trimmedContent)
     return trimmedContent
   }
 
