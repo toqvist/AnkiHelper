@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
+import path from 'path'; // Import the path module
 
 interface FileContextType {
   resetFile: () => void,
@@ -81,7 +82,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
   async function resultToSource(content: string): Promise<void> {
     if (selectedFile !== undefined) {
       const resultPath: string = await window.api.saveFileTemp(selectedFile.path, content);
-      const fileName: string = resultPath.split('/').pop() || '';
+      const fileName: string = extractFileName(resultPath);
 
       const fileObj: CustomFile = {
         name: fileName,
@@ -97,7 +98,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   async function inputToSource(content: string): Promise<void> {
     const resultPath: string = await window.api.saveFileTemp('', content);
-    const fileName: string = resultPath.split('/').pop() || '';
+    const fileName: string = extractFileName(resultPath);
 
     const fileObj: CustomFile = {
       name: fileName,
@@ -105,9 +106,13 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
       type: 'text/plain',
     };
 
-    setSelectedFile(fileObj); // Update the selectedFile state
+    setSelectedFile(fileObj);
   }
 
+  function extractFileName(filePath: string): string {
+    const lastSlashIndex = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
+    return lastSlashIndex !== -1 ? filePath.slice(lastSlashIndex + 1) : filePath;
+  }
 
   return (
     <FileContext.Provider
