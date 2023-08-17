@@ -1,7 +1,6 @@
 import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
 import { Word } from "@renderer/views/Analyze"
-import { KeyboardEvent, useRef, useState } from 'react'
-import { useStateWithCallbackLazy } from 'use-state-with-callback';
+import { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 interface ClozeWordProps {
     word: Word;
@@ -13,7 +12,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
     const [clozed, setClozed] = useState<boolean>(word.clozed)
 
     const [inputValue, setInputValue] = useState(translations[0]);
-    const [showInput, setShowInput] = useStateWithCallbackLazy<boolean>(true)
+    const [showInput, setShowInput] = useState<boolean>(true)
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const handleInputChange = (event) => {
@@ -24,23 +23,29 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
     function handleEnter(event: KeyboardEvent<HTMLInputElement>): void {
         if (event.key === 'Enter') {
             updateWord({ ...word, clozed: clozed, hint: inputValue })
-            setShowInput(false, () => { })
+            setShowInput(false)
         }
     }
 
     function hideInput() {
-        setShowInput(false, () => { })
+        setShowInput(false)
     }
 
     function toggleClozed() {
         if (clozed == true) {
-            setShowInput(false, () => { });
+            setShowInput(false);
         } else {
-            setShowInput(true, () => { inputRef.current?.focus() })
+            setShowInput(true)
         }
         updateWord({ ...word, clozed: !clozed, hint: inputValue })
         setClozed(!clozed);
     }
+
+    useEffect(() => {
+        if(showInput) {
+            inputRef.current?.focus()
+        }
+    }, [clozed])
 
     return (
         <span className="cloze-word">
@@ -54,7 +59,7 @@ function ClozeWord({ word, updateWord, translations }: ClozeWordProps): JSX.Elem
             </a>
 
             {(word.text !== ' ') &&
-                <div className={`cloze-hint ${clozed && showInput ? 'flex' : 'opacity-0'}`}>
+                <div className={`cloze-hint ${clozed && showInput ? 'flex' : 'hidden'}`}>
                     <div className="flex items-center m-0">
                         <input
                             className="text-slate-950 border-2 border-slate-200 text-sm z-50 rounded-w-md h-7 py-0"
