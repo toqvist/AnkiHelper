@@ -52,9 +52,9 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   async function updateResultPreview(content: string): Promise<void> {
     const lines: string[] = content.split('\n')
-    const linesToReturn: number = Math.min(10, lines.length)
+    //const linesToReturn: number = Math.min(10, lines.length)
 
-    const result = lines.slice(0, linesToReturn)
+    const result = lines.slice(0, Infinity)
     setResultPreview(result)
   }
 

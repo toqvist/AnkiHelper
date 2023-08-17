@@ -10,7 +10,7 @@ function Process(): JSX.Element {
 
     return (
         <>
-            {selectedFile == "" ? <IntroText />
+            {selectedFile.path == "" ? <IntroText />
                 : <div>
                     <FileActions />
                     <i>The processor can automatically process files. Currently removing SRT timestamps is the only option. Try opening movie subitles!</i>

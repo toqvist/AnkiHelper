@@ -29,7 +29,7 @@ function FileActions(): JSX.Element {
 
 
   let actions: Action[] = []
-  switch (getFileExtension(selectedFile)) {
+  switch (getFileExtension(selectedFile.name)) {
     case 'srt':
       actions = [...defaultActions, ...srtActions]
       break
@@ -47,7 +47,7 @@ function FileActions(): JSX.Element {
               <button
                 key={i}
                 onClick={async () => {
-                  const result: string = await action.function(selectedFile)
+                  const result: string = await action.function(selectedFile.path)
                   updateResult(result)
                 }}
               >

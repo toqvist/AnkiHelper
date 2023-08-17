@@ -19,7 +19,7 @@ export default function SourceAsLines({ onClick, disabled }: SourceAsLinesProps)
     }, [])
 
     async function getSentences() {
-        setSentences(await window.api.readFileAsSentences(selectedFile, Infinity))
+        setSentences(await window.api.readFileAsSentences(selectedFile.path, Infinity))
     }
 
     return (

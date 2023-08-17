@@ -9,8 +9,8 @@ import { WebContents, ipcRenderer } from 'electron'
 declare global { //TODO: This is probably not the correct/best way to declare types
   interface Window {
     api: {
-      trimSRTFile: () => string
-      trimSRT: () => string
+      trimSRTFile: (filePath: string) => string
+      trimSRT: (content: string) => string
       previewFile: (filePath: string, lines: number) => Promise<string[]>
       readFileAsSentences: (filePath: string, lines: number) => Promise<Sentence[]>
       openSaveDialog: () => Promise<string>
@@ -82,3 +82,4 @@ export default App
 //TODO: ENH/ Cloze input box should closed when another one opens
 //TODO: BUG/ Input box not focused when cloze selected
 //TODO: FTR/ More languages/add languages to selector
+//TODO: ENH/ Loading file freezes up program until it's done

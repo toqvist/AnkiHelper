@@ -33,7 +33,7 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
     }, [])
 
     async function getWordFreqs() {
-        setWordFreqs(await window.api.wordFrequency(selectedFile))
+        setWordFreqs(await window.api.wordFrequency(selectedFile.path))
         setIsLoading(false)
     }
 

@@ -84,7 +84,7 @@ function Analyze(): JSX.Element {
 
   async function getSentences(word: string): Promise<void> {
     try {
-      setRightColumn(await window.api.usedInSentences(selectedFile, word));
+      setRightColumn(await window.api.usedInSentences(selectedFile.path, word));
     } catch (error) {
       console.error("Error fetching sentences:", error);
     }
@@ -118,7 +118,7 @@ function Analyze(): JSX.Element {
 
   return (
     <>
-      {selectedFile == "" ? <IntroText />
+      {selectedFile.path == "" ? <IntroText />
         : <>
           {showModal &&
             <div className="modal">
@@ -145,7 +145,7 @@ function Analyze(): JSX.Element {
                   Words in text</button>
               </div>
 
-              {selectedFile != "" && <>
+              {selectedFile.path != "" && <>
                 {activeMode == AnalyzeModes.lines && <>
                   <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
                 </>}
