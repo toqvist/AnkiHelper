@@ -6,6 +6,8 @@ import ClickableSentences from '@renderer/components/ClickableSentences';
 import SourceAsLines from '@renderer/components/SourceAsLines';
 import IntroText from '@renderer/components/IntroText';
 import { openExternalLink } from '@renderer/helpers/externalLink';
+import NoDecksFound from '@renderer/components/NoDecksFound';
+import DeckSelection from '@renderer/components/DeckSelection';
 
 export interface WordFreq {
   word: string;
@@ -158,35 +160,11 @@ function Analyze(): JSX.Element {
             <div>
               <div>
                 {decks.length == 0
-                  ? <>
-                    <div className='flex justify-between align-middle mb-4'>
-                      <p className='font-bold text-lg'>No anki decks found!</p>
-                      <button onClick={() => getDecks()}>Retry</button>
-                    </div>
-
-                    <div>
-                      <p className='mb-4'>Make sure <a href="https://apps.ankiweb.net/" onClick={(e) => {
-                        e.preventDefault();
-                        openExternalLink('https://apps.ankiweb.net/');
-                      }}>Anki </a>
-                        is running with
-                        <a href="https://ankiweb.net/shared/info/2055492159" onClick={(e) => {
-                          e.preventDefault();
-                          openExternalLink('https://ankiweb.net/shared/info/2055492159');
-                        }}> AnkiConnect</a> installed!</p>
-                      <p>{`Install AnkiConnect by going to Tools > Add-ons > Get Add-ons and entering the code:`} <strong>2055492159</strong></p>
-                    </div>
-                  </>
+                  ? <NoDecksFound getDecks={getDecks} />
                   : <div className='flex flex-end gap-1 rounded-sm'>
-                    <div>
-                      <select className='bg-slate-600' onChange={selectDeck}>
-                        <option value="">Deck</option>
-                        {decks.map((deck) => (
-                          <option key={deck.id} value={deck.name}>{deck.name}</option>
-                        ))}
-                      </select>
-                    </div>
-
+                    <DeckSelection decks={decks}
+                      selectedDeck={selectedDeck}
+                      selectDeck={selectDeck} />
                     <div>
                       <select
                         className='bg-slate-600'
@@ -203,7 +181,7 @@ function Analyze(): JSX.Element {
                 }
               </div>
               {rightColumn.length > 0 && <div>
-                <h2>Used in sentences</h2>
+                <h2 className='mb-2'>Used in sentences</h2>
                 <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
               </div>}
 
