@@ -1,5 +1,5 @@
 import { useFileContext } from '../contexts/FileContext'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import ClozeModal from '@renderer/components/ClozeModal';
 import WordFrequencies from '@renderer/components/WordFrequencies';
 import ClickableSentences from '@renderer/components/ClickableSentences';
@@ -8,6 +8,7 @@ import IntroText from '@renderer/components/IntroText';
 import { openExternalLink } from '@renderer/helpers/externalLink';
 import NoDecksFound from '@renderer/components/NoDecksFound';
 import DeckSelection from '@renderer/components/DeckSelection';
+import LanguageSelection from '@renderer/components/LanguageSelection';
 
 export interface WordFreq {
   word: string;
@@ -161,23 +162,17 @@ function Analyze(): JSX.Element {
               <div>
                 {decks.length == 0
                   ? <NoDecksFound getDecks={getDecks} />
-                  : <div className='flex flex-end gap-1 rounded-sm'>
-                    <DeckSelection decks={decks}
-                      selectedDeck={selectedDeck}
-                      selectDeck={selectDeck} />
-                    <div>
-                      <select
-                        className='bg-slate-600'
-                        id="languageSelect"
-                        onChange={selectLanguage}>
-                        {languages.map((language) => (
-                          <option key={language.code} value={language.code}>
-                            {language.name}
-                          </option>
-                        ))}
-                      </select>
+                  : <>
+                    <div className='flex flex-end gap-1 rounded-sm'>
+                      <DeckSelection decks={decks}
+                        selectedDeck={selectedDeck}
+                        selectDeck={selectDeck} />
+                      <LanguageSelection
+                        languages={languages}
+                        selectLanguage={selectLanguage}
+                        language={language} />
                     </div>
-                  </div>
+                  </>
                 }
               </div>
               {rightColumn.length > 0 && <div>
