@@ -121,7 +121,6 @@ function Analyze(): JSX.Element {
 
   if (selectedFile.path == "") return <IntroText />
 
-
   return (
     <>
       {showModal &&
@@ -132,52 +131,59 @@ function Analyze(): JSX.Element {
           targetLanguage={language.code}
         />
       }
-      <div className='flex gap-4 justify-between mx-4'>
-        <div>
-          <div className="flex gap-1 mb-3">
-            <button disabled={activeMode == AnalyzeModes.lines}
-              onClick={() => setActiveMode(AnalyzeModes.lines)}
-            >
-              Source</button>
-            <button disabled={activeMode == AnalyzeModes.wordFrequencies}
-              onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
-            >
-              Words in text</button>
-          </div>
 
-          {selectedFile.path != "" && <>
-            {activeMode == AnalyzeModes.lines && <>
-              <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
-            </>}
-            {activeMode == AnalyzeModes.wordFrequencies && <>
-              <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
-            </>}
-          </>
-          }
-        </div>
-        <div>
+      <div className='mx-auto' />
+
+      <div className='flex justify-center'>
+        <div className='grid gap-4 grid-cols-2 w-lg'>
           <div>
-            {decks.length == 0
-              ? <NoDecksFound getDecks={getDecks} />
-              : <>
-                <div className='flex flex-end gap-1 rounded-sm'>
-                  <DeckSelection decks={decks}
-                    selectedDeck={selectedDeck}
-                    selectDeck={selectDeck} />
-                  <LanguageSelection
-                    languages={languages}
-                    selectLanguage={selectLanguage}
-                    language={language} />
-                </div>
-              </>
+            <div className="flex gap-1 mb-3">
+              <button disabled={activeMode == AnalyzeModes.lines}
+                onClick={() => setActiveMode(AnalyzeModes.lines)}
+              >
+                Source</button>
+              <button disabled={activeMode == AnalyzeModes.wordFrequencies}
+                onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
+              >
+                Words in text</button>
+            </div>
+            {selectedFile.path != "" && <>
+              {activeMode == AnalyzeModes.lines && <>
+                <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
+              </>}
+              {activeMode == AnalyzeModes.wordFrequencies && <>
+                <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
+              </>}
+            </>
             }
           </div>
-          {rightColumn.length > 0 && <div>
-            <h2 className='mb-2'>Used in sentences</h2>
-            <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
-          </div>}
+
+          <div>
+            <div>
+              {decks.length == 0
+                ? <NoDecksFound getDecks={getDecks} />
+                : <>
+                  <div className='flex flex-end gap-1 rounded-sm'>
+                    <DeckSelection decks={decks}
+                      selectedDeck={selectedDeck}
+                      selectDeck={selectDeck} />
+                    <LanguageSelection
+                      languages={languages}
+                      selectLanguage={selectLanguage}
+                      language={language} />
+                  </div>
+                </>
+              }
+            </div>
+            {rightColumn.length > 0 && <div>
+              <h2 className='mb-2'>Used in sentences</h2>
+              <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
+            </div>}
+          </div>
         </div>
       </div>
+      <div className='mx-auto' />
+
     </>
   )
 }
