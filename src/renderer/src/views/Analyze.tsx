@@ -119,71 +119,65 @@ function Analyze(): JSX.Element {
     }
   }
 
+  if (selectedFile.path == "") return <IntroText />
+
+
   return (
     <>
-      {selectedFile.path == "" ? <IntroText />
-        : <>
-          {showModal &&
-            <div className="modal">
-              <ClozeModal
-                sentence={modalSentence}
-                deck={selectedDeck}
-                closeModal={closeModal}
-                targetLanguage={language.code}
-              />
-              <div onClick={() => { setShowModal(false) }} className={`modal-overlay`} />
-            </div>
-          }
-
-          <div className='flex gap-4 justify-between mx-4'>
-            <div>
-              <div className="flex gap-1 mb-3">
-                <button disabled={activeMode == AnalyzeModes.lines}
-                  onClick={() => setActiveMode(AnalyzeModes.lines)}
-                >
-                  Source</button>
-                <button disabled={activeMode == AnalyzeModes.wordFrequencies}
-                  onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
-                >
-                  Words in text</button>
-              </div>
-
-              {selectedFile.path != "" && <>
-                {activeMode == AnalyzeModes.lines && <>
-                  <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
-                </>}
-                {activeMode == AnalyzeModes.wordFrequencies && <>
-                  <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
-                </>}
-              </>
-              }
-            </div>
-            <div>
-              <div>
-                {decks.length == 0
-                  ? <NoDecksFound getDecks={getDecks} />
-                  : <>
-                    <div className='flex flex-end gap-1 rounded-sm'>
-                      <DeckSelection decks={decks}
-                        selectedDeck={selectedDeck}
-                        selectDeck={selectDeck} />
-                      <LanguageSelection
-                        languages={languages}
-                        selectLanguage={selectLanguage}
-                        language={language} />
-                    </div>
-                  </>
-                }
-              </div>
-              {rightColumn.length > 0 && <div>
-                <h2 className='mb-2'>Used in sentences</h2>
-                <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
-              </div>}
-
-            </div>
-          </div>
-        </>
+      {showModal &&
+        <ClozeModal
+          sentence={modalSentence}
+          deck={selectedDeck}
+          closeModal={closeModal}
+          targetLanguage={language.code}
+        />
       }
+      <div className='flex gap-4 justify-between mx-4'>
+        <div>
+          <div className="flex gap-1 mb-3">
+            <button disabled={activeMode == AnalyzeModes.lines}
+              onClick={() => setActiveMode(AnalyzeModes.lines)}
+            >
+              Source</button>
+            <button disabled={activeMode == AnalyzeModes.wordFrequencies}
+              onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
+            >
+              Words in text</button>
+          </div>
+
+          {selectedFile.path != "" && <>
+            {activeMode == AnalyzeModes.lines && <>
+              <SourceAsLines onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
+            </>}
+            {activeMode == AnalyzeModes.wordFrequencies && <>
+              <WordFrequencies getSentences={getSentences} selectedDeck={selectedDeck} />
+            </>}
+          </>
+          }
+        </div>
+        <div>
+          <div>
+            {decks.length == 0
+              ? <NoDecksFound getDecks={getDecks} />
+              : <>
+                <div className='flex flex-end gap-1 rounded-sm'>
+                  <DeckSelection decks={decks}
+                    selectedDeck={selectedDeck}
+                    selectDeck={selectDeck} />
+                  <LanguageSelection
+                    languages={languages}
+                    selectLanguage={selectLanguage}
+                    language={language} />
+                </div>
+              </>
+            }
+          </div>
+          {rightColumn.length > 0 && <div>
+            <h2 className='mb-2'>Used in sentences</h2>
+            <ClickableSentences sentences={rightColumn} onClick={initiateClozeCreation} disabled={selectedDeck !== undefined && selectedDeck.name !== ""} />
+          </div>}
+        </div>
+      </div>
     </>
   )
 }
