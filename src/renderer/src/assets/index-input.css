@@ -24,9 +24,9 @@
     @apply py-1;
     @apply px-4;
     @apply rounded-sm;
-    @apply hover: bg-slate-500;
-    @apply disabled: opacity-60;
-    @apply disabled: cursor-not-allowed;
+    @apply hover:bg-slate-500;
+    @apply disabled:opacity-60;
+    @apply disabled:cursor-not-allowed;
   }
 
   select {
@@ -344,9 +344,4 @@ a:hover {
   border-bottom: 7px solid #f8fafc;
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
-}
-
-.center-content-column {
-  display: grid;
-  grid-template-columns: 1fr min(65ch, 100%) 1fr;
 }
