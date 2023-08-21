@@ -1,19 +1,59 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { useFileContext } from '../contexts/FileContext';
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
+const acceptedFileTypes = ['.txt', '.srt'];
+const acceptedFileTypesString: string = acceptedFileTypes.join(' ');
 
 function FileUpload(): JSX.Element {
   const { selectedFile, updateSrc, resetFile } = useFileContext();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
+  const handleFileChange = (fileOrEvent: File | ChangeEvent<HTMLInputElement>) => {
+    let file: File | null = null;
+
+    if (fileOrEvent instanceof File) {
+      // If a File object is passed, use it directly
+      file = fileOrEvent;
+    } else if (fileOrEvent.target && fileOrEvent.target.files) {
+      // If a ChangeEvent is passed, extract the File from it
+      file = fileOrEvent.target.files[0];
+    }
+
     if (file != null) {
+      // Handle the valid file (you can process it here)
       updateSrc(file);
     }
   };
+
+  const handleDrop = (event: React.DragEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+
+    const invalidFiles: string[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileExtension = `.${file.name.split('.').pop()}`;
+      if (!acceptedFileTypes.includes(fileExtension)) {
+        invalidFiles.push(file.name);
+      } else {
+        // Handle the valid file (you can process it here)
+        handleFileChange(file);
+      }
+    }
+
+    if (invalidFiles.length > 0) {
+      alert(`Invalid file type. Accepted filetypes: \n ${acceptedFileTypesString}`);
+    }
+  };
+
+
+  function handleDragOver(event: React.DragEvent<HTMLInputElement>) {
+    event.preventDefault();
+    //TODO: Add visual indication for unaccepted filetype
+  }
 
   return (
     <div>
@@ -29,8 +69,10 @@ function FileUpload(): JSX.Element {
            "
             ref={fileInputRef}
             type="file"
-            accept=".txt, .srt"
+            accept={acceptedFileTypes.join(', ')}
             onChange={handleFileChange}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
           />
         </div>
         : <div className='flex gap-4 items-center py-1 px-4 justify-between border-2 border-slate-600 border-dotted'>

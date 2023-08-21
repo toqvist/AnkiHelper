@@ -12,7 +12,7 @@ export let mainWindow;
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 900,
+    width: 1300,
     height: 670,
     show: false,
     icon: path.join(__dirname, 'icon.png'),
