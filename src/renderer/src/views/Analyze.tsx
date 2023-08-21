@@ -132,10 +132,9 @@ function Analyze(): JSX.Element {
         />
       }
 
-      <div className='mx-auto' />
 
       <div className='flex justify-center'>
-        <div className='grid gap-4 grid-cols-2 w-lg'>
+        <div className='grid grid-cols-2 w-lg gap-4'>
           <div>
             <div className="flex gap-1 mb-3">
               <button disabled={activeMode == AnalyzeModes.lines}
@@ -145,7 +144,7 @@ function Analyze(): JSX.Element {
               <button disabled={activeMode == AnalyzeModes.wordFrequencies}
                 onClick={() => setActiveMode(AnalyzeModes.wordFrequencies)}
               >
-                Words in text</button>
+                Word analysis</button>
             </div>
             {selectedFile.path != "" && <>
               {activeMode == AnalyzeModes.lines && <>
@@ -182,7 +181,6 @@ function Analyze(): JSX.Element {
           </div>
         </div>
       </div>
-      <div className='mx-auto' />
 
     </>
   )

@@ -84,3 +84,4 @@ export default App
 //TODO: FTR/ More languages/add languages to selector
 //TODO: ENH/ Loading file freezes up program until it's done
 //TODO: BUG/ Save file doesn't work anymore
+//TODO: BUG/Reselecting 'Deck' again does not update deck state

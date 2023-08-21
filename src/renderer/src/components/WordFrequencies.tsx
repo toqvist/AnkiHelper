@@ -103,7 +103,7 @@ export default function WordFrequencies({ getSentences, selectedDeck }: WordFreq
     return (
         <>
             <h2>Words from source</h2>
-            <button disabled={selectedDeck === undefined || selectedDeck.name === ""} onClick={() => getNewWords()}>New words</button>
+            <button className={'mb-1 mt-2'} disabled={selectedDeck === undefined || selectedDeck.name === ""} onClick={() => getNewWords()}>New words</button>
                 {
                     (wordFreqs.length == 0 || isLoading) &&
                     <div className='display-flex justify-center word-frequency'>
