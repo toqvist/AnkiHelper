@@ -1,25 +1,20 @@
-import { Language } from '@renderer/views/Analyze';
-import React from 'react';
+import { Language } from '@renderer/views/Analyze'
+import React from 'react'
 
 interface LanguageSelectionProps {
-    languages: Language[];
-    selectLanguage: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    language: Language;
-  }
-  
+  languages: Language[]
+  selectLanguage: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  language: Language
+}
 
 function LanguageSelection({
   languages,
   selectLanguage,
-  language,
+  language
 }: LanguageSelectionProps): JSX.Element {
   return (
     <div>
-      <select
-        className='bg-slate-600'
-        id="languageSelect"
-        onChange={selectLanguage}
-      >
+      <select className="bg-slate-600" id="languageSelect" onChange={selectLanguage}>
         {languages.map((language) => (
           <option key={language.code} value={language.code}>
             {language.name}
@@ -27,7 +22,7 @@ function LanguageSelection({
         ))}
       </select>
     </div>
-  );
+  )
 }
 
-export default LanguageSelection;
+export default LanguageSelection

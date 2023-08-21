@@ -18,15 +18,9 @@ function FileActions(): JSX.Element {
     }
   }
 
-  const defaultActions = [
-    { label: 'Save result', function: openSaveDialog },
-  ]
+  const defaultActions = [{ label: 'Save result', function: openSaveDialog }]
 
-  const srtActions = [
-    { label: 'Trim timestamps', function: window.api.trimSRTFile },
-  ]
-
-
+  const srtActions = [{ label: 'Trim timestamps', function: window.api.trimSRTFile }]
 
   let actions: Action[] = []
   switch (getFileExtension(selectedFile.name)) {
@@ -40,9 +34,12 @@ function FileActions(): JSX.Element {
   return (
     <>
       <div>
-        {result && <button onClick={() => resultToSource(result)} >Set result as active file</button>}
+        {result && (
+          <button onClick={() => resultToSource(result)}>Set result as active file</button>
+        )}
         {selectedFile &&
-          actions.map((action, i) => {11
+          actions.map((action, i) => {
+            11
             return (
               <button
                 key={i}
@@ -54,8 +51,7 @@ function FileActions(): JSX.Element {
                 {action.label}
               </button>
             )
-          })
-        }
+          })}
       </div>
     </>
   )

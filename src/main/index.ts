@@ -1,13 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { getHandlers } from './ipcHandlers'
 import FileHandler from '../model/fileHandler'
-import electronFind from 'electron-find';
 
-
-export let mainWindow;
+export let mainWindow
 
 function createWindow(): void {
   // Create the browser window.
@@ -27,7 +25,7 @@ function createWindow(): void {
       color: '#334155',
       symbolColor: '#74b1be',
       height: 60
-    },
+    }
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -39,22 +37,17 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-
-
   /* globalShortcut.register('CommandOrControl+F', () => {
     mainWindow.webContents.send('on-find');
 }); */
-
 }
 
 // This method will be called when Electron has finished
@@ -92,9 +85,8 @@ app.on('window-all-closed', () => {
 })
 
 app.on('before-quit', () => {
-  FileHandler.cleanUpTempFolder();
-});
-
+  FileHandler.cleanUpTempFolder()
+})
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

@@ -1,5 +1,5 @@
 interface FilePreviewProps {
-  previewLines: string[];
+  previewLines: string[]
 }
 
 function FilePreview({ previewLines }: FilePreviewProps): JSX.Element {

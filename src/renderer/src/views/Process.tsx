@@ -5,29 +5,31 @@ import { useState } from 'react'
 import IntroText from '@renderer/components/IntroText'
 
 function Process(): JSX.Element {
+  const { selectedFile, srcPreview, resultPreview } = useFileContext()
 
-    const { selectedFile, srcPreview, resultPreview } = useFileContext()
+  if (selectedFile.path == '') return <IntroText />
 
-    if (selectedFile.path == "") return <IntroText />
-
-    return (
-        <div>
-            <FileActions />
-            <i>The processor can automatically process files. Currently removing SRT timestamps is the only option. Try opening movie subitles!</i>
-            {selectedFile && (
-                <div className="flex justify-between mx-6">
-                    <div>
-                        <h2>Source</h2>
-                        <FilePreview previewLines={srcPreview} />
-                    </div>
-                    <div>
-                        <h2>Result</h2>
-                        <FilePreview previewLines={resultPreview} />
-                    </div>
-                </div>
-            )}
+  return (
+    <div>
+      <FileActions />
+      <i>
+        The processor can automatically process files. Currently removing SRT timestamps is the only
+        option. Try opening movie subitles!
+      </i>
+      {selectedFile && (
+        <div className="flex justify-between mx-6">
+          <div>
+            <h2>Source</h2>
+            <FilePreview previewLines={srcPreview} />
+          </div>
+          <div>
+            <h2>Result</h2>
+            <FilePreview previewLines={resultPreview} />
+          </div>
         </div>
-    )
+      )}
+    </div>
+  )
 }
 
 export default Process

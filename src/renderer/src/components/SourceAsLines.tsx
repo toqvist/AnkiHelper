@@ -1,33 +1,31 @@
-import { useFileContext } from '@renderer/contexts/FileContext';
+import { useFileContext } from '@renderer/contexts/FileContext'
 import { useEffect, useState } from 'react'
-import ClickableSentences from './ClickableSentences';
-import { Sentence } from '@renderer/views/Analyze';
+import ClickableSentences from './ClickableSentences'
+import { Sentence } from '@renderer/views/Analyze'
 
 interface SourceAsLinesProps {
-    onClick: Function;
-    disabled: boolean;
+  onClick: Function
+  disabled: boolean
 }
 
 export default function SourceAsLines({ onClick, disabled }: SourceAsLinesProps): JSX.Element {
+  const { selectedFile } = useFileContext()
+  const [sentences, setSentences] = useState<Sentence[]>([])
 
-    const { selectedFile } = useFileContext()
-    const [sentences, setSentences] = useState<Sentence[]>([]);
+  useEffect(() => {
+    if (sentences.length == 0) getSentences()
+  }, [])
 
-    useEffect(() => {
-        if (sentences.length == 0)
-            getSentences()
-    }, [])
+  async function getSentences() {
+    setSentences(await window.api.readFileAsSentences(selectedFile.path, Infinity))
+  }
 
-    async function getSentences() {
-        setSentences(await window.api.readFileAsSentences(selectedFile.path, Infinity))
-    }
-
-    return (
-        <>
-            <h2 className='mb-4'>Source content</h2>
-            {sentences.length > 0 &&
-                <ClickableSentences sentences={sentences} onClick={onClick} disabled={disabled} />
-            }
-        </>
-    );
+  return (
+    <>
+      <h2 className="mb-4">Source content</h2>
+      {sentences.length > 0 && (
+        <ClickableSentences sentences={sentences} onClick={onClick} disabled={disabled} />
+      )}
+    </>
+  )
 }

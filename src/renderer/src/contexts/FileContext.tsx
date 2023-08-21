@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
-import path from 'path'; // Import the path module
+import path from 'path' // Import the path module
 
 interface FileContextType {
-  resetFile: () => void,
+  resetFile: () => void
   selectedFile: CustomFile
   setSelectedFile: (fileName: File) => void
   result: string
@@ -23,18 +23,17 @@ interface FileProviderProps {
 }
 
 interface CustomFile {
-  name: string,
-  path: string,
-  type: string,
+  name: string
+  path: string
+  type: string
 }
 
 export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
-
   const defaultFile: CustomFile = {
-    name: "",
-    path: "",
-    type: "",
-  };
+    name: '',
+    path: '',
+    type: ''
+  }
 
   const [selectedFile, setSelectedFile] = useState<CustomFile>(defaultFile)
   const [srcPreview, setSrcPreview] = useState<string[]>([])
@@ -45,8 +44,8 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
   const [processing, setProcessing] = useState<boolean>(false)
 
   function resetFile() {
-    setSelectedFile(defaultFile);
-  };
+    setSelectedFile(defaultFile)
+  }
 
   async function updateSrc(file: CustomFile): Promise<void> {
     setSelectedFile(file)
@@ -81,37 +80,36 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
 
   async function resultToSource(content: string): Promise<void> {
     if (selectedFile !== undefined) {
-      const resultPath: string = await window.api.saveFileTemp(selectedFile.path, content);
-      const fileName: string = extractFileName(resultPath);
+      const resultPath: string = await window.api.saveFileTemp(selectedFile.path, content)
+      const fileName: string = extractFileName(resultPath)
 
       const fileObj: CustomFile = {
         name: fileName,
         path: resultPath,
-        type: 'text/plain',
-      };
+        type: 'text/plain'
+      }
 
-      updateSrc(fileObj);
-      updateResult("");
+      updateSrc(fileObj)
+      updateResult('')
     }
   }
 
-
   async function inputToSource(content: string): Promise<void> {
-    const resultPath: string = await window.api.saveFileTemp('', content);
-    const fileName: string = extractFileName(resultPath);
+    const resultPath: string = await window.api.saveFileTemp('', content)
+    const fileName: string = extractFileName(resultPath)
 
     const fileObj: CustomFile = {
       name: fileName,
       path: resultPath,
-      type: 'text/plain',
-    };
+      type: 'text/plain'
+    }
 
-    setSelectedFile(fileObj);
+    setSelectedFile(fileObj)
   }
 
   function extractFileName(filePath: string): string {
-    const lastSlashIndex = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
-    return lastSlashIndex !== -1 ? filePath.slice(lastSlashIndex + 1) : filePath;
+    const lastSlashIndex = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'))
+    return lastSlashIndex !== -1 ? filePath.slice(lastSlashIndex + 1) : filePath
   }
 
   return (
@@ -128,7 +126,7 @@ export const FileProvider: React.FC<FileProviderProps> = ({ children }) => {
         openSaveDialog,
         resultToSource,
         inputToSource,
-        resetFile,
+        resetFile
       }}
     >
       {children}
