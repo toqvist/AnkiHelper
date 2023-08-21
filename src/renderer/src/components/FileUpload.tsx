@@ -10,24 +10,21 @@ function FileUpload(): JSX.Element {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (fileOrEvent: File | ChangeEvent<HTMLInputElement>) => {
+  function handleFileChange(fileOrEvent: File | ChangeEvent<HTMLInputElement>) {
     let file: File | null = null;
 
     if (fileOrEvent instanceof File) {
-      // If a File object is passed, use it directly
       file = fileOrEvent;
     } else if (fileOrEvent.target && fileOrEvent.target.files) {
-      // If a ChangeEvent is passed, extract the File from it
       file = fileOrEvent.target.files[0];
     }
 
     if (file != null) {
-      // Handle the valid file (you can process it here)
       updateSrc(file);
     }
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLInputElement>) => {
+  function handleDrop(event: React.DragEvent<HTMLInputElement>) {
     event.preventDefault();
     const files = event.dataTransfer.files;
 
