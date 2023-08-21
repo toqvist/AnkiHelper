@@ -2,6 +2,8 @@
 AnkiHelper is a tool for rapidly creating flashcards from texts for the spaced repetition software [Anki](https://apps.ankiweb.net/).
 
 # Usage
+![demo](./ankihelper_demo.gif)
+
 ## Analyzing
 Choose a file to start analyzing it. Once a file is selected you can see which words are most common in the text. If you select an Anki deck 
 you can filter out all words that are already in that deck. 
