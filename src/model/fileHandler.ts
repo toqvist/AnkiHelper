@@ -54,7 +54,7 @@ export default class FileHandler {
       const result = lines.slice(0, linesToReturn)
       return result
     } catch (error: unknown) {
-      throw new Error('Error reading the file: ' + error.message)
+      throw new Error(`Error reading the file: ${error.message}`)
       return []
     }
   }
