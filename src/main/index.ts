@@ -25,7 +25,8 @@ function createWindow(): void {
       color: '#334155',
       symbolColor: '#74b1be',
       height: 60
-    }
+    },
+    title: 'AnkiHelper'
   })
 
   mainWindow.on('ready-to-show', () => {
