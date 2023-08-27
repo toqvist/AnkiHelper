@@ -1,5 +1,5 @@
 # AnkiHelper helps you create Anki notes
-AnkiHelper is a tool for rapidly creating flashcards from texts for the spaced repetition software [Anki](https://apps.ankiweb.net/).
+AnkiHelper is a versatile tool designed to streamline the process of creating flashcards for the spaced repetition software [Anki](https://apps.ankiweb.net/).
 
 ## Usage
 ![demo](./ankihelper_demo.gif)
@@ -28,7 +28,7 @@ Make sure that Anki is installed and running with the [AnkiConnect](https://anki
 
 
 ## Limitations
-AnkiHelper is under early, active development. If you encounter a bug I would appreciate if you would report it.
+Please note that AnkiHelper is still in its early stages of development. If you encounter any bugs, I would greatly appreciate it if you could report them.
 
 
 ## Planned features
@@ -38,4 +38,8 @@ AnkiHelper is under early, active development. If you encounter a bug I would ap
 
 
 ## License
-This software is licensed under GNU General Public License v3.0. Read the LICENSE.txt file for more information. 
+AnkiHelper is released under the GNU General Public License v3.0. For more details, consult the LICENSE.txt file.
+
+
+## Download
+To download AnkiHelper visit the [releases page](https://github.com/toqvist/AnkiHelper/releases/tag/v1.0).
